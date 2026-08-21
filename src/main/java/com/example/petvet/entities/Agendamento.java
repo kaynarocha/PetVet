@@ -8,24 +8,28 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+
 @Entity
-// data cria os get e set
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Usuario {
+public class Agendamento {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
+    public int id;
 
-    public String nome;
+    public LocalDateTime data;
 
-    public String cpf;
+    public String servico;
 
-    public String senha;
+    public String status;
 
-    public String email;
+    public String descricao;
+
 
 
 }

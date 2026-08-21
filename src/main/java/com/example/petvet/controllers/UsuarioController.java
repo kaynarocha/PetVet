@@ -1,10 +1,11 @@
 package com.example.petvet.controllers;
 
 import com.example.petvet.entities.Usuario;
+import com.example.petvet.repository.UsuarioRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -13,19 +14,24 @@ import java.util.List;
 @RequestMapping("/usuarios") // define a rota
 public class UsuarioController {
 
+    // injeção de dependência
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
+
     // ? significa qualquer coisa
     @GetMapping
     public ResponseEntity<?> listarTodos() {
 
-        List<Usuario> usuarios =
-                List.of(new Usuario(1L,
-                        "Kayná",
-                        "11412594944",
-                        "123456",
-                        "kaynarocha1@gmail.com"));
+        return ResponseEntity.ok(usuarioRepository.findAll());
+    }
 
+    // void é saida
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<Usuario> criar(@RequestBody Usuario usuario) {
 
-
-        return ResponseEntity.ok("Sucesso");
+        var usuarioBanco = usuarioRepository.save(usuario);
+        return ResponseEntity.ok(usuarioBanco);
     }
 }

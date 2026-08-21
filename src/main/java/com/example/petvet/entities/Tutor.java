@@ -8,12 +8,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Entity
-// data cria os get e set
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Usuario {
+public class Tutor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,9 +24,13 @@ public class Usuario {
 
     public String cpf;
 
-    public String senha;
+    public String telefone;
 
     public String email;
+
+    public LocalDate dataNascimento;
+
+    public String endereco;
 
 
 }
