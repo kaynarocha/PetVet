@@ -1,6 +1,10 @@
 package com.example.petvet.service;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +43,15 @@ public class TokenService {
         } catch (RuntimeException e) {
             throw new RuntimeException(e);
         }
+
+        }
+
+        public DecodedJWT verificarToken(String token) throws JWTVerificationException {
+            Algorithm algorithm = Algorithm.HMAC256(secret);
+
+            JWTVerifier verificador = JWT.require(algorithm).withIssuer(emissor).build();
+
+            return verificador.verify(token);
 
         }
 
