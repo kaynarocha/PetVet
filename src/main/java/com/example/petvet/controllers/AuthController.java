@@ -1,6 +1,8 @@
 package com.example.petvet.controllers;
 
 import com.example.petvet.DTOs.LoginRequest;
+import com.example.petvet.DTOs.LoginResponse;
+import com.example.petvet.repository.UsuarioRepository;
 import com.example.petvet.service.TokenService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,16 +23,20 @@ public class AuthController {
     @Autowired
     private TokenService tokenService;
 
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
     @PostMapping("/login")
     @Operation(description = "Método de login", summary = "Autenticação de usuários")
-    public ResponseEntity<?> login (@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
 
-        if (loginRequest.email().equals("string")&& loginRequest.senha().equals("string")) {
-           // gerar token
-            var token = tokenService.gerarToken(loginRequest.email());
-            return ResponseEntity.ok(token);
+        if (usuarioRepository.existsUsuarioByEmailAndSenha(request.email(), request.senha())) {
+
+            // gerar token
+            var token = tokenService.gerarToken(request.email());
+
+            return ResponseEntity.ok(new LoginResponse(token));
         }
-        return ResponseEntity.status(HttpURLConnection.HTTP_UNAUTHORIZED).build();
+        return ResponseEntity.badRequest().body("Usuário ou senha inválida.");
     }
-
 }

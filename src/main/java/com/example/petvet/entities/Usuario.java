@@ -17,15 +17,17 @@ public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
+    private Long id;
 
-    public String nome;
+    private String nome;
 
-    public String cpf;
+    private String cpf;
 
-    public String senha;
+    private String senha;
 
-    public String email;
+    private String email;
+
+    private EnumStatusUsuario status;
 
 
 }
