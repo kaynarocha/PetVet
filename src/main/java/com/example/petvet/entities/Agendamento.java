@@ -20,16 +20,15 @@ public class Agendamento {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public int id;
+    private Long id;
 
-    public LocalDateTime data;
+    private LocalDateTime data;
 
-    public String servico;
+    private String servico;
 
-    public String status;
+    private String descricao;
 
-    public String descricao;
-
+    private EnumStatusAgendamento statusAgendamento;
 
 
 }

@@ -18,19 +18,21 @@ public class Tutor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
+    private Long id;
 
-    public String nome;
+    private String nome;
 
-    public String cpf;
+    private String cpf;
 
-    public String telefone;
+    private String telefone;
 
-    public String email;
+    private String email;
 
-    public LocalDate dataNascimento;
+    private LocalDate dataNascimento;
 
-    public String endereco;
+    private String endereco;
+
+    private EnumStatusTutor statusTutor;
 
 
 }

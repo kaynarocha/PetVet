@@ -18,12 +18,14 @@ public class Pet {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public long id;
+    private long id;
 
-    public String nome;
+    private String nome;
 
-    public String raca;
+    private String raca;
 
-    public LocalDate dataNascimento;
+    private LocalDate dataNascimento;
+
+    private EnumStatusPet statusPet;
 
 }
