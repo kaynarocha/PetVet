@@ -23,50 +23,81 @@ export default function Agendamentos(){
         }
     }
 
-    return (<div className="min-h-screen bg-[#F5F3FA] px-6 py-10">
+    return (<div className="relative min-h-screen overflow-hidden bg-[#0a0a0f] bg-gradient-to-b from-[#0a0a0f] via-[#0f0d1a] to-[#0a0a0f] px-6 py-10">
 
-        <div className="mx-auto mb-8 flex w-full max-w-5xl items-center justify-between">
+        <style jsx global>{`
+            @keyframes float1 {
+              0%, 100% { transform: translate(0, 0) scale(1); }
+              33% { transform: translate(40px, -30px) scale(1.1); }
+              66% { transform: translate(-20px, 20px) scale(0.95); }
+            }
+            @keyframes float2 {
+              0%, 100% { transform: translate(0, 0) scale(1); }
+              33% { transform: translate(-30px, 40px) scale(1.05); }
+              66% { transform: translate(30px, -20px) scale(0.9); }
+            }
+            @keyframes fadeInUp {
+              0% { opacity: 0; transform: translateY(16px); }
+              100% { opacity: 1; transform: translateY(0); }
+            }
+            .agendamentos-blob-purple { animation: float1 10s ease-in-out infinite; }
+            .agendamentos-blob-green { animation: float2 12s ease-in-out infinite; }
+            .agendamentos-fade-up { animation: fadeInUp 0.6s ease-out forwards; }
+        `}</style>
 
-            <h1 className="text-3xl font-semibold text-[#4C3A75]">
-                Gestão de agendamentos
-            </h1>
+        {/* glows decorativos animados */}
+        <div className="agendamentos-blob-purple pointer-events-none absolute -top-40 -left-40 h-96 w-96 rounded-full bg-[#a855f7]/15 blur-[130px]" />
+        <div className="agendamentos-blob-green pointer-events-none absolute -bottom-40 -right-40 h-96 w-96 rounded-full bg-[#22c55e]/10 blur-[130px]" />
+
+        <div className="agendamentos-fade-up relative z-10 mx-auto mb-8 flex w-full max-w-5xl items-center justify-between">
+
+            <div className="flex items-center gap-3">
+                <span className="h-2.5 w-2.5 rounded-full bg-gradient-to-br from-[#a855f7] to-[#22c55e] shadow-[0_0_12px_2px_rgba(168,85,247,0.5)]" />
+                <h1 className="text-3xl font-semibold tracking-tight text-white">
+                    Gestão de <span className="bg-gradient-to-r from-[#a855f7] to-[#22c55e] bg-clip-text text-transparent">agendamentos</span>
+                </h1>
+            </div>
 
             <Link
                 href="/agendamentos/novo"
-                className="rounded-lg bg-[#22A06B] px-5 py-2.5 text-sm font-medium text-white transition duration-200 hover:bg-[#1B8859]"
+                className="group relative overflow-hidden rounded-lg bg-gradient-to-r from-[#a855f7] to-[#7c3aed] px-5 py-2.5 text-sm font-medium text-white transition-all duration-300 hover:scale-105 hover:shadow-[0_0_20px_2px_rgba(168,85,247,0.45)] active:scale-95"
             >
-                Novo agendamento
+                <span className="relative z-10">Novo agendamento</span>
+                <span className="absolute inset-0 bg-gradient-to-r from-[#22c55e] to-[#16a34a] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                <span className="absolute inset-0 z-10 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                    Novo agendamento
+                </span>
             </Link>
 
         </div>
 
-        <div className="mx-auto w-full max-w-5xl">
+        <div className="agendamentos-fade-up relative z-10 mx-auto w-full max-w-5xl">
 
-            <div className="overflow-hidden rounded-2xl border border-[#DCD3EE] bg-[#FDFCFF] shadow-sm">
+            <div className="overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl shadow-[0_20px_50px_-15px_rgba(168,85,247,0.2)]">
 
                 <table className="w-full text-left">
 
-                    <thead className="bg-[#E8E1F7]">
+                    <thead className="bg-gradient-to-r from-[#a855f7]/10 to-[#22c55e]/10 border-b border-white/10">
 
                         <tr>
 
-                            <th className="px-6 py-4 text-sm font-semibold text-[#4C3A75]">
+                            <th className="px-6 py-4 text-sm font-semibold text-white/80 tracking-wide">
                                 Código
                             </th>
 
-                            <th className="px-6 py-4 text-sm font-semibold text-[#4C3A75]">
+                            <th className="px-6 py-4 text-sm font-semibold text-white/80 tracking-wide">
                                 Data
                             </th>
 
-                            <th className="px-6 py-4 text-sm font-semibold text-[#4C3A75]">
+                            <th className="px-6 py-4 text-sm font-semibold text-white/80 tracking-wide">
                                 Serviço
                             </th>
 
-                            <th className="px-6 py-4 text-sm font-semibold text-[#4C3A75]">
+                            <th className="px-6 py-4 text-sm font-semibold text-white/80 tracking-wide">
                                 Descrição
                             </th>
 
-                            <th className="px-6 py-4 text-sm font-semibold text-[#4C3A75]">
+                            <th className="px-6 py-4 text-sm font-semibold text-white/80 tracking-wide">
                                 Status
                             </th>
 
@@ -78,26 +109,27 @@ export default function Agendamentos(){
 
                         {agendamentos.map((agendamento) => (
 
-                        <tr key={agendamento.id} className="border-t border-[#DCD3EE] transition hover:bg-[#F1ECFA]">
+                        <tr key={agendamento.id} className="border-t border-white/5 transition-colors duration-200 hover:bg-white/[0.04]">
 
-                            <td className="px-6 py-4 text-sm text-[#5C5468]">
+                            <td className="px-6 py-4 text-sm text-white/60">
                                 {agendamento.id}
                             </td>
 
-                            <td className="px-6 py-4 text-sm text-[#5C5468]">
+                            <td className="px-6 py-4 text-sm text-white/90 font-medium">
                                 {agendamento.data}
                             </td>
 
-                            <td className="px-6 py-4 text-sm text-[#5C5468]">
+                            <td className="px-6 py-4 text-sm text-white/60">
                                 {agendamento.servico}
                             </td>
 
-                            <td className="px-6 py-4 text-sm text-[#5C5468]">
+                            <td className="px-6 py-4 text-sm text-white/60">
                                 {agendamento.descricao}
                             </td>
 
                             <td className="px-6 py-4 text-sm">
-                                <span className="rounded-full bg-[#E4F5EC] px-3 py-1 text-xs font-medium text-[#1B8859]">
+                                <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium text-white/70">
+                                    <span className="h-1.5 w-1.5 rounded-full bg-gradient-to-br from-[#a855f7] to-[#22c55e]" />
                                     {agendamento.status}
                                 </span>
                             </td>
@@ -108,7 +140,7 @@ export default function Agendamentos(){
 
                         {agendamentos.length === 0 && (
                             <tr>
-                                <td colSpan={5} className="px-6 py-4 text-sm text-[#5C5468]">
+                                <td colSpan={5} className="px-6 py-4 text-sm text-white/40">
                                     Nenhum agendamento encontrado.
                                 </td>
                             </tr>
