@@ -16,7 +16,6 @@ export default function Usuarios(){
     const carregarDados = async () => {
         // Lógica para carregar os dados dos usuários
 
-
         try {
             const dados = await axios.get<Usuario[]>("http://localhost:8080/usuarios");
 

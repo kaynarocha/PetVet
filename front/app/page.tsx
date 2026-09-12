@@ -2,8 +2,23 @@
 
 import Link from "next/link";
 
+import {
+  PawPrint,
+  ShieldAlert,
+  Lock,
+  Clock,
+  Heart,
+  Compass,
+  BookOpen,
+  CalendarDays,
+  NotebookPen,
+  Users,
+  ChevronDown,
+} from "lucide-react";
+
 export default function Home() {
-  return (
+
+return (
     <>
       <style jsx global>{`
         :root {
@@ -65,7 +80,6 @@ export default function Home() {
           align-items: center;
           justify-content: center;
           border-radius: 10px;
-          font-size: 1.2rem;
         }
 
         .petvet-nav ul {
@@ -104,59 +118,140 @@ export default function Home() {
           transform: translateY(-1px);
         }
 
-        /* Hero Section */
-        .petvet-hero {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
+        .petvet-btn-login a {
+          color: var(--white);
+          text-decoration: none;
+        }
+
+        /* Hero de identidade */
+        .petvet-identity-hero {
+          position: relative;
+          display: flex;
+          flex-direction: column;
           align-items: center;
-          padding: 5rem 5%;
-          gap: 4rem;
+          text-align: center;
+          padding: 6rem 5% 8rem 5%;
           background: linear-gradient(135deg, #f5f3ff 0%, #ecfdf5 100%);
+          overflow: hidden;
         }
 
-        .petvet-hero-content h1 {
-          font-size: 3rem;
-          line-height: 1.2;
+        .petvet-identity-hero::before {
+          content: "";
+          position: absolute;
+          top: -80px;
+          right: -80px;
+          width: 300px;
+          height: 300px;
+          border-radius: 50%;
+          background: var(--accent-purple);
+          opacity: 0.5;
+        }
+
+        .petvet-identity-hero::after {
+          content: "";
+          position: absolute;
+          bottom: -100px;
+          left: -100px;
+          width: 320px;
+          height: 320px;
+          border-radius: 50%;
+          background: var(--accent-green);
+          opacity: 0.5;
+        }
+
+        .petvet-identity-badge {
+          position: relative;
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          background: var(--white);
           color: var(--primary-purple);
-          margin-bottom: 1.5rem;
-        }
-
-        .petvet-hero-content h1 span {
-          color: var(--primary-green);
-        }
-
-        .petvet-hero-content p {
-          font-size: 1.125rem;
-          color: var(--text-light);
+          font-size: 0.85rem;
+          font-weight: 600;
+          padding: 0.5rem 1.1rem;
+          border-radius: 999px;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
           margin-bottom: 2rem;
+          border: 1px solid var(--accent-purple);
         }
 
-        .petvet-hero-buttons {
+        .petvet-identity-icon-ring {
+          position: relative;
+          width: 96px;
+          height: 96px;
+          border-radius: 50%;
+          background: var(--white);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 20px 40px -10px rgba(91, 33, 182, 0.25);
+          margin-bottom: 2rem;
+          border: 6px solid var(--accent-green);
+          color: var(--primary-purple);
+        }
+
+        .petvet-identity-hero h1 {
+          position: relative;
+          font-size: 2.75rem;
+          line-height: 1.25;
+          color: var(--text-dark);
+          max-width: 700px;
+          margin-bottom: 1.25rem;
+        }
+
+        .petvet-identity-hero h1 span {
+          color: var(--primary-purple);
+        }
+
+        .petvet-identity-hero p {
+          position: relative;
+          font-size: 1.15rem;
+          color: var(--text-light);
+          max-width: 560px;
+          margin-bottom: 2.5rem;
+        }
+
+        .petvet-identity-actions {
+          position: relative;
           display: flex;
           gap: 1rem;
+          flex-wrap: wrap;
+          justify-content: center;
         }
 
         .petvet-btn-primary {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.6rem;
           background-color: var(--primary-purple);
           color: var(--white);
-          padding: 0.8rem 2rem;
-          border-radius: 8px;
+          padding: 0.9rem 2.2rem;
+          border-radius: 10px;
           text-decoration: none;
           font-weight: 600;
-          transition: background 0.2s;
+          font-size: 0.95rem;
+          transition: background 0.2s, transform 0.15s;
+          border: none;
+          cursor: pointer;
         }
 
         .petvet-btn-primary:hover {
           background-color: var(--light-purple);
+          transform: translateY(-2px);
         }
 
         .petvet-btn-outline {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.6rem;
           border: 2px solid var(--primary-purple);
+          background: var(--white);
           color: var(--primary-purple);
-          padding: 0.8rem 2rem;
-          border-radius: 8px;
+          padding: 0.85rem 2.2rem;
+          border-radius: 10px;
           text-decoration: none;
           font-weight: 600;
+          font-size: 0.95rem;
           transition: background 0.2s;
         }
 
@@ -164,37 +259,30 @@ export default function Home() {
           background-color: var(--accent-purple);
         }
 
-        .petvet-hero-card-mockup {
-          background: var(--white);
-          padding: 2.5rem;
-          border-radius: 20px;
-          box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-          width: 100%;
-          max-width: 450px;
-          border-top: 5px solid var(--primary-green);
-          margin: 0 auto;
-        }
-
-        .petvet-mockup-header {
+        /* Faixa de confiança */
+        .petvet-trust-strip {
           display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin-bottom: 1.5rem;
-          border-bottom: 1px solid var(--bg-light);
-          padding-bottom: 1rem;
+          justify-content: center;
+          gap: 3rem;
+          flex-wrap: wrap;
+          padding: 2.5rem 5%;
+          border-bottom: 1px solid #f0f0f0;
         }
 
-        .petvet-mockup-item {
+        .petvet-trust-item {
           display: flex;
           align-items: center;
-          gap: 1rem;
-          margin-bottom: 1rem;
-          padding: 0.75rem;
-          background: var(--bg-light);
-          border-radius: 8px;
+          gap: 0.75rem;
+          color: var(--text-light);
+          font-size: 0.95rem;
+          font-weight: 500;
         }
 
-        /* Seção História e Recursos */
+        .petvet-trust-item svg {
+          color: var(--primary-green);
+        }
+
+        /* Seções gerais */
         .petvet-section {
           padding: 6rem 5%;
           text-align: center;
@@ -202,6 +290,16 @@ export default function Home() {
 
         .petvet-section-alt {
           background-color: var(--bg-light);
+        }
+
+        .petvet-section-eyebrow {
+          display: inline-block;
+          color: var(--primary-green);
+          font-weight: 700;
+          font-size: 0.8rem;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          margin-bottom: 0.75rem;
         }
 
         .petvet-section-title {
@@ -217,47 +315,103 @@ export default function Home() {
           font-size: 1.1rem;
         }
 
+        /* Nossa História */
         .petvet-history-box {
           max-width: 800px;
           margin: 0 auto;
           text-align: left;
           background: var(--white);
           padding: 2.5rem;
-          border-radius: 12px;
-          box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+          border-radius: 16px;
+          box-shadow: 0 10px 25px -8px rgba(91, 33, 182, 0.12);
+          border-top: 4px solid var(--primary-green);
         }
 
+        .petvet-history-box p {
+          color: var(--text-light);
+        }
+
+        .petvet-history-box p + p {
+          margin-top: 1rem;
+        }
+
+        .petvet-history-box strong {
+          color: var(--primary-purple);
+        }
+
+        /* Recursos / Pilares */
         .petvet-grid-features {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+          grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
           gap: 2rem;
           text-align: left;
+          max-width: 1100px;
+          margin: 0 auto;
         }
 
         .petvet-feature-card {
-          background: var(--bg-light);
-          padding: 2rem;
-          border-radius: 12px;
-          transition: transform 0.2s;
+          position: relative;
+          background: var(--white);
+          padding: 2.25rem 2rem;
+          border-radius: 16px;
+          transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
           border: 1px solid #e5e7eb;
         }
 
         .petvet-feature-card:hover {
-          transform: translateY(-5px);
+          transform: translateY(-6px);
           border-color: var(--light-green);
+          box-shadow: 0 20px 30px -12px rgba(16, 185, 129, 0.18);
         }
 
         .petvet-feature-icon {
-          width: 50px;
-          height: 50px;
+          width: 54px;
+          height: 54px;
           background: var(--accent-green);
           color: var(--primary-green);
           display: flex;
           align-items: center;
           justify-content: center;
-          border-radius: 10px;
-          font-size: 1.5rem;
+          border-radius: 14px;
           margin-bottom: 1.5rem;
+        }
+
+        .petvet-feature-card h3 {
+          font-size: 1.15rem;
+          color: var(--text-dark);
+          margin-bottom: 0.6rem;
+        }
+
+        .petvet-feature-card p {
+          color: var(--text-light);
+          font-size: 0.95rem;
+          line-height: 1.6;
+        }
+
+        /* Citação / propósito */
+        .petvet-quote-section {
+          padding: 5rem 5%;
+          text-align: center;
+          background: linear-gradient(135deg, var(--primary-purple) 0%, #4c1d95 100%);
+          color: var(--white);
+        }
+
+        .petvet-quote-section svg {
+          color: var(--light-green);
+          margin-bottom: 1.5rem;
+        }
+
+        .petvet-quote-section p {
+          font-size: 1.4rem;
+          font-weight: 500;
+          max-width: 700px;
+          margin: 0 auto 1rem auto;
+          line-height: 1.5;
+        }
+
+        .petvet-quote-section span {
+          color: #c4b5fd;
+          font-size: 0.9rem;
         }
 
         /* Footer */
@@ -275,14 +429,16 @@ export default function Home() {
 
         /* Responsividade */
         @media (max-width: 768px) {
-          .petvet-hero {
-            grid-template-columns: 1fr;
-            text-align: center;
-            padding: 3rem 5%;
+          .petvet-identity-hero {
+            padding: 4rem 6% 6rem 6%;
           }
 
-          .petvet-hero-buttons {
-            justify-content: center;
+          .petvet-identity-hero h1 {
+            font-size: 2.1rem;
+          }
+
+          .petvet-trust-strip {
+            gap: 1.5rem;
           }
 
           .petvet-nav ul {
@@ -291,11 +447,11 @@ export default function Home() {
         }
       `}</style>
 
-      {/* Estrutura HTML da Landing Page */}
+      {/* Header */}
       <header className="petvet-header">
-        <a href="#" className="petvet-logo">
+        <a href="#inicio" className="petvet-logo">
           <div className="petvet-logo-icon">
-            <i className="fa-solid fa-paw"></i>
+            <PawPrint size={20} />
           </div>
           PetVet
         </a>
@@ -308,99 +464,65 @@ export default function Home() {
           </ul>
         </nav>
 
-{/* Atenção aqui, o código abaixo foi adicionado para incluir o botão de login na página inicial. Certifique-se de que o estilo e a funcionalidade estejam corretos.*/}
-
         <div className="petvet-btn-login">
-          <Link href="/login" className="btn-link">Login</Link>
-          </div>
+          <Link href="/login">Login</Link>
+        </div>
       </header>
 
       <main>
-        <section id="inicio" className="petvet-hero">
-          <div className="petvet-hero-content">
-            <h1>
-              Cuidado e Gestão em perfeita <span>harmonia</span> para seu PetShop
-            </h1>
-
-            <p>
-              O PetVet é o sistema completo para clínicas veterinárias que
-              valorizam o elo entre tutores, pets e profissionais. Simplifique
-              agendamentos e históricos em um só lugar.
-            </p>
-
-            <div className="petvet-hero-buttons">
-              <a href="#recursos" className="petvet-btn-primary">
-                Conhecer Sistema
-              </a>
-
-              <a href="#sobre" className="petvet-btn-outline">
-                Nossa História
-              </a>
-            </div>
+        {/* Hero de identidade — o que o sistema é */}
+        <section id="inicio" className="petvet-identity-hero">
+          <div className="petvet-identity-badge">
+            <ShieldAlert size={16} />
+            Sistema de Gestão para Petshops e Clínicas
           </div>
 
-          <div className="petvet-hero-image">
-            <div className="petvet-hero-card-mockup">
-              <div className="petvet-mockup-header">
-                <strong>Painel PetVet</strong>
+          <div className="petvet-identity-icon-ring">
+            <PawPrint size={36} />
+          </div>
 
-                <i
-                  className="fa-solid fa-shield-cat"
-                  style={{
-                    color: "var(--primary-purple)",
-                    fontSize: "1.5rem",
-                  }}
-                ></i>
-              </div>
+          <h1>
+            Cuidado e Gestão em perfeita <span>harmonia</span> para seu PetShop
+          </h1>
 
-              <div className="petvet-mockup-item">
-                <i
-                  className="fa-solid fa-calendar-check"
-                  style={{ color: "var(--primary-purple)" }}
-                ></i>
+          <p>
+            O PetVet é o sistema completo para clínicas e petshops que valorizam
+            o elo entre tutores, pets e profissionais. Simplifique agendamentos
+            e históricos em um só lugar.
+          </p>
 
-                <div>
-                  <small style={{ color: "var(--text-light)" }}>
-                    Próxima Consulta
-                  </small>
+          <div className="petvet-identity-actions">
+            <a href="#recursos" className="petvet-btn-primary">
+              <Compass size={18} />
+              Conhecer Sistema
+            </a>
 
-                  <p
-                    style={{
-                      fontWeight: 600,
-                      fontSize: "0.9rem",
-                    }}
-                  >
-                    Thor (Golden Retriever) - 14:30
-                  </p>
-                </div>
-              </div>
-
-              <div className="petvet-mockup-item">
-                <i
-                  className="fa-solid fa-user-gear"
-                  style={{ color: "var(--primary-purple)" }}
-                ></i>
-
-                <div>
-                  <small style={{ color: "var(--text-light)" }}>
-                    Gestão de Tutores
-                  </small>
-
-                  <p
-                    style={{
-                      fontWeight: 600,
-                      fontSize: "0.9rem",
-                    }}
-                  >
-                    +45 cadastros esta semana
-                  </p>
-                </div>
-              </div>
-            </div>
+            <a href="#sobre" className="petvet-btn-outline">
+              <BookOpen size={18} />
+              Nossa História
+            </a>
           </div>
         </section>
 
+        {/* Faixa de confiança */}
+        <section className="petvet-trust-strip">
+          <div className="petvet-trust-item">
+            <Lock size={18} />
+            Dados protegidos e criptografados
+          </div>
+          <div className="petvet-trust-item">
+            <Clock size={18} />
+            Atualizado em tempo real
+          </div>
+          <div className="petvet-trust-item">
+            <Heart size={18} />
+            Feito para quem cuida de vidas
+          </div>
+        </section>
+
+        {/* Nossa História */}
         <section id="sobre" className="petvet-section petvet-section-alt">
+          <span className="petvet-section-eyebrow">Nossa origem</span>
           <h2 className="petvet-section-title">Nossa História</h2>
 
           <p className="petvet-section-subtitle">
@@ -410,19 +532,14 @@ export default function Home() {
           </p>
 
           <div className="petvet-history-box">
-            <p
-              style={{
-                color: "var(--text-light)",
-                marginBottom: "1rem",
-              }}
-            >
+            <p>
               O <strong>PetVet</strong> surgiu da percepção de que as clínicas
               veterinárias gastavam tempo demais com planilhas confusas e
               papéis, e pouco tempo focando no que realmente importa: o
               bem-estar animal.
             </p>
 
-            <p style={{ color: "var(--text-light)" }}>
+            <p>
               Inspirados pelo símbolo da cumplicidade entre gatos e cachorros,
               criamos um ecossistema digital inteligente focado no controle
               dinâmico de agendamentos, prontuários de pets, gestão de tutores e
@@ -432,10 +549,10 @@ export default function Home() {
           </div>
         </section>
 
+        {/* Recursos */}
         <section id="recursos" className="petvet-section">
-          <h2 className="petvet-section-title">
-            Tudo o que sua Clínica Precisa
-          </h2>
+          <span className="petvet-section-eyebrow">O que oferecemos</span>
+          <h2 className="petvet-section-title">Tudo o que sua Clínica Precisa</h2>
 
           <p className="petvet-section-subtitle">
             Ferramentas robustas desenvolvidas para otimizar a rotina de médicos
@@ -445,11 +562,9 @@ export default function Home() {
           <div className="petvet-grid-features">
             <div className="petvet-feature-card">
               <div className="petvet-feature-icon">
-                <i className="fa-solid fa-calendar-days"></i>
+                <CalendarDays size={22} />
               </div>
-
               <h3>Agendamentos</h3>
-
               <p>
                 Controle de agenda integrado com lembretes automáticos para os
                 tutores reduzirem as faltas.
@@ -458,11 +573,9 @@ export default function Home() {
 
             <div className="petvet-feature-card">
               <div className="petvet-feature-icon">
-                <i className="fa-solid fa-paw"></i>
+                <NotebookPen size={22} />
               </div>
-
               <h3>Prontuário dos Pets</h3>
-
               <p>
                 Histórico médico completo, vacinas, receituários e evoluções
                 clínicas acessíveis em segundos.
@@ -471,17 +584,25 @@ export default function Home() {
 
             <div className="petvet-feature-card">
               <div className="petvet-feature-icon">
-                <i className="fa-solid fa-users"></i>
+                <Users size={22} />
               </div>
-
               <h3>Gestão de Tutores</h3>
-
               <p>
                 Base de clientes centralizada com dados de contato, histórico
                 financeiro e preferências dos animais.
               </p>
             </div>
           </div>
+        </section>
+
+        {/* Propósito */}
+        <section className="petvet-quote-section">
+          <PawPrint size={32} />
+          <p>
+            "Tecnologia não substitui o cuidado — ela existe para que sobre mais
+            tempo para ele."
+          </p>
+          <span>Equipe PetVet</span>
         </section>
       </main>
 

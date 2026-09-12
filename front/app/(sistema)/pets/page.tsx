@@ -1,13 +1,38 @@
+'use client';
+
+import { Pet } from "@/app/types/pet";
+import axios from "axios";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function Pets(){
+
+    const [pets, setPets] = useState<Pet[]>([]);
+
+    useEffect(() => {
+        carregarDados();
+    }, []);
+
+    const carregarDados = async () => {
+        // Lógica para carregar os dados dos pets
+    
+    try {
+        const dados = await axios.get<Pet[]>("http://localhost:8080/pets");
+        setPets(dados.data);
+    } catch (error) {
+        alert("Erro ao carregar os dados dos pets.");
+    }
+
+}
+
+    
 
     return (<div className="min-h-screen bg-[#F5F3FA] px-6 py-10">
 
         <div className="mx-auto mb-8 flex w-full max-w-5xl items-center justify-between">
 
             <h1 className="text-3xl font-semibold text-[#4C3A75]">
-                Pets
+                Gestão de pets
             </h1>
 
             <Link
@@ -30,6 +55,10 @@ export default function Pets(){
                         <tr>
 
                             <th className="px-6 py-4 text-sm font-semibold text-[#4C3A75]">
+                                Código
+                            </th>
+
+                            <th className="px-6 py-4 text-sm font-semibold text-[#4C3A75]">
                                 Nome
                             </th>
 
@@ -42,7 +71,7 @@ export default function Pets(){
                             </th>
 
                             <th className="px-6 py-4 text-sm font-semibold text-[#4C3A75]">
-                                Tutor
+                                Status
                             </th>
 
                         </tr>
@@ -51,25 +80,41 @@ export default function Pets(){
 
                     <tbody>
 
-                        <tr className="border-t border-[#DCD3EE] transition hover:bg-[#F1ECFA]">
+                        {pets.map((pet) => (
+
+                        <tr key={pet.id} className="border-t border-[#DCD3EE] transition hover:bg-[#F1ECFA]">
 
                             <td className="px-6 py-4 text-sm text-[#5C5468]">
-                                Thena
+                                {pet.id}
                             </td>
 
                             <td className="px-6 py-4 text-sm text-[#5C5468]">
-                                Vira-lata
+                                {pet.nome}
                             </td>
 
                             <td className="px-6 py-4 text-sm text-[#5C5468]">
-                                12/08/2025
+                                {pet.raca}
                             </td>
 
                             <td className="px-6 py-4 text-sm text-[#5C5468]">
-                                Janicio
+                                {pet.dataNascimento}
+                            </td>
+
+                            <td className="px-6 py-4 text-sm text-[#5C5468]">
+                                {pet.status}
                             </td>
 
                         </tr>
+
+                        ))}
+
+                        { pets.length === 0 && (
+                            <tr>
+                                <td colSpan={5} className="px-6 py-4 text-sm text-[#5C5468]">
+                                    Nenhum pet cadastrado.
+                                </td>
+                            </tr>
+                        )}
 
                     </tbody>
 

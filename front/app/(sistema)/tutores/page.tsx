@@ -1,13 +1,36 @@
+'use client';
+
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { Tutor } from "@/app/types/tutor";
+import axios from "axios";
 
 export default function Tutores(){
+
+    const [tutores, setTutores] = useState<Tutor[]>([]);
+
+    useEffect(() => {
+        carregarDados();
+    }, []);
+
+    const carregarDados = async () => {
+        // Lógica para carregar os dados dos tutores
+        try {
+            const dados = await axios.get<Tutor[]>("http://localhost:8080/tutores");
+            setTutores(dados.data);
+        } catch (error) {
+            alert("Erro ao carregar os dados dos tutores.");
+        }
+    }
+
+    
 
     return (<div className="min-h-screen bg-[#F5F3FA] px-6 py-10">
 
         <div className="mx-auto mb-8 flex w-full max-w-5xl items-center justify-between">
 
             <h1 className="text-3xl font-semibold text-[#4C3A75]">
-                Tutores
+                Gestão de tutores
             </h1>
 
             <Link
@@ -28,6 +51,10 @@ export default function Tutores(){
                     <thead className="bg-[#E8E1F7]">
 
                         <tr>
+
+                            <th className="px-6 py-4 text-sm font-semibold text-[#4C3A75]">
+                                Código
+                            </th>
 
                             <th className="px-6 py-4 text-sm font-semibold text-[#4C3A75]">
                                 Nome
@@ -53,39 +80,67 @@ export default function Tutores(){
                                 Endereço
                             </th>
 
+                            <th className="px-6 py-4 text-sm font-semibold text-[#4C3A75]">
+                                Status
+                            </th>
+
                         </tr>
 
                     </thead>
 
                     <tbody>
 
-                        <tr className="border-t border-[#DCD3EE] transition hover:bg-[#F1ECFA]">
+                        {tutores.map((tutor) => (
+
+                        <tr key={tutor.id} className="border-t border-[#DCD3EE] transition hover:bg-[#F1ECFA]">
 
                             <td className="px-6 py-4 text-sm text-[#5C5468]">
-                                Janicio
+                                {tutor.id}
                             </td>
 
                             <td className="px-6 py-4 text-sm text-[#5C5468]">
-                                123.456.789-00
+                                {tutor.nome}
                             </td>
 
                             <td className="px-6 py-4 text-sm text-[#5C5468]">
-                                (48) 99999-0000
+                                {tutor.cpf}
                             </td>
 
                             <td className="px-6 py-4 text-sm text-[#5C5468]">
-                                janicio@email.com
+                                {tutor.telefone}
                             </td>
 
                             <td className="px-6 py-4 text-sm text-[#5C5468]">
-                                22/02/1978
+                                {tutor.email}
                             </td>
 
                             <td className="px-6 py-4 text-sm text-[#5C5468]">
-                                Rua Teresinha da Silva Rocha, SN - Bairro Santa Apolônia, Sangão, SC
+                                {tutor.dataNascimento}
+                            </td>
+
+                            <td className="px-6 py-4 text-sm text-[#5C5468]">
+                                {tutor.endereco}
+                            </td>
+
+                            <td className="px-6 py-4 text-sm text-[#5C5468]">
+                                {tutor.status}
                             </td>
 
                         </tr>
+
+                        ))}
+
+                        { tutores.length === 0 && (
+
+                            <tr>
+
+                                <td colSpan={8} className="px-6 py-4 text-sm text-[#5C5468] text-center">
+                                    Nenhum tutor encontrado.
+                                </td>
+
+                            </tr>
+
+                        )}
 
                     </tbody>
 

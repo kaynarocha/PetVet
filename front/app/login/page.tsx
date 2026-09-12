@@ -30,67 +30,66 @@ export default function Login(){
 
  
     return(<>
- 
-    <div className="min-h-screen flex items-center justify-center bg-[#F8F5F0] px-4">
- 
-        <div className="w-full max-w-md rounded-2xl border border-[#E8DED0] bg-[#FFFDF9] p-8 shadow-lg">
- 
+
+    <div className="min-h-screen flex items-center justify-center bg-[#F7F5FB] px-4">
+
+        <div className="w-full max-w-md rounded-2xl border border-[#E4DBF5] bg-[#FFFFFF] p-8 shadow-lg">
+
             <div className="mb-8 text-center">
- 
-                <h1 className="text-3xl font-semibold text-[#5C5145]">
+
+                <h1 className="text-3xl font-semibold text-[#4C2A85]">
                     Entrar no sistema
                 </h1>
- 
-                <p className="mt-2 text-sm text-[#8A7D70]">
+
+                <p className="mt-2 text-sm text-[#7A6A9C]">
                     Insira suas credenciais para acessar o sistema.
                 </p>
- 
+
             </div>
- 
+
                 <form action={handlerLogin} className="space-y-6">
- 
+
                     <div className="flex flex-col gap-2">
- 
-                        <label className="text-sm font-medium text-[#6B6054]">
+
+                        <label className="text-sm font-medium text-[#5B4B7A]">
                             E-mail
                         </label>
- 
+
                         <input
                             name="email"
                             placeholder="Digite seu e-mail"
-                            className="w-full rounded-lg border border-[#D8CBBB] bg-[#FAF7F2] px-4 py-3 text-[#4F463D] placeholder:text-[#B8ADA2] outline-none transition focus:border-[#B9A58D] focus:ring-2 focus:ring-[#D8CBBB]/50"
+                            className="w-full rounded-lg border border-[#D6C6EF] bg-[#FAF8FD] px-4 py-3 text-[#3E2E5C] placeholder:text-[#B3A4CC] outline-none transition focus:border-[#8B5CF6] focus:ring-2 focus:ring-[#8B5CF6]/30"
                         />
- 
+
                     </div>
- 
+
                     <div className="flex flex-col gap-2">
- 
-                        <label className="text-sm font-medium text-[#6B6054]">
+
+                        <label className="text-sm font-medium text-[#5B4B7A]">
                             Senha
                         </label>
- 
+
                         <input
                             name="senha"
                             placeholder="Digite sua senha"
-                            className="w-full rounded-lg border border-[#D8CBBB] bg-[#FAF7F2] px-4 py-3 text-[#4F463D] placeholder:text-[#B8ADA2] outline-none transition focus:border-[#B9A58D] focus:ring-2 focus:ring-[#D8CBBB]/50"
+                            className="w-full rounded-lg border border-[#D6C6EF] bg-[#FAF8FD] px-4 py-3 text-[#3E2E5C] placeholder:text-[#B3A4CC] outline-none transition focus:border-[#8B5CF6] focus:ring-2 focus:ring-[#8B5CF6]/30"
                         />
- 
+
                     </div>
- 
+
                     <button
                         type="submit"
-                        className="w-full rounded-lg bg-[#B9A58D] py-3 font-medium text-white transition duration-200 hover:bg-[#A58F76] focus:outline-none focus:ring-2 focus:ring-[#B9A58D] focus:ring-offset-2"
+                        className="w-full rounded-lg bg-[#8B5CF6] py-3 font-medium text-white transition duration-200 hover:bg-[#7C3AED] focus:outline-none focus:ring-2 focus:ring-[#A7F3D0] focus:ring-offset-2"
                     >
                         Entrar
                     </button>
- 
+
                 </form>
- 
+
         </div>
- 
+
     </div>
- 
+
     </>);
- 
+
 }
- 
