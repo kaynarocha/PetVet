@@ -138,6 +138,13 @@ export default function Usuarios(){
                                 </span>
                             </td>
 
+                            <td className="px-6 py-4 text-sm">
+                                <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium text-white/70">
+                                    <span className="h-1.5 w-1.5 rounded-full bg-gradient-to-br from-[#a855f7] to-[#22c55e]" />
+                                    <Link href={`/usuarios/${usuario.id}/editar`}>Editar</Link>
+                                </span>
+                            </td>
+
                         </tr>
 
                         ))}
