@@ -1,9 +1,10 @@
 'use client'
 
 import Link from "@/node_modules/next/link";
-import UsuarioForm from "../components/UsuarioForm";
+import UsuarioForm from "../components/AgendamentoForm";
+import AgendamentoForm from "../components/AgendamentoForm";
 
-export default function CadastroUsuario(){
+export default function CadastroAgendamento(){
     return(<>
 
     <style jsx global>{`
@@ -45,9 +46,9 @@ export default function CadastroUsuario(){
                             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#22c55e]/50" />
                             <span className="relative h-2.5 w-2.5 bg-gradient-to-br from-[#a855f7] to-[#22c55e] rounded-full inline-block shadow-[0_0_10px_2px_rgba(168,85,247,0.5)]"></span>
                         </span>
-                        <span>Novo Usuário</span>
+                        <span>Novo Agendamento</span>
                     </h1>
-                    <p className="text-sm text-white/50">Preencha os dados para registrar um novo Usuário</p>
+                    <p className="text-sm text-white/50">Preencha os dados para registrar um novo Agendamento</p>
                 </div>
 
                 <Link
@@ -59,7 +60,7 @@ export default function CadastroUsuario(){
             </div>
 
             <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 md:p-8 shadow-[0_20px_50px_-15px_rgba(168,85,247,0.25)]">
-                <UsuarioForm/>
+                <AgendamentoForm/>
             </div>
 
         </div>

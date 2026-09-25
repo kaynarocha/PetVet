@@ -10,3 +10,7 @@ export class Pet {
     }
 
     }
+
+    export interface PetFormProps {
+        petExistente ?: Pet;
+    }

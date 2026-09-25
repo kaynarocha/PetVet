@@ -23,6 +23,46 @@ export default function Agendamentos(){
         }
     }
 
+        const handleDeletarAgendamento = async (agendamento: Agendamento) => {
+
+        var dadosRetorno = await 
+        axios.delete('http://localhost:8080/agendamentos/'+ agendamento.id+'/excluir');
+
+        if (dadosRetorno.status == 200) {
+            alert("O Agendamento foi excluído com sucesso!");
+        } else {
+            alert (dadosRetorno.data);
+            
+            return;
+        }
+
+        carregarDados();
+    }
+
+    const handleAlterarStatusAgendamento = async (agendamento: Agendamento) => {
+
+        var novoStatus = {};
+
+        if (agendamento.status === "ATIVO") {
+            novoStatus = {status : "BLOQUEADO"}
+        } else {
+            novoStatus = {status : "ATIVO"}
+        }
+
+        var dadosRetorno = await
+        axios.patch('http://localhost:8080/agendamentos/'+ agendamento.id+'/status', novoStatus);
+
+        if (dadosRetorno.status == 200) {
+            alert("Status do agendamento foi alterado com sucesso!");
+        } else {
+            alert (dadosRetorno.data);
+            
+            return;
+        }
+
+        carregarDados();
+    }
+
     return (<div className="relative min-h-screen overflow-hidden bg-[#0a0a0f] bg-gradient-to-b from-[#0a0a0f] via-[#0f0d1a] to-[#0a0a0f] px-6 py-10">
 
         <style jsx global>{`
@@ -132,6 +172,33 @@ export default function Agendamentos(){
                                     <span className="h-1.5 w-1.5 rounded-full bg-gradient-to-br from-[#a855f7] to-[#22c55e]" />
                                     {agendamento.status}
                                 </span>
+                            </td>
+
+                            <td className="px-6 py-4 text-sm font-medium">
+                                <div className="flex items-center gap-3">
+                                    <Link
+                                        href={`/usuarios/${agendamento.id}/editar`}
+                                        className="text-[#c084fc] hover:text-[#a855f7] transition-colors duration-200">
+                                        Editar
+                                    </Link>
+
+                                    <button
+                                        onClick={() => handleDeletarAgendamento(agendamento)}
+                                        className="text-red-400 hover:text-red-300 transition-colors duration-200">
+                                        Deletar
+                                    </button>
+
+                                    <button
+                                        onClick={() => handleAlterarStatusAgendamento(agendamento)}
+                                        className={`transition-colors duration-200 ${
+                                            agendamento.status === 'BLOQUEADO'
+                                                ? 'text-amber-400 hover:text-amber-300'
+                                                : 'text-[#4ade80] hover:text-[#22c55e]'
+                                        }`}
+                                    >
+                                        {agendamento.status}
+                                    </button>
+                                </div>
                             </td>
 
                         </tr>

@@ -12,3 +12,7 @@ export class Tutor {
 
     }
 }
+
+export interface TutorFormProps {
+    tutorExistente ?: Tutor;
+}

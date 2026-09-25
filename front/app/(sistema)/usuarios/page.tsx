@@ -146,6 +146,10 @@ export default function Usuarios(){
                                 Status
                             </th>
 
+                            <th className="px-6 py-4 text-sm font-semibold text-white/80 tracking-wide">
+                                Ações
+                            </th>
+
                         </tr>
 
                     </thead>
@@ -179,18 +183,32 @@ export default function Usuarios(){
                                 </span>
                             </td>
 
-                            <td className="px-6 py-4 text-sm font-medium text-slate-800">
-                                        <Link href={`/usuarios/${usuario.id}/editar`}>Editar</Link>
-                                       <button onClick = {()=> handleDeletarUsuario(usuario)}
-                                       className= "font-medium transition-colors text-red-600 hover:text-red-800">
-                                        DELETAR</button>
-                                        <button onClick = {()=> handleAlterarStatusUsuario(usuario)}
-                                       className= {`font-medium transition-colors ${usuario.status ==='BLOQUEADO'
-                                         ?'text-orange-600 hover:text-orange-800' 
-                                         :'text-green-600 hover:text-green-800' }`
-                                         }>
-                                        {usuario.status}</button>
-                                    </td>
+                            <td className="px-6 py-4 text-sm font-medium">
+                                <div className="flex items-center gap-3">
+                                    <Link
+                                        href={`/usuarios/${usuario.id}/editar`}
+                                        className="text-[#c084fc] hover:text-[#a855f7] transition-colors duration-200">
+                                        Editar
+                                    </Link>
+
+                                    <button
+                                        onClick={() => handleDeletarUsuario(usuario)}
+                                        className="text-red-400 hover:text-red-300 transition-colors duration-200">
+                                        Deletar
+                                    </button>
+
+                                    <button
+                                        onClick={() => handleAlterarStatusUsuario(usuario)}
+                                        className={`transition-colors duration-200 ${
+                                            usuario.status === 'BLOQUEADO'
+                                                ? 'text-amber-400 hover:text-amber-300'
+                                                : 'text-[#4ade80] hover:text-[#22c55e]'
+                                        }`}
+                                    >
+                                        {usuario.status}
+                                    </button>
+                                </div>
+                            </td>
 
                         </tr>
 
@@ -198,7 +216,7 @@ export default function Usuarios(){
 
                         { usuarios.length === 0 && (
                             <tr>
-                                <td colSpan={5} className="px-6 py-12 text-center text-sm text-white/40">
+                                <td colSpan={6} className="px-6 py-12 text-center text-sm text-white/40">
                                     Nenhum usuário encontrado.
                                 </td>
 

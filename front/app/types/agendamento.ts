@@ -9,3 +9,7 @@ export class Agendamento {
 
     }
 }
+
+export interface AgendamentoFormProps {
+    agendamentoExistente ?: Agendamento;
+}

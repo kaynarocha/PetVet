@@ -1,9 +1,9 @@
 'use client'
 
 import Link from "@/node_modules/next/link";
-import UsuarioForm from "../components/UsuarioForm";
+import TutorForm from "../components/TutorForm";
 
-export default function CadastroUsuario(){
+export default function CadastroTutor(){
     return(<>
 
     <style jsx global>{`
@@ -45,13 +45,13 @@ export default function CadastroUsuario(){
                             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#22c55e]/50" />
                             <span className="relative h-2.5 w-2.5 bg-gradient-to-br from-[#a855f7] to-[#22c55e] rounded-full inline-block shadow-[0_0_10px_2px_rgba(168,85,247,0.5)]"></span>
                         </span>
-                        <span>Novo Usuário</span>
+                        <span>Novo Tutor</span>
                     </h1>
-                    <p className="text-sm text-white/50">Preencha os dados para registrar um novo Usuário</p>
+                    <p className="text-sm text-white/50">Preencha os dados para registrar um novo Tutor</p>
                 </div>
 
                 <Link
-                    href="/usuarios"
+                    href="/tutores"
                     className="relative z-10 inline-flex items-center justify-center text-sm font-medium text-white/70 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 hover:border-[#a855f7]/50 px-4 py-2.5 rounded-xl transition-all duration-200 w-full sm:w-auto"
                 >
                     &larr; Voltar para Listagem
@@ -59,7 +59,7 @@ export default function CadastroUsuario(){
             </div>
 
             <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 md:p-8 shadow-[0_20px_50px_-15px_rgba(168,85,247,0.25)]">
-                <UsuarioForm/>
+                <TutorForm/>
             </div>
 
         </div>

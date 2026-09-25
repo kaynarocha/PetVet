@@ -1,32 +1,31 @@
 'use client';
 
-import { Usuario, UsuarioFormProps } from "@/app/types/usuario";
+import { Agendamento, AgendamentoFormProps } from "@/app/types/agendamento";
 import Link from "@/node_modules/next/link";
 import axios from "axios";
 import { useRouter } from "next/dist/client/components/navigation";
 import { useState } from "react";
 
-export default function UsuarioForm({usuarioExistente} : UsuarioFormProps) {
+export default function AgendamentoForm({agendamentoExistente} : AgendamentoFormProps) {
     const router = useRouter();
 
     // constante com array de informações
-    const [usuario, setUsuario] = useState<Usuario> (
+    const [agendamento, setAgendamento] = useState<Agendamento> (
         // se for existente, ele carrega os dados
-        usuarioExistente || 
-        new Usuario(null, "", "", "ATIVO", "", "")
+        agendamentoExistente || 
+        new Agendamento(null, "", "", "", "ATIVO")
     );
 
     // função para atualizar os valores do formulário
-    const handlerChange = ( campo : 'nome' | 'email' | 'cpf' | 'senha', valor: string) => {
+    const handlerChange = ( campo : 'data' | 'servico' | 'descricao', valor: string) => {
         // preview
-        setUsuario(valorAnterior => 
-            new Usuario(
+        setAgendamento(valorAnterior => 
+            new Agendamento(
                 valorAnterior.id,
-                campo === 'nome' ? valor : valorAnterior.nome,
-                campo === 'email' ? valor : valorAnterior.email,
-                valorAnterior.status,
-                campo === 'cpf' ? valor : valorAnterior.cpf,
-                campo === 'senha' ? valor : valorAnterior.senha
+                campo === 'data' ? valor : valorAnterior.data,
+                campo === 'servico' ? valor : valorAnterior.servico,
+                campo === 'descricao' ? valor : valorAnterior.descricao,
+                valorAnterior.status
             )
         )
     }
@@ -34,12 +33,12 @@ export default function UsuarioForm({usuarioExistente} : UsuarioFormProps) {
     // formData - nome / FormData - Tipo
     const handlerSalvar = async (formData: FormData) => { 
 
-        if (usuarioExistente) {
+        if (agendamentoExistente) {
             var dadosRetorno = await 
-            axios.put<number>('http://localhost:8080/usuarios' +usuario.id, usuario);
+            axios.put<number>('http://localhost:8080/agendamentos' +agendamento.id, agendamento);
 
         if (dadosRetorno.status == 200) {
-            alert("Usuário foi salvo com sucesso!");
+            alert("Agendamento salvo com sucesso!");
         } else {
             alert (dadosRetorno.data);
             
@@ -47,70 +46,67 @@ export default function UsuarioForm({usuarioExistente} : UsuarioFormProps) {
         }
 
         } else {
-            var dadosRetorno = await axios.post<number>('http://localhost:8080/usuarios', usuario);
+            var dadosRetorno = await axios.post<number>('http://localhost:8080/agendamentos', agendamento);
 
         if (dadosRetorno.status == 200) {
-            alert("Usuário foi salvo com sucesso!");
+            alert("Agendamento salvo com sucesso!");
         } else {
             alert (dadosRetorno.data);
             
             return;
         }
-        router.push("/usuarios");
+        router.push("/agendamentos");
     }
 }
 
     return (
         <form action={handlerSalvar} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+
                 <div className="space-y-2">
                     <label className="block text-sm font-medium text-white/70">
-                        Nome completo:
+                        Data:
                     </label>
-                    <input name="nome"
-                    value={usuario.nome} 
+                    <input name="data"
+                    type="date"
+                    value={agendamento.data || ""} 
                     required
-                    placeholder="Maxine Galathynius"
-                    onChange={(e) => handlerChange('nome', e.target.value)}
+                    placeholder="01/01/2026"
+                    onChange={(e) => handlerChange('data', e.target.value)}
                     className="w-full px-4 py-2.5 bg-white/[0.03] border border-white/10 rounded-xl text-white placeholder-white/30 outline-none focus:ring-2 focus:ring-[#a855f7]/30 focus:border-[#a855f7] transition-all duration-200 focus:bg-white/[0.06]">
                     </input>
                 </div>
+
+
                 <div className="space-y-2">
                     <label className="block text-sm font-medium text-white/70">
-                        CPF:
+                        Serviço:
                     </label>
-                    <input name="CPF" 
-                    value={usuario.cpf}
+                    <input name="servico" 
+                    value={agendamento.servico}
                     required
-                    placeholder="000.000.000-00"
-                    onChange={(e) => handlerChange('cpf', e.target.value)}
+                    placeholder="Tosa e banho"
+                    onChange={(e) => handlerChange('servico', e.target.value)}
                     className="w-full px-4 py-2.5 bg-white/[0.03] border border-white/10 rounded-xl text-white placeholder-white/30 outline-none focus:ring-2 focus:ring-[#a855f7]/30 focus:border-[#a855f7] transition-all duration-200 focus:bg-white/[0.06]">
                     </input>
                 </div>
+
+
                 <div className="space-y-2">
                     <label className="block text-sm font-medium text-white/70">
-                        E-mail
+                        Descrição
                     </label>
-                    <input name="email" 
-                    value={usuario.email}
+                    <input name="descricao" 
+                    value={agendamento.descricao}
                     required
-                    placeholder="maxine.galathynius@gmail.com"
-                    onChange={(e) => handlerChange('email', e.target.value)}
+                    placeholder="O animal é doce"
+                    onChange={(e) => handlerChange('descricao', e.target.value)}
                     className="w-full px-4 py-2.5 bg-white/[0.03] border border-white/10 rounded-xl text-white placeholder-white/30 outline-none focus:ring-2 focus:ring-[#a855f7]/30 focus:border-[#a855f7] transition-all duration-200 focus:bg-white/[0.06]">
                     </input>
                 </div>
-                <div className="space-y-2">
-                    <label className="block text-sm font-medium text-white/70">
-                        Senha:
-                    </label>
-                    <input name="Senha" type="password" 
-                    value={usuario.senha}
-                    required
-                    placeholder="••••••••"
-                    onChange={(e) => handlerChange('senha', e.target.value)}
-                    className="w-full px-4 py-2.5 bg-white/[0.03] border border-white/10 rounded-xl text-white placeholder-white/30 outline-none focus:ring-2 focus:ring-[#a855f7]/30 focus:border-[#a855f7] transition-all duration-200 focus:bg-white/[0.06]">
-                    </input>
-                </div>
+
+
             </div>
 
             <div className="flex items-center justify-end space-x-4 pt-4 border-t border-white/10">

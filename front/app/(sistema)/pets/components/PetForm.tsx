@@ -1,32 +1,31 @@
 'use client';
 
-import { Usuario, UsuarioFormProps } from "@/app/types/usuario";
+import { Pet, PetFormProps } from "@/app/types/pet";
 import Link from "@/node_modules/next/link";
 import axios from "axios";
 import { useRouter } from "next/dist/client/components/navigation";
 import { useState } from "react";
 
-export default function UsuarioForm({usuarioExistente} : UsuarioFormProps) {
+export default function PetForm({petExistente} : PetFormProps) {
     const router = useRouter();
 
     // constante com array de informações
-    const [usuario, setUsuario] = useState<Usuario> (
+    const [pet, setPet] = useState<Pet> (
         // se for existente, ele carrega os dados
-        usuarioExistente || 
-        new Usuario(null, "", "", "ATIVO", "", "")
+        petExistente || 
+        new Pet(null, "", "", "", "ATIVO")
     );
 
     // função para atualizar os valores do formulário
-    const handlerChange = ( campo : 'nome' | 'email' | 'cpf' | 'senha', valor: string) => {
+    const handlerChange = ( campo : 'nome' | 'raca' | 'dataNascimento', valor: string) => {
         // preview
-        setUsuario(valorAnterior => 
-            new Usuario(
+        setPet(valorAnterior => 
+            new Pet(
                 valorAnterior.id,
                 campo === 'nome' ? valor : valorAnterior.nome,
-                campo === 'email' ? valor : valorAnterior.email,
-                valorAnterior.status,
-                campo === 'cpf' ? valor : valorAnterior.cpf,
-                campo === 'senha' ? valor : valorAnterior.senha
+                campo === 'raca' ? valor : valorAnterior.raca,
+                campo === 'dataNascimento' ? valor : valorAnterior.dataNascimento,
+                valorAnterior.status
             )
         )
     }
@@ -34,12 +33,12 @@ export default function UsuarioForm({usuarioExistente} : UsuarioFormProps) {
     // formData - nome / FormData - Tipo
     const handlerSalvar = async (formData: FormData) => { 
 
-        if (usuarioExistente) {
+        if (petExistente) {
             var dadosRetorno = await 
-            axios.put<number>('http://localhost:8080/usuarios' +usuario.id, usuario);
+            axios.put<number>('http://localhost:8080/pets' +pet.id, pet);
 
         if (dadosRetorno.status == 200) {
-            alert("Usuário foi salvo com sucesso!");
+            alert("Pet salvo com sucesso!");
         } else {
             alert (dadosRetorno.data);
             
@@ -47,70 +46,67 @@ export default function UsuarioForm({usuarioExistente} : UsuarioFormProps) {
         }
 
         } else {
-            var dadosRetorno = await axios.post<number>('http://localhost:8080/usuarios', usuario);
+            var dadosRetorno = await axios.post<number>('http://localhost:8080/pets', pet);
 
         if (dadosRetorno.status == 200) {
-            alert("Usuário foi salvo com sucesso!");
+            alert("Pet foi salvo com sucesso!");
         } else {
             alert (dadosRetorno.data);
             
             return;
         }
-        router.push("/usuarios");
+        router.push("/pets");
     }
 }
 
     return (
         <form action={handlerSalvar} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+
                 <div className="space-y-2">
                     <label className="block text-sm font-medium text-white/70">
-                        Nome completo:
+                        Nome:
                     </label>
                     <input name="nome"
-                    value={usuario.nome} 
+                    value={pet.nome} 
                     required
-                    placeholder="Maxine Galathynius"
+                    placeholder="Docinho"
                     onChange={(e) => handlerChange('nome', e.target.value)}
                     className="w-full px-4 py-2.5 bg-white/[0.03] border border-white/10 rounded-xl text-white placeholder-white/30 outline-none focus:ring-2 focus:ring-[#a855f7]/30 focus:border-[#a855f7] transition-all duration-200 focus:bg-white/[0.06]">
                     </input>
                 </div>
+
+
                 <div className="space-y-2">
                     <label className="block text-sm font-medium text-white/70">
-                        CPF:
+                        Raça:
                     </label>
-                    <input name="CPF" 
-                    value={usuario.cpf}
+                    <input name="raca" 
+                    value={pet.raca}
                     required
-                    placeholder="000.000.000-00"
-                    onChange={(e) => handlerChange('cpf', e.target.value)}
+                    placeholder="Vira-lata"
+                    onChange={(e) => handlerChange('raca', e.target.value)}
                     className="w-full px-4 py-2.5 bg-white/[0.03] border border-white/10 rounded-xl text-white placeholder-white/30 outline-none focus:ring-2 focus:ring-[#a855f7]/30 focus:border-[#a855f7] transition-all duration-200 focus:bg-white/[0.06]">
                     </input>
                 </div>
+
+
                 <div className="space-y-2">
                     <label className="block text-sm font-medium text-white/70">
-                        E-mail
+                        Data de Nascimento
                     </label>
                     <input name="email" 
-                    value={usuario.email}
+                    type-date
+                    value={pet.dataNascimento || ""}
                     required
-                    placeholder="maxine.galathynius@gmail.com"
-                    onChange={(e) => handlerChange('email', e.target.value)}
+                    placeholder="01/01/2000"
+                    onChange={(e) => handlerChange('dataNascimento', e.target.value)}
                     className="w-full px-4 py-2.5 bg-white/[0.03] border border-white/10 rounded-xl text-white placeholder-white/30 outline-none focus:ring-2 focus:ring-[#a855f7]/30 focus:border-[#a855f7] transition-all duration-200 focus:bg-white/[0.06]">
                     </input>
                 </div>
-                <div className="space-y-2">
-                    <label className="block text-sm font-medium text-white/70">
-                        Senha:
-                    </label>
-                    <input name="Senha" type="password" 
-                    value={usuario.senha}
-                    required
-                    placeholder="••••••••"
-                    onChange={(e) => handlerChange('senha', e.target.value)}
-                    className="w-full px-4 py-2.5 bg-white/[0.03] border border-white/10 rounded-xl text-white placeholder-white/30 outline-none focus:ring-2 focus:ring-[#a855f7]/30 focus:border-[#a855f7] transition-all duration-200 focus:bg-white/[0.06]">
-                    </input>
-                </div>
+
+
             </div>
 
             <div className="flex items-center justify-end space-x-4 pt-4 border-t border-white/10">
