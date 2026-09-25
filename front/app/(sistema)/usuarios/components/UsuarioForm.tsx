@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { Usuario, UsuarioFormProps } from "@/app/types/usuario";
 import Link from "@/node_modules/next/link";
@@ -34,7 +34,20 @@ export default function UsuarioForm({usuarioExistente} : UsuarioFormProps) {
     // formData - nome / FormData - Tipo
     const handlerSalvar = async (formData: FormData) => { 
 
-        const dadosRetorno = await axios.post<number>('http://localhost:8080/usuarios', usuario);
+        if (usuarioExistente) {
+            var dadosRetorno = await 
+            axios.put<number>('http://localhost:8080/usuarios' +usuario.id, usuario);
+
+        if (dadosRetorno.status == 200) {
+            alert("Usuário foi salvo com sucesso!");
+        } else {
+            alert (dadosRetorno.data);
+            
+            return;
+        }
+
+        } else {
+            var dadosRetorno = await axios.post<number>('http://localhost:8080/usuarios', usuario);
 
         if (dadosRetorno.status == 200) {
             alert("Usuário foi salvo com sucesso!");
@@ -45,8 +58,7 @@ export default function UsuarioForm({usuarioExistente} : UsuarioFormProps) {
         }
         router.push("/usuarios");
     }
-
-
+}
 
     return (
         <form action={handlerSalvar} className="space-y-6">
