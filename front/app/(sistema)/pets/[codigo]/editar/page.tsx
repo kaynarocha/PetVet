@@ -5,7 +5,7 @@ import { useParams, useRouter } from "@/node_modules/next/navigation";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Pet } from "@/app/types/pet";
-import PetForm from "../components/PetForm";
+import PetForm from "../../components/PetForm";
 
 export default function EditarPet(){
 

@@ -104,8 +104,9 @@ export default function Pets(){
 
             <Link
                 href="/pets/novo"
-                className="group relative overflow-hidden rounded-lg bg-gradient-to-r from-[#a855f7] to-[#7c3aed] px-5 py-2.5 text-sm font-medium text-white transition-all duration-300 hover:scale-105 hover:shadow-[0_0_20px_2px_rgba(168,85,247,0.45)] active:scale-95"
-            >
+                className="group relative overflow-hidden rounded-lg bg-gradient-to-r from-[#a855f7] to-[#7c3aed] 
+                px-5 py-2.5 text-sm font-medium text-white transition-all duration-300 hover:scale-105 hover:shadow-[0_0_20px_2px_rgba(168,85,247,0.45)] active:scale-95">
+
                 <span className="relative z-10">Novo pet</span>
                 <span className="absolute inset-0 bg-gradient-to-r from-[#22c55e] to-[#16a34a] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                 <span className="absolute inset-0 z-10 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
@@ -181,7 +182,7 @@ export default function Pets(){
                             <td className="px-6 py-4 text-sm font-medium">
                                 <div className="flex items-center gap-3">
                                     <Link
-                                        href={`/usuarios/${pet.id}/editar`}
+                                        href={`/pets/${pet.id}/editar`}
                                         className="text-[#c084fc] hover:text-[#a855f7] transition-colors duration-200">
                                         Editar
                                     </Link>

@@ -236,7 +236,7 @@ export default function Tutores(){
                             <tr>
 
                                 <td colSpan={8} className="px-6 py-4 text-sm text-white/40 text-center">
-                                    Nenhum tutor encontrado.
+                                    Nenhum tutor encontrado. 
                                 </td>
 
                             </tr>

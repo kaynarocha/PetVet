@@ -36,9 +36,10 @@ export default function TutorForm({tutorExistente} : TutorFormProps) {
     // formData - nome / FormData - Tipo
     const handlerSalvar = async (formData: FormData) => { 
 
+        debugger;
         if (tutorExistente) {
             var dadosRetorno = await 
-            axios.put<number>('http://localhost:8080/tutores' +tutor.id, tutor);
+            axios.put<number>(`http://localhost:8080/tutores/${tutor.id}`, tutor);
 
         if (dadosRetorno.status == 200) {
             alert("Usuário foi salvo com sucesso!");
@@ -76,7 +77,8 @@ export default function TutorForm({tutorExistente} : TutorFormProps) {
                     required
                     placeholder="Camila Mendes"
                     onChange={(e) => handlerChange('nome', e.target.value)}
-                    className="w-full px-4 py-2.5 bg-white/[0.03] border border-white/10 rounded-xl text-white placeholder-white/30 outline-none focus:ring-2 focus:ring-[#a855f7]/30 focus:border-[#a855f7] transition-all duration-200 focus:bg-white/[0.06]">
+                    className="w-full px-4 py-2.5 bg-white/[0.03] border border-white/10 rounded-xl text-white placeholder-white/30 outline-none 
+                    focus:ring-2 focus:ring-[#a855f7]/30 focus:border-[#a855f7] transition-all duration-200 focus:bg-white/[0.06]">
                     </input>
                 </div>
 
@@ -90,7 +92,8 @@ export default function TutorForm({tutorExistente} : TutorFormProps) {
                     required
                     placeholder="000.000.000-00"
                     onChange={(e) => handlerChange('cpf', e.target.value)}
-                    className="w-full px-4 py-2.5 bg-white/[0.03] border border-white/10 rounded-xl text-white placeholder-white/30 outline-none focus:ring-2 focus:ring-[#a855f7]/30 focus:border-[#a855f7] transition-all duration-200 focus:bg-white/[0.06]">
+                    className="w-full px-4 py-2.5 bg-white/[0.03] border border-white/10 rounded-xl text-white placeholder-white/30 
+                    outline-none focus:ring-2 focus:ring-[#a855f7]/30 focus:border-[#a855f7] transition-all duration-200 focus:bg-white/[0.06]">
                     </input>
                 </div>
 
@@ -104,7 +107,8 @@ export default function TutorForm({tutorExistente} : TutorFormProps) {
                     required
                     placeholder="(48) 99999-9999"
                     onChange={(e) => handlerChange('telefone', e.target.value)}
-                    className="w-full px-4 py-2.5 bg-white/[0.03] border border-white/10 rounded-xl text-white placeholder-white/30 outline-none focus:ring-2 focus:ring-[#a855f7]/30 focus:border-[#a855f7] transition-all duration-200 focus:bg-white/[0.06]">
+                    className="w-full px-4 py-2.5 bg-white/[0.03] border border-white/10 rounded-xl text-white placeholder-white/30 
+                    outline-none focus:ring-2 focus:ring-[#a855f7]/30 focus:border-[#a855f7] transition-all duration-200 focus:bg-white/[0.06]">
                     </input>
                 </div>
 
@@ -118,7 +122,8 @@ export default function TutorForm({tutorExistente} : TutorFormProps) {
                     required
                     placeholder="camila.mendes@gmail.com"
                     onChange={(e) => handlerChange('email', e.target.value)}
-                    className="w-full px-4 py-2.5 bg-white/[0.03] border border-white/10 rounded-xl text-white placeholder-white/30 outline-none focus:ring-2 focus:ring-[#a855f7]/30 focus:border-[#a855f7] transition-all duration-200 focus:bg-white/[0.06]">
+                    className="w-full px-4 py-2.5 bg-white/[0.03] border border-white/10 rounded-xl text-white placeholder-white/30 
+                    outline-none focus:ring-2 focus:ring-[#a855f7]/30 focus:border-[#a855f7] transition-all duration-200 focus:bg-white/[0.06]">
                     </input>
                 </div>
 
@@ -133,7 +138,8 @@ export default function TutorForm({tutorExistente} : TutorFormProps) {
                     required
                     placeholder="01/01/2000"
                     onChange={(e) => handlerChange('dataNascimento', e.target.value)}
-                    className="w-full px-4 py-2.5 bg-white/[0.03] border border-white/10 rounded-xl text-white placeholder-white/30 outline-none focus:ring-2 focus:ring-[#a855f7]/30 focus:border-[#a855f7] transition-all duration-200 focus:bg-white/[0.06]">
+                    className="w-full px-4 py-2.5 bg-white/[0.03] border border-white/10 rounded-xl text-white placeholder-white/30 
+                    outline-none focus:ring-2 focus:ring-[#a855f7]/30 focus:border-[#a855f7] transition-all duration-200 focus:bg-white/[0.06]">
                     </input>
                 </div>
 
@@ -147,7 +153,8 @@ export default function TutorForm({tutorExistente} : TutorFormProps) {
                     required
                     placeholder="Estrada dos Caçadores, 123, Bairro Centro, Cidade, Estado"
                     onChange={(e) => handlerChange('endereco', e.target.value)}
-                    className="w-full px-4 py-2.5 bg-white/[0.03] border border-white/10 rounded-xl text-white placeholder-white/30 outline-none focus:ring-2 focus:ring-[#a855f7]/30 focus:border-[#a855f7] transition-all duration-200 focus:bg-white/[0.06]">
+                    className="w-full px-4 py-2.5 bg-white/[0.03] border border-white/10 rounded-xl text-white placeholder-white/30 
+                    outline-none focus:ring-2 focus:ring-[#a855f7]/30 focus:border-[#a855f7] transition-all duration-200 focus:bg-white/[0.06]">
                     </input>
                 </div>
 

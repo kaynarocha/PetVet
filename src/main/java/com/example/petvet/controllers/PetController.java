@@ -5,7 +5,6 @@ import com.example.petvet.entities.EnumStatusPet;
 import com.example.petvet.entities.Pet;
 import com.example.petvet.repository.PetRepository;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

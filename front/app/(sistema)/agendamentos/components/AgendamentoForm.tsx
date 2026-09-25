@@ -35,7 +35,7 @@ export default function AgendamentoForm({agendamentoExistente} : AgendamentoForm
 
         if (agendamentoExistente) {
             var dadosRetorno = await 
-            axios.put<number>('http://localhost:8080/agendamentos' +agendamento.id, agendamento);
+            axios.put<number>(`http://localhost:8080/agendamentos/${agendamento.id}`, agendamento);
 
         if (dadosRetorno.status == 200) {
             alert("Agendamento salvo com sucesso!");

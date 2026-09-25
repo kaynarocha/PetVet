@@ -35,7 +35,7 @@ export default function PetForm({petExistente} : PetFormProps) {
 
         if (petExistente) {
             var dadosRetorno = await 
-            axios.put<number>('http://localhost:8080/pets' +pet.id, pet);
+            axios.put<number>(`http://localhost:8080/pets/${pet.id}`, pet);
 
         if (dadosRetorno.status == 200) {
             alert("Pet salvo com sucesso!");
@@ -60,7 +60,7 @@ export default function PetForm({petExistente} : PetFormProps) {
 }
 
     return (
-        <form action={handlerSalvar} className="space-y-6">
+        <form onSubmit={handlerSalvar} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
 
@@ -69,7 +69,7 @@ export default function PetForm({petExistente} : PetFormProps) {
                         Nome:
                     </label>
                     <input name="nome"
-                    value={pet.nome} 
+                    value={pet.nome || ""} 
                     required
                     placeholder="Docinho"
                     onChange={(e) => handlerChange('nome', e.target.value)}
@@ -83,7 +83,7 @@ export default function PetForm({petExistente} : PetFormProps) {
                         Raça:
                     </label>
                     <input name="raca" 
-                    value={pet.raca}
+                    value={pet.raca || ""}
                     required
                     placeholder="Vira-lata"
                     onChange={(e) => handlerChange('raca', e.target.value)}
@@ -96,8 +96,8 @@ export default function PetForm({petExistente} : PetFormProps) {
                     <label className="block text-sm font-medium text-white/70">
                         Data de Nascimento
                     </label>
-                    <input name="email" 
-                    type-date
+                    <input name="dataNascimento" 
+                    type="date"
                     value={pet.dataNascimento || ""}
                     required
                     placeholder="01/01/2000"
