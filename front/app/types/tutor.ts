@@ -8,7 +8,7 @@ export class Tutor {
         public email: string,
         public dataNascimento: string | null,
         public endereco: string,
-        public status: string) {
+        public statusTutor: string) {
 
     }
 }

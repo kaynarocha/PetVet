@@ -43,10 +43,10 @@ export default function Tutores(){
 
         var novoStatus = {};
 
-        if (tutor.status === "ATIVO") {
-            novoStatus = {status : "BLOQUEADO"}
+        if (tutor.statusTutor === "ATIVO") {
+            novoStatus = {statusTutor : "BLOQUEADO"}
         } else {
-            novoStatus = {status : "ATIVO"}
+            novoStatus = {statusTutor : "ATIVO"}
         }
 
         var dadosRetorno = await
@@ -113,9 +113,10 @@ export default function Tutores(){
 
         </div>
 
-        <div className="tutores-fade-up relative z-10 mx-auto w-full max-w-6xl">
+        <div className="tutores-fade-up relative z-10 mx-auto w-full max-w-7xl">
 
             <div className="overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl shadow-[0_20px_50px_-15px_rgba(168,85,247,0.2)]">
+            <div className="overflow-x-auto">
 
                 <table className="w-full text-left">
 
@@ -153,6 +154,10 @@ export default function Tutores(){
 
                             <th className="px-6 py-4 text-sm font-semibold text-white/80 tracking-wide">
                                 Status
+                            </th>
+
+                            <th className="px-6 py-4 text-sm font-semibold text-white/80 tracking-wide">
+                                Ações
                             </th>
 
                         </tr>
@@ -196,7 +201,7 @@ export default function Tutores(){
                             <td className="px-6 py-4 text-sm">
                                 <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium text-white/70">
                                     <span className="h-1.5 w-1.5 rounded-full bg-gradient-to-br from-[#a855f7] to-[#22c55e]" />
-                                    {tutor.status}
+                                    {tutor.statusTutor}
                                 </span>
                             </td>
 
@@ -217,12 +222,12 @@ export default function Tutores(){
                                     <button
                                         onClick={() => handleAlterarStatusTutor(tutor)}
                                         className={`transition-colors duration-200 ${
-                                            tutor.status === 'BLOQUEADO'
+                                            tutor.statusTutor === 'BLOQUEADO'
                                                 ? 'text-amber-400 hover:text-amber-300'
                                                 : 'text-[#4ade80] hover:text-[#22c55e]'
                                         }`}
                                     >
-                                        {tutor.status}
+                                        {tutor.statusTutor}
                                     </button>
                                 </div>
                             </td>
@@ -248,6 +253,8 @@ export default function Tutores(){
                 </table>
 
             </div>
+
+        </div>
 
         </div>
 

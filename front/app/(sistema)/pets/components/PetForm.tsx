@@ -25,7 +25,7 @@ export default function PetForm({petExistente} : PetFormProps) {
                 campo === 'nome' ? valor : valorAnterior.nome,
                 campo === 'raca' ? valor : valorAnterior.raca,
                 campo === 'dataNascimento' ? valor : valorAnterior.dataNascimento,
-                valorAnterior.status
+                valorAnterior.statusPet
             )
         )
     }
@@ -35,7 +35,7 @@ export default function PetForm({petExistente} : PetFormProps) {
 
         if (petExistente) {
             var dadosRetorno = await 
-            axios.put<number>(`http://localhost:8080/pets/${pet.id}`, pet);
+            axios.put<Pet>(`http://localhost:8080/pets/${pet.id}`, pet);
 
         if (dadosRetorno.status == 200) {
             alert("Pet salvo com sucesso!");
@@ -46,21 +46,21 @@ export default function PetForm({petExistente} : PetFormProps) {
         }
 
         } else {
-            var dadosRetorno = await axios.post<number>('http://localhost:8080/pets', pet);
+            var dadosRetorno = await axios.post<Pet>('http://localhost:8080/pets', pet);
 
         if (dadosRetorno.status == 200) {
             alert("Pet foi salvo com sucesso!");
+            router.push("/pets");
         } else {
             alert (dadosRetorno.data);
             
             return;
         }
-        router.push("/pets");
     }
 }
 
     return (
-        <form onSubmit={handlerSalvar} className="space-y-6">
+        <form action={handlerSalvar} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
 

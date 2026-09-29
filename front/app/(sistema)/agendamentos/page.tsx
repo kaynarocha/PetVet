@@ -43,10 +43,10 @@ export default function Agendamentos(){
 
         var novoStatus = {};
 
-        if (agendamento.status === "ATIVO") {
-            novoStatus = {status : "BLOQUEADO"}
+        if (agendamento.statusAgendamento === "ATIVO") {
+            novoStatus = {statusAgendamento : "BLOQUEADO"}
         } else {
-            novoStatus = {status : "ATIVO"}
+            novoStatus = {statusAgendamento : "ATIVO"}
         }
 
         var dadosRetorno = await
@@ -141,6 +141,10 @@ export default function Agendamentos(){
                                 Status
                             </th>
 
+                            <th className="px-6 py-4 text-sm font-semibold text-white/80 tracking-wide">
+                                Ações
+                            </th>
+
                         </tr>
 
                     </thead>
@@ -170,7 +174,7 @@ export default function Agendamentos(){
                             <td className="px-6 py-4 text-sm">
                                 <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium text-white/70">
                                     <span className="h-1.5 w-1.5 rounded-full bg-gradient-to-br from-[#a855f7] to-[#22c55e]" />
-                                    {agendamento.status}
+                                    {agendamento.statusAgendamento}
                                 </span>
                             </td>
 
@@ -191,12 +195,12 @@ export default function Agendamentos(){
                                     <button
                                         onClick={() => handleAlterarStatusAgendamento(agendamento)}
                                         className={`transition-colors duration-200 ${
-                                            agendamento.status === 'BLOQUEADO'
+                                            agendamento.statusAgendamento === 'BLOQUEADO'
                                                 ? 'text-amber-400 hover:text-amber-300'
                                                 : 'text-[#4ade80] hover:text-[#22c55e]'
                                         }`}
                                     >
-                                        {agendamento.status}
+                                        {agendamento.statusAgendamento}
                                     </button>
                                 </div>
                             </td>

@@ -25,42 +25,50 @@ export default function AgendamentoForm({agendamentoExistente} : AgendamentoForm
                 campo === 'data' ? valor : valorAnterior.data,
                 campo === 'servico' ? valor : valorAnterior.servico,
                 campo === 'descricao' ? valor : valorAnterior.descricao,
-                valorAnterior.status
+                valorAnterior.statusAgendamento
             )
         )
     }
 
     // formData - nome / FormData - Tipo
-    const handlerSalvar = async (formData: FormData) => { 
+    const handlerSalvar = async (e: React.FormEvent<HTMLFormElement>) => { 
+        e.preventDefault();
 
-        if (agendamentoExistente) {
-            var dadosRetorno = await 
-            axios.put<number>(`http://localhost:8080/agendamentos/${agendamento.id}`, agendamento);
+        const agendamentoParaEnviar = {
+            ...agendamento,
+            data: agendamento.data ? `${agendamento.data}T00:00:00` : null
+        };
 
-        if (dadosRetorno.status == 200) {
-            alert("Agendamento salvo com sucesso!");
-        } else {
-            alert (dadosRetorno.data);
+        try {
+            let dadosRetorno;
             
-            return;
-        }
+            if (agendamentoExistente) {
+                dadosRetorno = await axios.put<Agendamento>(
+                    `http://localhost:8080/agendamentos/${agendamento.id}`, 
+                    agendamentoParaEnviar
+                );
+            } else {
+                dadosRetorno = await axios.post<Agendamento>(
+                    'http://localhost:8080/agendamentos', 
+                    agendamentoParaEnviar
+                );
+            }
 
-        } else {
-            var dadosRetorno = await axios.post<number>('http://localhost:8080/agendamentos', agendamento);
-
-        if (dadosRetorno.status == 200) {
-            alert("Agendamento salvo com sucesso!");
-        } else {
-            alert (dadosRetorno.data);
-            
-            return;
+            if (dadosRetorno.status === 200 || dadosRetorno.status === 201) {
+                alert("Agendamento salvo com sucesso!");
+                router.push("/agendamentos");
+            } else {
+                alert(dadosRetorno.data);
+            }
+        } catch (error) {
+            console.error("Erro ao salvar agendamento:", error);
+            alert("Erro ao salvar agendamento. Verifique os dados.");
         }
-        router.push("/agendamentos");
     }
-}
+
 
     return (
-        <form action={handlerSalvar} className="space-y-6">
+        <form onSubmit={handlerSalvar} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
 
@@ -110,7 +118,7 @@ export default function AgendamentoForm({agendamentoExistente} : AgendamentoForm
             </div>
 
             <div className="flex items-center justify-end space-x-4 pt-4 border-t border-white/10">
-                <Link href="/usuarios" className="px-5 py-2.5 bg-white/5 hover:bg-white/10 text-white/70 hover:text-white font-medium text-sm rounded-xl transition-all duration-200 text-center border border-white/10"> Cancelar</Link>
+                <Link href="/agendamentos" className="px-5 py-2.5 bg-white/5 hover:bg-white/10 text-white/70 hover:text-white font-medium text-sm rounded-xl transition-all duration-200 text-center border border-white/10"> Cancelar</Link>
                 <button type="submit" className="group relative overflow-hidden px-6 py-2.5 bg-gradient-to-r from-[#a855f7] to-[#7c3aed] text-white font-semibold text-sm rounded-xl shadow-[0_0_20px_-5px_rgba(168,85,247,0.5)] transition-all duration-300 hover:scale-105 hover:shadow-[0_0_25px_2px_rgba(168,85,247,0.5)] active:scale-95 focus:outline-none focus:ring-2 focus:ring-[#22c55e]/50">
                     <span className="relative z-10">Salvar</span>
                     <span className="absolute inset-0 bg-gradient-to-r from-[#22c55e] to-[#16a34a] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
@@ -121,4 +129,5 @@ export default function AgendamentoForm({agendamentoExistente} : AgendamentoForm
             </div>
         </form>
     );
-}
+    }
+

@@ -5,7 +5,7 @@ export class Agendamento {
         public data: string,
         public servico: string,
         public descricao: string,
-        public status: string) {
+        public statusAgendamento: string) {
 
     }
 }

@@ -5,7 +5,7 @@ import { useParams, useRouter } from "@/node_modules/next/navigation";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Agendamento } from "@/app/types/agendamento";
-import AgendamentoForm from "../components/AgendamentoForm";
+import AgendamentoForm from "../../components/AgendamentoForm";
 
 export default function EditarAgendamento(){
 

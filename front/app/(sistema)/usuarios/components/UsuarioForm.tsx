@@ -63,6 +63,8 @@ export default function UsuarioForm({usuarioExistente} : UsuarioFormProps) {
     return (
         <form action={handlerSalvar} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+
                 <div className="space-y-2">
                     <label className="block text-sm font-medium text-white/70">
                         Nome completo:
@@ -75,6 +77,8 @@ export default function UsuarioForm({usuarioExistente} : UsuarioFormProps) {
                     className="w-full px-4 py-2.5 bg-white/[0.03] border border-white/10 rounded-xl text-white placeholder-white/30 outline-none focus:ring-2 focus:ring-[#a855f7]/30 focus:border-[#a855f7] transition-all duration-200 focus:bg-white/[0.06]">
                     </input>
                 </div>
+
+
                 <div className="space-y-2">
                     <label className="block text-sm font-medium text-white/70">
                         CPF:
@@ -87,6 +91,8 @@ export default function UsuarioForm({usuarioExistente} : UsuarioFormProps) {
                     className="w-full px-4 py-2.5 bg-white/[0.03] border border-white/10 rounded-xl text-white placeholder-white/30 outline-none focus:ring-2 focus:ring-[#a855f7]/30 focus:border-[#a855f7] transition-all duration-200 focus:bg-white/[0.06]">
                     </input>
                 </div>
+
+
                 <div className="space-y-2">
                     <label className="block text-sm font-medium text-white/70">
                         E-mail
@@ -99,6 +105,8 @@ export default function UsuarioForm({usuarioExistente} : UsuarioFormProps) {
                     className="w-full px-4 py-2.5 bg-white/[0.03] border border-white/10 rounded-xl text-white placeholder-white/30 outline-none focus:ring-2 focus:ring-[#a855f7]/30 focus:border-[#a855f7] transition-all duration-200 focus:bg-white/[0.06]">
                     </input>
                 </div>
+
+                
                 <div className="space-y-2">
                     <label className="block text-sm font-medium text-white/70">
                         Senha:

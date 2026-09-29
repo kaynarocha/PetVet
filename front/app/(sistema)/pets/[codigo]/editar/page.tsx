@@ -57,7 +57,7 @@ export default function EditarPet(){
                     </h1>
                     <p className="text-sm text-white/50">Preencha os dados para editar o Pet</p>
                 </div>
-                <Link href="/usuarios" className="inline-flex items-center justify-center text-sm font-medium text-white/70 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 px-4 py-2.5 rounded-xl transition-all duration-200 w-full sm:w-auto">
+                <Link href="/pets" className="inline-flex items-center justify-center text-sm font-medium text-white/70 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 px-4 py-2.5 rounded-xl transition-all duration-200 w-full sm:w-auto">
                     &larr; Voltar para Listagem
                 </Link>
             </div>
