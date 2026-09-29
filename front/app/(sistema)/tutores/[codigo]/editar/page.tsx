@@ -1,7 +1,7 @@
 "use client"
 
-import Link from "@/node_modules/next/link";
-import { useParams, useRouter } from "@/node_modules/next/navigation";
+import Link from "next/link";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Tutor } from "@/app/types/tutor";
@@ -25,15 +25,19 @@ export default function EditarTutor(){
 
     const buscarDados = async() => {
 
-        // pq não está indo?
-        const valorTutorBack = await axios.get<Tutor>('http://localhost:8080/tutores/'+codigo);
+        try {
+            const valorTutorBack = await axios.get<Tutor>('http://localhost:8080/tutores/'+codigo);
 
-        if (valorTutorBack.status == 200) {
-            setTutor(valorTutorBack.data);
-        } else {
-        router.push("/tutores");
+            if (valorTutorBack.status == 200) {
+                setTutor(valorTutorBack.data);
+            } else {
+                router.push("/tutores");
+            }
+        } catch (erro) {
+            console.error("Erro ao buscar tutor:", erro);
+            alert("Tutor não encontrado.");
+            router.push("/tutores");
         }
-    
 
     }
 
@@ -82,19 +86,15 @@ export default function EditarTutor(){
 
                     <div className="relative z-10 space-y-1">
                         <h1 className="text-2xl font-bold tracking-tight text-white flex items-center space-x-2">
-                            <span className="w-2.5 h-2.5 bg-gradient-to-br from-[#a855f7] to-[#22c55e] 
-                            rounded-full inline-block shadow-[0_0_12px_2px_rgba(168,85,247,0.5)]"></span>
-                            <span>Editar <span className="bg-gradient-to-r from-[#a855f7] to-[#22c55e] 
-                            bg-clip-text text-transparent">Tutor {codigo}</span></span>
+                            <span className="w-2.5 h-2.5 bg-gradient-to-br from-[#a855f7] to-[#22c55e] rounded-full inline-block shadow-[0_0_12px_2px_rgba(168,85,247,0.5)]"></span>
+                            <span>Editar <span className="bg-gradient-to-r from-[#a855f7] to-[#22c55e] bg-clip-text text-transparent">Tutor {codigo}</span></span>
                         </h1>
                         <p className="text-sm text-white/50">Preencha os dados para editar o Tutor</p>
                     </div>
 
                     <Link
                         href="/tutores"
-                        className="relative z-10 inline-flex items-center justify-center text-sm font-medium 
-                        text-white/70 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 
-                        hover:border-[#a855f7]/50 px-4 py-2.5 rounded-xl transition-all duration-200 w-full sm:w-auto">
+                        className="relative z-10 inline-flex items-center justify-center text-sm font-medium text-white/70 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 hover:border-[#a855f7]/50 px-4 py-2.5 rounded-xl transition-all duration-200 w-full sm:w-auto">
                         &larr; Voltar para Listagem
                     </Link>
 
@@ -112,4 +112,3 @@ export default function EditarTutor(){
     </>);
 
     }
-

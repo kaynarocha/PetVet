@@ -13,8 +13,11 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
+//get e setter
 @Data
+// construtor vazio
 @NoArgsConstructor
+// com instancia
 @AllArgsConstructor
 public class Agendamento {
 

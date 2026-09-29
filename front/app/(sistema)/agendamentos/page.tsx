@@ -181,7 +181,7 @@ export default function Agendamentos(){
                             <td className="px-6 py-4 text-sm font-medium">
                                 <div className="flex items-center gap-3">
                                     <Link
-                                        href={`/usuarios/${agendamento.id}/editar`}
+                                        href={`/agendamentos/${agendamento.id}/editar`}
                                         className="text-[#c084fc] hover:text-[#a855f7] transition-colors duration-200">
                                         Editar
                                     </Link>

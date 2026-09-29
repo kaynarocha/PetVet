@@ -1,4 +1,8 @@
-import Link from "@/node_modules/next/link";
+"use client";
+
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import {
   PawPrint,
   CalendarCheck,
@@ -9,13 +13,82 @@ import {
   Search,
 } from "lucide-react";
 
+const API = "http://localhost:8080";
+const INTERVALO_MS = 10000; // atualiza a cada 10 segundos
+
+type Totais = {
+  agendamentosHoje: number | null;
+  pets: number | null;
+  tutores: number | null;
+  consultasMes: number | null;
+};
+
+// ignora registros excluídos (o backend só marca como EXCLUIDO, não apaga)
+const semExcluidos = (lista: Record<string, unknown>[]) =>
+  lista.filter((item) => !Object.values(item).includes("EXCLUIDO"));
+
 export default function HomePage() {
 
+  const [totais, setTotais] = useState<Totais>({
+    agendamentosHoje: null,
+    pets: null,
+    tutores: null,
+    consultasMes: null,
+  });
+
+  useEffect(() => {
+    const carregarTotais = async () => {
+      try {
+        const [respAgendamentos, respPets, respTutores] = await Promise.all([
+          axios.get(`${API}/agendamentos`),
+          axios.get(`${API}/pets`),
+          axios.get(`${API}/tutores`),
+        ]);
+
+        const agora = new Date();
+        const mes = String(agora.getMonth() + 1).padStart(2, "0");
+        const dia = String(agora.getDate()).padStart(2, "0");
+        const prefixoMes = `${agora.getFullYear()}-${mes}`; // ex: 2026-09
+        const prefixoHoje = `${prefixoMes}-${dia}`; // ex: 2026-09-29
+
+        const agendamentos = semExcluidos(respAgendamentos.data).filter(
+          (a) => a.statusAgendamento === "ATIVO"
+        );
+        const pets = semExcluidos(respPets.data);
+        const tutores = semExcluidos(respTutores.data).filter(
+          (t) => t.statusTutor === "ATIVO"
+        );
+
+        setTotais({
+          agendamentosHoje: agendamentos.filter((a) =>
+            String(a.data).startsWith(prefixoHoje)
+          ).length,
+          pets: pets.length,
+          tutores: tutores.length,
+          consultasMes: agendamentos.filter((a) =>
+            String(a.data).startsWith(prefixoMes)
+          ).length,
+        });
+      } catch (erro) {
+        console.error("Erro ao carregar os totais da home:", erro);
+      }
+    };
+
+    carregarTotais();
+    const intervalo = setInterval(carregarTotais, INTERVALO_MS);
+    window.addEventListener("focus", carregarTotais); // atualiza ao voltar para a aba
+
+    return () => {
+      clearInterval(intervalo);
+      window.removeEventListener("focus", carregarTotais);
+    };
+  }, []);
+
   const stats = [
-    { label: "Agendamentos hoje", value: "8", icon: CalendarCheck },
-    { label: "Pets cadastrados", value: "142", icon: PawPrint },
-    { label: "Tutores ativos", value: "96", icon: Users },
-    { label: "Consultas no mês", value: "37", icon: Stethoscope },
+    { label: "Agendamentos hoje", value: totais.agendamentosHoje ?? "–", icon: CalendarCheck },
+    { label: "Pets cadastrados", value: totais.pets ?? "–", icon: PawPrint },
+    { label: "Tutores ativos", value: totais.tutores ?? "–", icon: Users },
+    { label: "Consultas no mês", value: totais.consultasMes ?? "–", icon: Stethoscope },
   ];
 
   const quickActions = [
