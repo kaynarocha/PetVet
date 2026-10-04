@@ -1,6 +1,8 @@
 package com.example.petvet.presentation;
 
 import com.example.petvet.application.DTOs.AtualizarStatusRequest;
+import com.example.petvet.application.DTOs.TutorResponse;
+import com.example.petvet.application.service.TutorService;
 import com.example.petvet.domain.entities.EnumStatusTutor;
 import com.example.petvet.domain.entities.Tutor;
 import com.example.petvet.domain.repository.TutorRepository;
@@ -11,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/tutores")
 @Tag(name = "Tutores",
@@ -20,13 +24,15 @@ public class TutorController {
 
     @Autowired
     private TutorRepository tutorRepository;
+    @Autowired
+    private TutorService tutorService;
 
     @GetMapping
     @Operation(summary = "Método de consulta de lista de tutores.",
             description = "Método responsável em efetuar a consulta de todos os tutores sem filtro")
-    public ResponseEntity<?> listarTutores() {
+    public ResponseEntity<List<TutorResponse>> listarTodos() {
 
-        return ResponseEntity.ok(tutorRepository.findAll());
+        return ResponseEntity.ok(tutorService.listarTodosTutoresTable());
     }
 
     @GetMapping("/{id}")

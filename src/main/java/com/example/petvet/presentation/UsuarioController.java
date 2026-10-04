@@ -1,6 +1,7 @@
 package com.example.petvet.presentation;
 
 import com.example.petvet.application.DTOs.AtualizarStatusRequest;
+import com.example.petvet.application.DTOs.UsuarioResponse;
 import com.example.petvet.application.service.UsuarioService;
 import com.example.petvet.domain.entities.EnumStatusUsuario;
 import com.example.petvet.domain.entities.Usuario;
@@ -11,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
 
 // rest api
 @RestController
@@ -30,14 +34,15 @@ public class UsuarioController {
     // ? significa qualquer coisa
     @GetMapping
     @Operation(summary = "Método de consulta de lista de usuários",
-                description = "Método responsável em efetuar a consulta de todos os usuarios sem filtro")
-    public ResponseEntity<?> listarTodos() {
+                description = "Método responsável em efetuar a consulta de todos os usuários sem filtro")
+    public ResponseEntity<List<UsuarioResponse>> listarTodos() {
 
-        return ResponseEntity.ok(usuarioRepository.findAll());
+        return ResponseEntity.ok(usuarioService.listarTodosUsuariosTable());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Usuario> buscarPorId(@PathVariable Long id) {
+
         Usuario usuarioBanco = usuarioRepository.findById(id).orElse(null);
         if (usuarioBanco!= null) {
             return ResponseEntity.ok(usuarioBanco);

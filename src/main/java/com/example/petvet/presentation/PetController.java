@@ -1,6 +1,8 @@
 package com.example.petvet.presentation;
 
 import com.example.petvet.application.DTOs.AtualizarStatusRequest;
+import com.example.petvet.application.DTOs.PetResponse;
+import com.example.petvet.application.service.PetService;
 import com.example.petvet.domain.entities.EnumStatusPet;
 import com.example.petvet.domain.entities.Pet;
 import com.example.petvet.domain.repository.PetRepository;
@@ -11,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/pets")
 @Tag(name = "Pets", description = "Grupo de APIs responsável por controlar a estrutura de criação e consulta do sistema. editar")
@@ -18,13 +22,15 @@ public class PetController {
 
     @Autowired
     private PetRepository petRepository;
+    @Autowired
+    private PetService petService;
 
     @GetMapping
     @Operation(summary = "Método de consulta de lista de pets",
             description = "Método responsável em efetuar a consulta de todos os pets sem filtro.")
-    public ResponseEntity<?> listarPets() {
+    public ResponseEntity<List<PetResponse>> listarTodos() {
 
-        return ResponseEntity.ok(petRepository.findAll());
+        return ResponseEntity.ok(petService.listarTodosPetsTable());
     }
 
     @GetMapping("/{id}")
