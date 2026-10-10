@@ -5,6 +5,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.example.petvet.application.DTOs.LoginRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -16,35 +17,28 @@ import java.time.ZoneOffset;
 @Service
 public class TokenService {
 
-    @Value("${spring.secret}")
+    @Value("${spring.secretkey}")
     private String secret;
 
-    @Value("${spring.expiracao}")
-    private long expiracao;
+    @Value("${spring.tempo_expiracao}")
+    private Long tempo;
 
-    @Value("${spring.emissor}")
-    private String emissor;
+    private String emissor = "DEVTEST";
 
-    public String gerarToken(String subject) {
-
-        try{
+    public String gerarToken(LoginRequest loginRequestDto) {
 
             Algorithm algorithm = Algorithm.HMAC256(secret);
 
-            String token = com.auth0.jwt.JWT.create()
+            String token = JWT.create()
                     .withIssuer(emissor)
-                    .withSubject(subject)
-                    .withExpiresAt(getDataExpiration())
+                    .withSubject(loginRequestDto.email())
+                    .withExpiresAt(this.gerarDataExpiration())
                     .sign(algorithm);
 
             return token;
 
-
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
         }
 
-        }
 
         public DecodedJWT verificarToken(String token) throws JWTVerificationException {
             Algorithm algorithm = Algorithm.HMAC256(secret);
@@ -55,14 +49,14 @@ public class TokenService {
 
         }
 
-        private Instant getDataExpiration() {
+        private Instant gerarDataExpiration() {
 
             // pegar data atual
             var dataAtual = LocalDateTime.now();
             //adicionar ou diminuir tempo da data atual
-            var dataFutura = dataAtual.plusMinutes(expiracao);
+            dataAtual = dataAtual.plusMinutes(tempo);
 
-            return dataFutura.toInstant(ZoneOffset.of("-03:00"));
+            return dataAtual.toInstant(ZoneOffset.of("-03:00"));
     }
 
 }

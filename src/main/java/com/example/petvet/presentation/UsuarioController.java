@@ -1,6 +1,8 @@
 package com.example.petvet.presentation;
 
 import com.example.petvet.application.DTOs.AtualizarStatusRequest;
+import com.example.petvet.application.DTOs.CriarAdminRequest;
+import com.example.petvet.application.DTOs.CriarAdminResponse;
 import com.example.petvet.application.DTOs.UsuarioResponse;
 import com.example.petvet.application.service.UsuarioService;
 import com.example.petvet.domain.entities.EnumStatusUsuario;
@@ -38,6 +40,23 @@ public class UsuarioController {
     public ResponseEntity<List<UsuarioResponse>> listarTodos() {
 
         return ResponseEntity.ok(usuarioService.listarTodosUsuariosTable());
+    }
+
+    @PostMapping("/admin")
+    public ResponseEntity<CriarAdminResponse> criarAdmin(
+            @RequestBody CriarAdminRequest criarAdminRequest) {
+
+        try {
+
+            CriarAdminResponse respostaSalvar = usuarioService.criarAdmin(criarAdminRequest);
+
+            return ResponseEntity.ok(respostaSalvar);
+
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().build();
+        }
+
+
     }
 
     @GetMapping("/{id}")

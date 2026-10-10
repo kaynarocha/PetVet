@@ -1,5 +1,6 @@
 package com.example.petvet.domain.entities;
 
+import com.example.petvet.application.DTOs.CriarAdminRequest;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,7 +28,16 @@ public class Usuario {
 
     private String email;
 
+    private String role = "ROLE_USUARIO";
+
     private EnumStatusUsuario status;
 
+    public Usuario(CriarAdminRequest criarAdminRequest) {
+        this.setCpf(criarAdminRequest.cpf());
+        this.setNome(criarAdminRequest.nome());
+        this.setSenha(criarAdminRequest.senha());
+        this.setEmail(criarAdminRequest.email());
+        this.setRole("ROLE_USUARIO");
 
+    }
 }
