@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.back.ServicoController">
+    <children>
+        <TextField fx:id="txtNome" layoutX="120.0" layoutY="48.0" />
+        <Label layoutX="80.0" layoutY="52.0" text="Nome:" />
+        <Button layoutX="41.0" layoutY="332.0" mnemonicParsing="false" onAction="#voltar" text="Voltar" />
+        <Button layoutX="504.0" layoutY="332.0" mnemonicParsing="false" onAction="#salvarServico" text="Salvar" />
+        <Label layoutX="62.0" layoutY="93.0" text="Descrição:" />
+        <TextField fx:id="txtDescricao" layoutX="120.0" layoutY="89.0" />
+        <Label layoutX="83.0" layoutY="131.0" text="Valor:" />
+        <TextField fx:id="txtValor" layoutX="120.0" layoutY="127.0" />
+        <Label layoutX="66.0" layoutY="167.0" text="Duração:" />
+        <TextField fx:id="txtDuracaoMinutos" layoutX="120.0" layoutY="163.0" />
+    </children>
+</AnchorPane>
