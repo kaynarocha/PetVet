@@ -1,9 +1,6 @@
 package com.example.petvet.presentation;
 
-import com.example.petvet.application.DTOs.AtualizarStatusRequest;
-import com.example.petvet.application.DTOs.CriarAdminRequest;
-import com.example.petvet.application.DTOs.CriarAdminResponse;
-import com.example.petvet.application.DTOs.UsuarioResponse;
+import com.example.petvet.application.DTOs.*;
 import com.example.petvet.application.service.UsuarioService;
 import com.example.petvet.domain.entities.EnumStatusUsuario;
 import com.example.petvet.domain.entities.Usuario;
@@ -60,24 +57,32 @@ public class UsuarioController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Usuario> buscarPorId(@PathVariable Long id) {
+    public ResponseEntity<UsuarioResponse> buscarPorId(@PathVariable Long id) {
 
-        Usuario usuarioBanco = usuarioRepository.findById(id).orElse(null);
+        Usuario usuarioBanco = usuarioService.buscarPorId(id);
         if (usuarioBanco!= null) {
             return ResponseEntity.ok(usuarioBanco);
         }
         return ResponseEntity.notFound().build();
     }
 
-    // void é saida
+    // void é saida | saída dinamica
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Método de criação de usuários!",
                 description = "Método responsável em efetuar a criação de novos usuários.")
-    public ResponseEntity<Usuario> criar(@RequestBody Usuario usuario) {
+    public ResponseEntity<?> criar(@RequestBody UsuarioRequest usuario) {
 
-        var usuarioBanco = usuarioRepository.save(usuario);
-        return ResponseEntity.ok(usuarioBanco);
+        try {
+
+            UsuarioResponse usuarioBanco = usuarioService.salvarUsuario(usuario);
+            return ResponseEntity.ok(usuarioBanco);
+
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(e.getMessage());
+        }
     }
 
     // serve pra atualizar um campo só
@@ -85,12 +90,7 @@ public class UsuarioController {
     public ResponseEntity<Void> atualizarStatus(@PathVariable Long id,
                                                 @RequestBody AtualizarStatusRequest statusRequest) {
 
-        Usuario usuarioBanco = usuarioRepository.findById(id).orElse(null);
-        if (usuarioBanco!= null) {
-            usuarioBanco.setStatus(statusRequest.status());
-            usuarioRepository.save(usuarioBanco);
-            return ResponseEntity.ok().build();
-        }
+       var atualizarUsuario = usuarioService.atualizarStatus(statusRequest.status(),id);
         return ResponseEntity.notFound().build();
     }
 

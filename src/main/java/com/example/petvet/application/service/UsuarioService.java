@@ -1,6 +1,7 @@
 package com.example.petvet.application.service;
 
 import com.example.petvet.application.DTOs.*;
+import com.example.petvet.domain.entities.EnumStatusUsuario;
 import com.example.petvet.domain.entities.Usuario;
 import com.example.petvet.domain.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,5 +54,35 @@ public class UsuarioService {
         usuarioRepository.save(usuarioAdminSalvar);
 
         return new CriarAdminResponse(usuarioAdminSalvar.getId(), "Usuário salvo com sucesso!");
+    }
+
+    public UsuarioResponse salvarUsuario(UsuarioRequest usuario) {
+
+        Usuario usuarioBanco = new Usuario(usuario);
+
+        usuarioRepository.save(usuarioBanco);
+
+        return new UsuarioResponse(usuarioBanco);
+
+    }
+
+    public UsuarioResponse buscarPorId(Long id) {
+
+        var usuario = usuarioRepository.findById(id).orElse(null);
+
+        if (usuario == null)
+            return null;
+
+        return new UsuarioResponse(usuario);
+    }
+
+    public boolean atualizarStatus(EnumStatusUsuario status, Long id) {
+
+        Usuario usuarioBanco = usuarioRepository.findById(id).orElse(null);
+        if (usuarioBanco!= null) {
+            usuarioBanco.setStatus(status);
+            usuarioRepository.save(usuarioBanco);
+            return ResponseEntity.ok().build();
+        }
     }
 }

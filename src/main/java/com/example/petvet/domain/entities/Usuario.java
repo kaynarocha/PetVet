@@ -1,10 +1,9 @@
 package com.example.petvet.domain.entities;
 
 import com.example.petvet.application.DTOs.CriarAdminRequest;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.example.petvet.application.DTOs.UsuarioRequest;
+import com.example.petvet.domain.valueobject.CPF;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,7 +21,9 @@ public class Usuario {
 
     private String nome;
 
-    private String cpf;
+    // acessa cpf e armazena
+    @Embedded
+    private CPF cpf;
 
     private String senha;
 
@@ -33,11 +34,19 @@ public class Usuario {
     private EnumStatusUsuario status;
 
     public Usuario(CriarAdminRequest criarAdminRequest) {
-        this.setCpf(criarAdminRequest.cpf());
+        this.setCpf(new CPF(criarAdminRequest.cpf()));
         this.setNome(criarAdminRequest.nome());
         this.setSenha(criarAdminRequest.senha());
         this.setEmail(criarAdminRequest.email());
         this.setRole("ROLE_USUARIO");
 
+    }
+
+    public Usuario(UsuarioRequest usuario) {
+        this.setCpf(new CPF(usuario.cpf()));
+        this.setNome(usuario.nome());
+        this.setSenha(usuario.senha());
+        this.setEmail(usuario.email());
+        this.setRole("ROLE_USER");
     }
 }
