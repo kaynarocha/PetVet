@@ -30,7 +30,7 @@ public class Pet {
 
     private String role = "ROLE_PET";
 
-    private EnumStatusPet statusPet;
+    private EnumStatusPet statusPet = EnumStatusPet.ATIVO;
 
     public Pet(PetRequest pet) {
         this.setNome(pet.nome());

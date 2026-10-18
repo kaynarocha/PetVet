@@ -10,7 +10,7 @@ public record UsuarioResponse(Long id, String nome, String email, String senha, 
                 usuarioEntidade.getId(),
                 usuarioEntidade.getNome(),
                 usuarioEntidade.getCpf().toString(),
-                usuarioEntidade.getEmail(),
+                usuarioEntidade.getEmail().toString(),
                 usuarioEntidade.getStatus()
         );
     }

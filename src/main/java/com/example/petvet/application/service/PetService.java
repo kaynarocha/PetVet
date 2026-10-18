@@ -34,7 +34,7 @@ public class PetService {
         } else {
 
             Pet petBanco = petRepository.findById(id).orElse(null);
-            if (petBanco == null) {
+            if (petBanco != null) {
                 petBanco.setNome(pet.nome());
                 petBanco.setRaca(pet.raca());
                 petBanco.setDataNascimento(pet.dataNascimento());
@@ -61,7 +61,7 @@ public class PetService {
     public boolean atualizarStatus(EnumStatusPet statusPet, Long id) {
 
         Pet petBanco = petRepository.findById(id).orElse(null);
-        if (petBanco == null) {
+        if (petBanco != null) {
             petBanco.setStatusPet(statusPet);
             petRepository.save(petBanco);
             return true;

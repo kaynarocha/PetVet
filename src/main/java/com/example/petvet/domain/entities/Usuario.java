@@ -34,7 +34,7 @@ public class Usuario {
 
     private String role = "ROLE_USUARIO";
 
-    private EnumStatusUsuario status;
+    private EnumStatusUsuario status = EnumStatusUsuario.ATIVO;
 
 
     public Usuario(CriarAdminRequest criarAdminRequest) {

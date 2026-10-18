@@ -6,6 +6,7 @@ import com.example.petvet.application.DTOs.EnumStatusTutor;
 import com.example.petvet.domain.entities.Tutor;
 import com.example.petvet.domain.repository.TutorRepository;
 import com.example.petvet.domain.valueobject.CPF;
+import com.example.petvet.domain.valueobject.EMAIL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,10 +37,10 @@ public class TutorService {
         } else {
 
             Tutor tutorBanco = tutorRepository.findById(id).orElse(null);
-            if (tutorBanco == null) {
+            if (tutorBanco != null) {
                 tutorBanco.setNome(tutor.nome());
                 tutorBanco.setCpf(new CPF(tutor.cpf()));
-                tutorBanco.setEmail(tutor.email());
+                tutorBanco.setEmail(new EMAIL(tutor.email()));
                 tutorBanco.setTelefone(tutor.telefone());
                 tutorBanco.setDataNascimento(tutor.dataNascimento());
                 tutorBanco.setEndereco(tutor.endereco());
@@ -65,7 +66,7 @@ public class TutorService {
         public boolean atualizarStatus(EnumStatusTutor statusTutor, Long id) {
 
             Tutor tutorBanco = tutorRepository.findById(id).orElse(null);
-            if (tutorBanco == null) {
+            if (tutorBanco != null) {
                 tutorBanco.setStatusTutor(statusTutor);
                 tutorRepository.save(tutorBanco);
                 return true;

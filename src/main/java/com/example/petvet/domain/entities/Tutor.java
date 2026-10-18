@@ -37,7 +37,7 @@ public class Tutor {
 
     private String role = "ROLE_TUTOR";
 
-    private EnumStatusTutor statusTutor;
+    private EnumStatusTutor statusTutor = EnumStatusTutor.ATIVO;
 
     public Tutor(TutorRequest tutor) {
         this.setCpf(new CPF(tutor.cpf()));
@@ -48,6 +48,4 @@ public class Tutor {
         this.setEndereco(tutor.endereco());
         this.setRole("ROLE_TUTOR");
     }
-
-
 }

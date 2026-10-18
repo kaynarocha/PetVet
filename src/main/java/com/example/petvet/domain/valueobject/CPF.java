@@ -2,6 +2,9 @@ package com.example.petvet.domain.valueobject;
 
 // CPF não é uma tabela
 
+import jakarta.persistence.Embeddable;
+
+@Embeddable
 public class CPF {
 
     private String cpf;

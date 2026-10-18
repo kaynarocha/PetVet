@@ -1,8 +1,15 @@
 package com.example.petvet.domain.valueobject;
 
+import jakarta.persistence.Embeddable;
+
+@Embeddable
 public class EMAIL {
 
-    private final String email;
+    private String email;
+
+    protected EMAIL() {
+
+    }
 
     public EMAIL(String email) {
         if (!emailValido(email)) {

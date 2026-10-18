@@ -15,7 +15,7 @@ public record TutorResponse(Long id, String nome, String cpf,
                 tutorEntidade.getNome(),
                 tutorEntidade.getCpf().toString(),
                 tutorEntidade.getTelefone(),
-                tutorEntidade.getEmail(),
+                tutorEntidade.getEmail().toString(),
                 tutorEntidade.getDataNascimento(),
                 tutorEntidade.getEndereco(),
                 tutorEntidade.getStatusTutor()

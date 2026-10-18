@@ -33,7 +33,7 @@ public class Agendamento {
 
     private String role = "ROLE_AGENDAMENTO";
 
-    private EnumStatusAgendamento statusAgendamento;
+    private EnumStatusAgendamento statusAgendamento =  EnumStatusAgendamento.ATIVO;
 
     public Agendamento(AgendamentoRequest agendamento) {
         this.setData(LocalDateTime.now());

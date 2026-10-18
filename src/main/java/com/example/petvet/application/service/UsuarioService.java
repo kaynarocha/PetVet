@@ -5,6 +5,7 @@ import com.example.petvet.application.DTOs.EnumStatusUsuario;
 import com.example.petvet.domain.entities.Usuario;
 import com.example.petvet.domain.repository.UsuarioRepository;
 import com.example.petvet.domain.valueobject.CPF;
+import com.example.petvet.domain.valueobject.EMAIL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -26,10 +27,10 @@ public class UsuarioService {
 
     public LoginResponse validarUsuarioAutenticadoRetornaToken(LoginRequest request) {
 
-        if (usuarioRepository.existsUsuarioByEmailAndSenha(request.email(), request.senha())) {
-            // gerar token
-            var token = tokenService.gerarToken(request);
+        String email = request.email() == null ? "" : request.email().trim().toLowerCase();
 
+        if (usuarioRepository.existsUsuarioByEmail_EmailAndSenha(email, request.senha())) {
+            var token = tokenService.gerarToken(request);
             return new LoginResponse(token);
         }
         return null;
@@ -67,10 +68,10 @@ public class UsuarioService {
         } else {
 
             Usuario usuarioBanco = usuarioRepository.findById(id).orElse(null);
-            if (usuarioBanco == null) {
+            if (usuarioBanco != null) {
                 usuarioBanco.setNome(usuario.nome());
                 usuarioBanco.setCpf(new CPF(usuario.cpf()));
-                usuarioBanco.setEmail(usuario.email());
+                usuarioBanco.setEmail(new EMAIL(usuario.email()));
                 usuarioBanco.setSenha(usuario.senha());
                 usuarioRepository.save(usuarioBanco);
 
