@@ -1,6 +1,7 @@
 package com.example.petvet.presentation;
 
 import com.example.petvet.application.DTOs.AtualizarStatusRequest;
+import com.example.petvet.application.DTOs.PetRequest;
 import com.example.petvet.application.DTOs.PetResponse;
 import com.example.petvet.application.service.PetService;
 import com.example.petvet.domain.entities.EnumStatusPet;
@@ -21,8 +22,6 @@ import java.util.List;
 public class PetController {
 
     @Autowired
-    private PetRepository petRepository;
-    @Autowired
     private PetService petService;
 
     @GetMapping
@@ -34,8 +33,9 @@ public class PetController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Pet> buscarPorId(@PathVariable Long id) {
-        Pet petBanco = petRepository.findById(id).orElse(null);
+    public ResponseEntity<PetResponse> buscarPorId(@PathVariable Long id) {
+
+        PetResponse petBanco = petService.buscarPetPorId(id);
         if (petBanco!= null) {
             return ResponseEntity.ok(petBanco);
         }
@@ -46,11 +46,16 @@ public class PetController {
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Método de criação de pets.",
             description = "Método responsável em efetuar a criação de novos pets.")
-    public ResponseEntity<Pet> criarPet (@RequestBody Pet pet) {
+    public ResponseEntity<?> criarPet (@RequestBody PetRequest pet) {
 
-        var petBanco = petRepository.save(pet);
-        return ResponseEntity.ok(petBanco);
+        try {
 
+            PetResponse petBanco = petService.salvarPet(pet, 0L);
+            return ResponseEntity.ok(petBanco);
+        }  catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+
+        }
     }
 
     // serve pra atualizar um campo só
@@ -58,46 +63,37 @@ public class PetController {
     public ResponseEntity<Void> atualizarStatus(@PathVariable Long id,
                                                 @RequestBody AtualizarStatusRequest statusRequest) {
 
-        Pet petBanco = petRepository.findById(id).orElse(null);
-        if (petBanco!= null) {
-            petBanco.setStatusPet(statusRequest.statusPet());
-            petRepository.save(petBanco);
+        var atualizarPet = petService.atualizarStatus(statusRequest.statusPet(),id);
+
+        if (atualizarPet) {
             return ResponseEntity.ok().build();
         }
+
         return ResponseEntity.notFound().build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Pet> atualizar(@PathVariable Long id,
-                                             @RequestBody Pet pet) {
+    public ResponseEntity<?> atualizar(@PathVariable Long id,
+                                             @RequestBody PetRequest pet) {
 
         try {
-            Pet petBanco = petRepository.findById(id).orElse(null);
-            if (petBanco!= null) {
-                petBanco.setStatusPet(pet.getStatusPet());
-                petBanco.setNome(pet.getNome());
-                petBanco.setRaca(pet.getRaca());
-                petBanco.setDataNascimento(pet.getDataNascimento());
+            PetResponse petBanco = petService.salvarPet(pet, id);
+            return ResponseEntity.ok(petBanco);
+        }   catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
 
-                petRepository.save(petBanco);
-                return ResponseEntity.ok().build();
-            }
-            return ResponseEntity.notFound().build();
-
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
         }
     }
 
     @DeleteMapping("/{id}/excluir")
     public ResponseEntity<Void> excluir(@PathVariable Long id) {
 
-        Pet petBanco = petRepository.findById(id).orElse(null);
-        if (petBanco!= null) {
-            petBanco.setStatusPet(EnumStatusPet.EXCLUIDO);
-            petRepository.save(petBanco);
+        var atualizarPet = petService.atualizarStatus(EnumStatusPet.EXCLUIDO,id);
+
+        if (atualizarPet) {
             return ResponseEntity.ok().build();
         }
+
         return ResponseEntity.notFound().build();
 
     }

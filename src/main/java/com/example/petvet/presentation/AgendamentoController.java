@@ -1,5 +1,6 @@
 package com.example.petvet.presentation;
 
+import com.example.petvet.application.DTOs.AgendamentoRequest;
 import com.example.petvet.application.DTOs.AgendamentoResponse;
 import com.example.petvet.application.DTOs.AtualizarStatusRequest;
 import com.example.petvet.application.service.AgendamentoService;
@@ -22,9 +23,6 @@ import java.util.List;
         description = "Grupo de APIs responsável por controlar a estrutura de criação e consulta do sistema.")
 public class AgendamentoController {
 
-    // acesso direto ao banco de dados
-    @Autowired
-    private AgendamentoRepository agendamentoRepository;
     @Autowired
     private AgendamentoService agendamentoService;
 
@@ -39,12 +37,13 @@ public class AgendamentoController {
 
     // agendamento por id | filtra pelo id. ERRO 404 se NÃO existir.
     @GetMapping("/{id}")
-    public ResponseEntity<Agendamento> buscarPorId(@PathVariable Long id) {
-        Agendamento agendamentoBanco = agendamentoRepository.findById(id).orElse(null);
-       // retorna null caso o ID não exista no banco.
-        if (agendamentoBanco!= null) {
-            return ResponseEntity.ok(agendamentoBanco); // 200 ok
+    public ResponseEntity<AgendamentoResponse> buscarPorId(@PathVariable Long id) {
+
+        AgendamentoResponse agendamentoBanco = agendamentoService.buscarPorId(id);
+        if (agendamentoBanco != null) {
+            return ResponseEntity.ok(agendamentoBanco);
         }
+
         return ResponseEntity.notFound().build(); // 404 not found
     }
 
@@ -53,10 +52,16 @@ public class AgendamentoController {
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Método de criação de agendamentos.",
             description = "Método responsável em efetuar a criação de novos agendamentos.")
-    public ResponseEntity<Agendamento> criar (@RequestBody Agendamento agendamento) {
+    public ResponseEntity<?> criar (@RequestBody AgendamentoRequest agendamento) {
 
-        var agendamentoBanco = agendamentoRepository.save(agendamento);
-        return ResponseEntity.ok(agendamentoBanco);
+        try {
+
+            AgendamentoResponse agendamentoBanco = agendamentoService.salvarAgendamento(agendamento, 0L);
+            return ResponseEntity.ok(agendamentoBanco);
+
+        }  catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     // PATCH = atualiza apenas o status do agendamento
@@ -64,37 +69,26 @@ public class AgendamentoController {
     public ResponseEntity<Void> atualizarStatus(@PathVariable Long id,
                                                 @RequestBody AtualizarStatusRequest statusRequest) {
 
-        Agendamento agendamentoBanco = agendamentoRepository.findById(id).orElse(null);
-        if (agendamentoBanco!= null) {
-            // altera somente o campo status com o valor recebido no request
-            agendamentoBanco.setStatusAgendamento(statusRequest.statusAgendamento());
-            agendamentoRepository.save(agendamentoBanco);
+        var atualizarAgendamento = agendamentoService.atualizarStatus(statusRequest.statusAgendamento(), id);
+
+        if (atualizarAgendamento) {
             return ResponseEntity.ok().build();
+
         }
+
         return ResponseEntity.notFound().build();
     }
 
     // PUT = atualiza status, data, serviço e descrição do agendamento.
     @PutMapping("/{id}")
-    public ResponseEntity<Agendamento> atualizar(@PathVariable Long id,
-                                             @RequestBody Agendamento agendamento) {
+    public ResponseEntity<?> atualizar(@PathVariable Long id,
+                                             @RequestBody AgendamentoRequest agendamento) {
 
         try {
-            Agendamento agendamentoBanco = agendamentoRepository.findById(id).orElse(null);
-            if (agendamentoBanco!= null) {
-                // copia os campos editáveis do request para a entidade do banco
-                agendamentoBanco.setStatusAgendamento(agendamento.getStatusAgendamento());
-                agendamentoBanco.setData(agendamento.getData());
-                agendamentoBanco.setServico(agendamento.getServico());
-                agendamentoBanco.setDescricao(agendamento.getDescricao());
-
-                agendamentoRepository.save(agendamentoBanco);
-                return ResponseEntity.ok().build();
-            }
-            return ResponseEntity.notFound().build();
-
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
+            AgendamentoResponse agendamentoBanco = agendamentoService.salvarAgendamento(agendamento, id);
+            return ResponseEntity.ok(agendamentoBanco);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
@@ -102,14 +96,13 @@ public class AgendamentoController {
     @DeleteMapping("/{id}/excluir")
     public ResponseEntity<Void> excluir(@PathVariable Long id) {
 
-        Agendamento agendamentoBanco = agendamentoRepository.findById(id).orElse(null);
-        if (agendamentoBanco!= null) {
-            agendamentoBanco.setStatusAgendamento(EnumStatusAgendamento.EXCLUIDO);
-            agendamentoRepository.save(agendamentoBanco);
-            return ResponseEntity.ok().build();
-        }
+       var atualizarAgendamento = agendamentoService.atualizarStatus(EnumStatusAgendamento.EXCLUIDO, id);
+
+       if (atualizarAgendamento) {
+           return ResponseEntity.ok().build();
+       }
+
         return ResponseEntity.notFound().build();
 
     }
-
 }

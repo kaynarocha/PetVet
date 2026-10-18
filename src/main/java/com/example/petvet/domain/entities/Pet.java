@@ -1,5 +1,6 @@
 package com.example.petvet.domain.entities;
 
+import com.example.petvet.application.DTOs.PetRequest;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,6 +27,15 @@ public class Pet {
 
     private LocalDate dataNascimento;
 
+    private String role = "ROLE_PET";
+
     private EnumStatusPet statusPet;
+
+    public Pet(PetRequest pet) {
+        this.setNome(pet.nome());
+        this.setRaca(pet.raca());
+        this.setDataNascimento(pet.dataNascimento());
+        this.setRole("ROLE_PET");
+    }
 
 }

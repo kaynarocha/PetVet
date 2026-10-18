@@ -33,12 +33,19 @@ public class Usuario {
 
     private EnumStatusUsuario status;
 
+    public void setEmail(String email) {
+        if (email.isEmpty() && !email.contains("@")) {
+            throw new IllegalArgumentException("Email Inválido.");
+        }
+        this.email = email;
+    }
+
     public Usuario(CriarAdminRequest criarAdminRequest) {
         this.setCpf(new CPF(criarAdminRequest.cpf()));
         this.setNome(criarAdminRequest.nome());
         this.setSenha(criarAdminRequest.senha());
         this.setEmail(criarAdminRequest.email());
-        this.setRole("ROLE_USUARIO");
+        this.setRole("ROLE_ADMIN");
 
     }
 

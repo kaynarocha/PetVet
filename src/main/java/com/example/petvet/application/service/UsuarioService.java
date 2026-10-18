@@ -4,9 +4,9 @@ import com.example.petvet.application.DTOs.*;
 import com.example.petvet.domain.entities.EnumStatusUsuario;
 import com.example.petvet.domain.entities.Usuario;
 import com.example.petvet.domain.repository.UsuarioRepository;
+import com.example.petvet.domain.valueobject.CPF;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -56,13 +56,29 @@ public class UsuarioService {
         return new CriarAdminResponse(usuarioAdminSalvar.getId(), "Usuário salvo com sucesso!");
     }
 
-    public UsuarioResponse salvarUsuario(UsuarioRequest usuario) {
+    public UsuarioResponse salvarUsuario(UsuarioRequest usuario, Long id) {
 
-        Usuario usuarioBanco = new Usuario(usuario);
+        if (id == 0L) {
+            Usuario usuarioBanco = new Usuario(usuario);
+            usuarioRepository.save(usuarioBanco);
 
-        usuarioRepository.save(usuarioBanco);
+            return new UsuarioResponse(usuarioBanco);
 
-        return new UsuarioResponse(usuarioBanco);
+        } else {
+
+            Usuario usuarioBanco = usuarioRepository.findById(id).orElse(null);
+            if (usuarioBanco == null) {
+                usuarioBanco.setNome(usuario.nome());
+                usuarioBanco.setCpf(new CPF(usuario.cpf()));
+                usuarioBanco.setEmail(usuario.email());
+                usuarioBanco.setSenha(usuario.senha());
+                usuarioRepository.save(usuarioBanco);
+
+                return new UsuarioResponse(usuarioBanco);
+            }
+        }
+
+        return null;
 
     }
 
@@ -82,7 +98,9 @@ public class UsuarioService {
         if (usuarioBanco!= null) {
             usuarioBanco.setStatus(status);
             usuarioRepository.save(usuarioBanco);
-            return ResponseEntity.ok().build();
+            return true;
         }
+
+        return false;
     }
 }

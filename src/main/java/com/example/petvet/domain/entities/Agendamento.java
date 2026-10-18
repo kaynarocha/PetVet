@@ -1,5 +1,6 @@
 package com.example.petvet.domain.entities;
 
+import com.example.petvet.application.DTOs.AgendamentoRequest;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,7 +30,15 @@ public class Agendamento {
 
     private String descricao;
 
+    private String role = "ROLE_AGENDAMENTO";
+
     private EnumStatusAgendamento statusAgendamento;
 
+    public Agendamento(AgendamentoRequest agendamento) {
+        this.setData(LocalDateTime.now());
+        this.setDescricao(agendamento.descricao());
+        this.setServico(agendamento.servico());
+        this.setRole("ROLE_AGENDAMENTO");
+    }
 
 }

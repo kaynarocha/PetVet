@@ -1,6 +1,7 @@
 package com.example.petvet.domain.entities;
 
 import com.example.petvet.application.DTOs.CriarServicoRequest;
+import com.example.petvet.application.DTOs.ServicoRequest;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -38,6 +39,14 @@ public class Servico{
         this.setDescricao(criarServicoRequest.descricao());
         this.setValor(criarServicoRequest.valor());
         this.setDuracaoMinutos(criarServicoRequest.duracaoMinutos());
+        this.setRole("ROLE_SERVICOADMIN");
+    }
+
+    public Servico(ServicoRequest servico) {
+        this.setNome(servico.nome());
+        this.setDescricao(servico.descricao());
+        this.setValor(servico.valor());
+        this.setDuracaoMinutos(servico.duracaoMinutos());
         this.setRole("ROLE_SERVICOADMIN");
     }
 

@@ -1,11 +1,10 @@
 package com.example.petvet.presentation;
 
 import com.example.petvet.application.DTOs.AtualizarStatusRequest;
+import com.example.petvet.application.DTOs.TutorRequest;
 import com.example.petvet.application.DTOs.TutorResponse;
 import com.example.petvet.application.service.TutorService;
 import com.example.petvet.domain.entities.EnumStatusTutor;
-import com.example.petvet.domain.entities.Tutor;
-import com.example.petvet.domain.repository.TutorRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +22,6 @@ import java.util.List;
 public class TutorController {
 
     @Autowired
-    private TutorRepository tutorRepository;
-    @Autowired
     private TutorService tutorService;
 
     @GetMapping
@@ -36,8 +33,8 @@ public class TutorController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Tutor> buscarPorId(@PathVariable Long id) {
-        Tutor tutorBanco = tutorRepository.findById(id).orElse(null);
+    public ResponseEntity<TutorResponse> buscarPorId(@PathVariable Long id) {
+        TutorResponse tutorBanco = tutorService.buscarPorId(id);
         if (tutorBanco!= null) {
             return ResponseEntity.ok(tutorBanco);
         }
@@ -48,57 +45,50 @@ public class TutorController {
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Método de criação de tutores.",
             description = "Método responsável em efetuar a criação de novos tutores.")
-    public ResponseEntity<Tutor> criarTutor(@RequestBody Tutor tutor) {
+    public ResponseEntity<?> criarTutor(@RequestBody TutorRequest tutor) {
 
-        var  tutorBanco = tutorRepository.save(tutor);
-        return ResponseEntity.ok(tutorBanco);
+        try {
+
+            TutorResponse tutorBanco = tutorService.salvarTutor(tutor, 0L);
+            return ResponseEntity.ok(tutorBanco);
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PatchMapping("/{id}/status")
     public ResponseEntity<Void> atualizarStatus(@PathVariable Long id,
                                                 @RequestBody AtualizarStatusRequest statusRequest) {
 
-        Tutor tutorBanco = tutorRepository.findById(id).orElse(null);
-        if (tutorBanco!= null) {
-            tutorBanco.setStatusTutor(statusRequest.statusTutor());
-            tutorRepository.save(tutorBanco);
+        var atualizarTutor = tutorService.atualizarStatus(statusRequest.statusTutor(),id);
+
+        if (atualizarTutor) {
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.notFound().build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Tutor> atualizar(@PathVariable Long id,
-                                             @RequestBody Tutor tutor) {
+    public ResponseEntity<?> atualizar(@PathVariable Long id,
+                                             @RequestBody TutorRequest tutor) {
 
         try {
-            Tutor tutorBanco = tutorRepository.findById(id).orElse(null);
-            if (tutorBanco!= null) {
-                tutorBanco.setStatusTutor(tutor.getStatusTutor());
-                tutorBanco.setNome(tutor.getNome());
-                tutorBanco.setCpf(tutor.getCpf());
-                tutorBanco.setEmail(tutor.getEmail());
-                tutorBanco.setTelefone(tutor.getTelefone());
-                tutorBanco.setDataNascimento(tutor.getDataNascimento());
-                tutorBanco.setEndereco(tutor.getEndereco());
-
-                tutorRepository.save(tutorBanco);
-                return ResponseEntity.ok().build();
-            }
-            return ResponseEntity.notFound().build();
-
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
+            TutorResponse tutorBanco = tutorService.salvarTutor(tutor, id);
+            return ResponseEntity.ok(tutorBanco);
+        } catch (Exception e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(e.getMessage());
         }
     }
 
     @DeleteMapping("/{id}/excluir")
     public ResponseEntity<Void> excluir(@PathVariable Long id) {
 
-        Tutor tutorBanco = tutorRepository.findById(id).orElse(null);
-        if (tutorBanco!= null) {
-            tutorBanco.setStatusTutor(EnumStatusTutor.EXCLUIDO);
-            tutorRepository.save(tutorBanco);
+        var atualizarTutor = tutorService.atualizarStatus(EnumStatusTutor.EXCLUIDO,id);
+
+        if (atualizarTutor) {
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.notFound().build();
