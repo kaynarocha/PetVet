@@ -2,7 +2,7 @@ package com.example.petvet.presentation;
 
 import com.example.petvet.application.DTOs.*;
 import com.example.petvet.application.service.UsuarioService;
-import com.example.petvet.domain.entities.EnumStatusUsuario;
+import com.example.petvet.application.DTOs.EnumStatusUsuario;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;

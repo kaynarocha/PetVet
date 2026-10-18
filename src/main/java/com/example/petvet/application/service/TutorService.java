@@ -2,7 +2,7 @@ package com.example.petvet.application.service;
 
 import com.example.petvet.application.DTOs.TutorRequest;
 import com.example.petvet.application.DTOs.TutorResponse;
-import com.example.petvet.domain.entities.EnumStatusTutor;
+import com.example.petvet.application.DTOs.EnumStatusTutor;
 import com.example.petvet.domain.entities.Tutor;
 import com.example.petvet.domain.repository.TutorRepository;
 import com.example.petvet.domain.valueobject.CPF;

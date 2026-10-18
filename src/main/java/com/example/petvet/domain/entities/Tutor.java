@@ -1,7 +1,9 @@
 package com.example.petvet.domain.entities;
 
+import com.example.petvet.application.DTOs.EnumStatusTutor;
 import com.example.petvet.application.DTOs.TutorRequest;
 import com.example.petvet.domain.valueobject.CPF;
+import com.example.petvet.domain.valueobject.EMAIL;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,7 +28,8 @@ public class Tutor {
 
     private String telefone;
 
-    private String email;
+    @Embedded
+    private EMAIL email;
 
     private LocalDate dataNascimento;
 
@@ -36,19 +39,11 @@ public class Tutor {
 
     private EnumStatusTutor statusTutor;
 
-    public void setEmail(String email) {
-
-        if (email.isEmpty() && !email.contains("@")) {
-            throw new IllegalArgumentException("Email inválido.");
-        }
-        this.email = email;
-    }
-
     public Tutor(TutorRequest tutor) {
         this.setCpf(new CPF(tutor.cpf()));
         this.setNome(tutor.nome());
         this.setTelefone(tutor.telefone());
-        this.setEmail(tutor.email());
+        this.setEmail(new EMAIL(tutor.email()));
         this.setDataNascimento(tutor.dataNascimento());
         this.setEndereco(tutor.endereco());
         this.setRole("ROLE_TUTOR");

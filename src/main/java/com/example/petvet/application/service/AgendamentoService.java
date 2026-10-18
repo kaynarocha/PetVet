@@ -3,7 +3,7 @@ package com.example.petvet.application.service;
 import com.example.petvet.application.DTOs.AgendamentoRequest;
 import com.example.petvet.application.DTOs.AgendamentoResponse;
 import com.example.petvet.domain.entities.Agendamento;
-import com.example.petvet.domain.entities.EnumStatusAgendamento;
+import com.example.petvet.application.DTOs.EnumStatusAgendamento;
 import com.example.petvet.domain.repository.AgendamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

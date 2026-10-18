@@ -4,7 +4,7 @@ import com.example.petvet.application.DTOs.CriarServicoRequest;
 import com.example.petvet.application.DTOs.CriarServicoResponse;
 import com.example.petvet.application.DTOs.ServicoRequest;
 import com.example.petvet.application.DTOs.ServicoResponse;
-import com.example.petvet.domain.entities.EnumStatusServico;
+import com.example.petvet.application.DTOs.EnumStatusServico;
 import com.example.petvet.domain.entities.Servico;
 import com.example.petvet.domain.repository.ServicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;

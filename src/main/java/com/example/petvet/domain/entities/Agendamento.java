@@ -1,6 +1,7 @@
 package com.example.petvet.domain.entities;
 
 import com.example.petvet.application.DTOs.AgendamentoRequest;
+import com.example.petvet.application.DTOs.EnumStatusAgendamento;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

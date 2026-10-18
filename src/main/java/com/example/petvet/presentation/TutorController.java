@@ -4,7 +4,7 @@ import com.example.petvet.application.DTOs.AtualizarStatusRequest;
 import com.example.petvet.application.DTOs.TutorRequest;
 import com.example.petvet.application.DTOs.TutorResponse;
 import com.example.petvet.application.service.TutorService;
-import com.example.petvet.domain.entities.EnumStatusTutor;
+import com.example.petvet.application.DTOs.EnumStatusTutor;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,5 @@
 package com.example.petvet.application.DTOs;
 
-import com.example.petvet.domain.entities.EnumStatusPet;
 import com.example.petvet.domain.entities.Pet;
 
 import java.time.LocalDate;

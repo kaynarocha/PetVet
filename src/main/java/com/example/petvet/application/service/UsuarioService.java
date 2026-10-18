@@ -1,7 +1,7 @@
 package com.example.petvet.application.service;
 
 import com.example.petvet.application.DTOs.*;
-import com.example.petvet.domain.entities.EnumStatusUsuario;
+import com.example.petvet.application.DTOs.EnumStatusUsuario;
 import com.example.petvet.domain.entities.Usuario;
 import com.example.petvet.domain.repository.UsuarioRepository;
 import com.example.petvet.domain.valueobject.CPF;

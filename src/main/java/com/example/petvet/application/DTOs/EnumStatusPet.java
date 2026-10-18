@@ -1,4 +1,4 @@
-package com.example.petvet.domain.entities;
+package com.example.petvet.application.DTOs;
 
 public enum EnumStatusPet {
 

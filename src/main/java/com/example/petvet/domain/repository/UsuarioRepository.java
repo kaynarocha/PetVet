@@ -1,6 +1,6 @@
 package com.example.petvet.domain.repository;
 
-import com.example.petvet.domain.entities.EnumStatusUsuario;
+import com.example.petvet.application.DTOs.EnumStatusUsuario;
 import com.example.petvet.domain.entities.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

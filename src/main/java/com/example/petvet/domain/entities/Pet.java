@@ -1,5 +1,6 @@
 package com.example.petvet.domain.entities;
 
+import com.example.petvet.application.DTOs.EnumStatusPet;
 import com.example.petvet.application.DTOs.PetRequest;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

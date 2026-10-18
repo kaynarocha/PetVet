@@ -2,7 +2,7 @@ package com.example.petvet.application.service;
 
 import com.example.petvet.application.DTOs.PetRequest;
 import com.example.petvet.application.DTOs.PetResponse;
-import com.example.petvet.domain.entities.EnumStatusPet;
+import com.example.petvet.application.DTOs.EnumStatusPet;
 import com.example.petvet.domain.entities.Pet;
 import com.example.petvet.domain.repository.PetRepository;
 import org.springframework.beans.factory.annotation.Autowired;

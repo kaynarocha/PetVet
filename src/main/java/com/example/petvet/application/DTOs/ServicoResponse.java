@@ -1,6 +1,5 @@
 package com.example.petvet.application.DTOs;
 
-import com.example.petvet.domain.entities.EnumStatusServico;
 import com.example.petvet.domain.entities.Servico;
 
 import java.math.BigDecimal;
