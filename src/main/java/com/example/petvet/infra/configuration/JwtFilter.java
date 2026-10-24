@@ -48,12 +48,12 @@ public class JwtFilter extends OncePerRequestFilter {
 
             try {
 
-                var jwtValidador = tokenService.verificarToken(token);
+                var usuarioLogado = tokenService.verificarToken(token);
 
                 var user = new UsernamePasswordAuthenticationToken(
-                        jwtValidador.getSubject(),
+                        usuarioLogado,
                         null,
-                        List.of());
+                        usuarioLogado.authorities());
 
                 SecurityContextHolder.getContext().setAuthentication(user);
 

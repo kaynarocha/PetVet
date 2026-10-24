@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
@@ -40,6 +41,13 @@ public class Usuario implements UserDetails {
 
     private String role = "ROLE_USUARIO";
 
+    // fetch = significa carregamento
+    // EAGER significa = carrega instantanemente = se botar demais pode sobrecarregar o sistema
+    // tomar cuidado ao usar o EAGER
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "empresa_id", referencedColumnName = "id")
+    private Empresa empresa;
+
     private EnumStatusUsuario status = EnumStatusUsuario.ATIVO;
 
 
@@ -62,7 +70,7 @@ public class Usuario implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return List.of(new SimpleGrantedAuthority(this.role));
     }
 
     @Override

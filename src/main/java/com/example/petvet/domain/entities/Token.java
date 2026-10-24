@@ -27,4 +27,6 @@ public class Token {
     @JoinColumn
     private Usuario usuario;
 
+    public Token(String token, Usuario usuario) {
+    }
 }

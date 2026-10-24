@@ -8,6 +8,7 @@ import com.example.petvet.domain.valueobject.CPF;
 import com.example.petvet.domain.valueobject.EMAIL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -38,7 +39,16 @@ public class UsuarioService {
 
     public List<UsuarioResponse> listarTodosUsuariosTable() {
 
-        return usuarioRepository.findAll()
+        var usuarioLogado = getUsuarioLogado();
+
+        if (usuarioLogado.empresa_id() == null) {
+            return usuarioRepository.findAll()
+                    .stream()
+                    .map(UsuarioResponse::new)
+                    .toList();
+        }
+
+        return usuarioRepository.getUsuariosByEmpresa_Id(usuarioLogado.empresa_id())
                 .stream()
                 .map(UsuarioResponse::new)
                 .toList();
@@ -57,7 +67,14 @@ public class UsuarioService {
         return new CriarAdminResponse(usuarioAdminSalvar.getId(), "Usuário salvo com sucesso!");
     }
 
+    public UsuarioLogado getUsuarioLogado() {
+        return (UsuarioLogado) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+    }
+
     public UsuarioResponse salvarUsuario(UsuarioRequest usuario, Long id) {
+
+        var usuarioLogado = getUsuarioLogado();
 
         if (id == 0L) {
             Usuario usuarioBanco = new Usuario(usuario);

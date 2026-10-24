@@ -6,6 +6,8 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.petvet.application.DTOs.LoginRequest;
+import com.example.petvet.application.DTOs.UsuarioLogado;
+import com.example.petvet.domain.entities.Token;
 import com.example.petvet.domain.repository.TokenRepository;
 import com.example.petvet.domain.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +41,8 @@ public class TokenService {
             Algorithm algorithm = Algorithm.HMAC256(secret);
 
             var usuario = usuarioRepository.findAll()
-                    .stream().filter()
+                    .stream().filter( u-> u.getEmail().equals(loginRequestDto.email()))
+                    .findFirst().orElse(null);
 
             String token = JWT.create()
                     .withIssuer(emissor)
@@ -47,17 +50,27 @@ public class TokenService {
                     .withExpiresAt(this.gerarDataExpiration())
                     .sign(algorithm);
 
+            tokenRepository.save(new Token(token, usuario));
+
             return token;
 
         }
 
 
-        public DecodedJWT verificarToken(String token) throws JWTVerificationException {
+        public UsuarioLogado verificarToken(String token) throws JWTVerificationException {
             Algorithm algorithm = Algorithm.HMAC256(secret);
 
             JWTVerifier verificador = JWT.require(algorithm).withIssuer(emissor).build();
 
-            return verificador.verify(token);
+            verificador.verify(token);
+
+            var tokenBanco = tokenRepository.findTokenByToken(token).orElse(null);
+
+            if (tokenBanco == null) {
+                throw new IllegalArgumentException("Token inválido!");
+            }
+
+            return new UsuarioLogado(tokenBanco.getUsuario());
 
         }
 
