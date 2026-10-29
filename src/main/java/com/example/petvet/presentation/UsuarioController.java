@@ -117,4 +117,15 @@ public class UsuarioController {
 
     }
 
+    @PatchMapping("/{id}/atribuirEspecilaidade")
+    public ResponseEntity<?> atribuirEspecialidade(@PathVariable Long id, @RequestBody AtribuirEspecialidadeRequest atribuirEspecialidadeRequest) {
+
+        boolean retornoEspecialidade = usuarioService.atribuirEspecialidade(id, atribuirEspecialidadeRequest);
+
+        if (retornoEspecialidade) {
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
+
 }

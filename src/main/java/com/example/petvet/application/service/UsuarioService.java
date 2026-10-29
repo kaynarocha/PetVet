@@ -2,7 +2,9 @@ package com.example.petvet.application.service;
 
 import com.example.petvet.application.DTOs.*;
 import com.example.petvet.application.DTOs.EnumStatusUsuario;
+import com.example.petvet.domain.entities.Especialidade;
 import com.example.petvet.domain.entities.Usuario;
+import com.example.petvet.domain.repository.EspecialidadeRepository;
 import com.example.petvet.domain.repository.UsuarioRepository;
 import com.example.petvet.domain.valueobject.CPF;
 import com.example.petvet.domain.valueobject.EMAIL;
@@ -18,6 +20,9 @@ public class UsuarioService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private EspecialidadeRepository especialidadeRepository;
 
     //injeção de dependência
     @Autowired
@@ -120,5 +125,29 @@ public class UsuarioService {
         }
 
         return false;
+    }
+
+    public boolean atribuirEspecialidade(Long id, AtribuirEspecialidadeRequest atribuirEspecialidadeRequest) {
+
+        Usuario usuarioBanco = usuarioRepository.findById(id).orElse(null);
+        Especialidade especialidadeBanco = especialidadeRepository.findById(atribuirEspecialidadeRequest.especialidade_id()).orElse(null);
+        if (usuarioBanco != null && especialidadeBanco != null) {
+
+            var especialidade = usuarioBanco.getEspecialidades().stream()
+                    .anyMatch(u->u.getId().equals(especialidadeBanco.getId()));
+
+            if (especialidade) {
+                return true;
+            } else {
+                usuarioBanco.getEspecialidades().add(especialidadeBanco);
+
+                usuarioRepository.save(usuarioBanco);
+
+                return true;
+            }
+        }
+
+        return false;
+
     }
 }

@@ -1,5 +1,7 @@
 package com.example.petvet.domain.entities;
 
+import com.example.petvet.application.DTOs.EmpresaRequest;
+import com.example.petvet.application.DTOs.EnumStatusEmpresa;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,4 +30,15 @@ public class Empresa {
     //mappedBy = apontar o outro lado
     @OneToMany(mappedBy = "empresa")
     private List<Usuario> usuario;
+
+    private String role = "ROLE_EMPRESA";
+
+    private EnumStatusEmpresa statusEmpresa = EnumStatusEmpresa.ATIVO;
+
+    public Empresa(EmpresaRequest empresa) {
+        this.setRazaoSocial(empresa.razaoSocial());
+        this.setCnpj(empresa.cnpj());
+        this.setNomeFantasia(empresa.nomeFantasia());
+        this.setRole("ROLE_EMPRESA");
+    }
 }
