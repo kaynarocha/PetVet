@@ -1,7 +1,7 @@
 'use client';
 
+import { atualizarStatusPet, buscarListaPets, deletarPet } from "@/app/services/petService";
 import { Pet } from "@/app/types/pet";
-import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -17,8 +17,9 @@ export default function Pets(){
         // Lógica para carregar os dados dos pets
     
     try {
-        const dados = await axios.get<Pet[]>("http://localhost:8080/pets");
-        setPets(dados.data);
+        const dados = await buscarListaPets();
+        setPets(dados);
+
     } catch (error) {
         alert("Erro ao carregar os dados dos pets.");
     }
@@ -27,40 +28,21 @@ export default function Pets(){
 
     const handleDeletarPet = async (pet: Pet) => {
 
-        var dadosRetorno = await 
-        axios.delete('http://localhost:8080/pets/'+ pet.id+'/excluir');
+        var dadosRetorno = await deletarPet(pet.id || 0);
 
-        if (dadosRetorno.status == 200) {
+        if(dadosRetorno == 200) {
             alert("Pet foi excluído com sucesso!");
         } else {
-            alert (dadosRetorno.data);
-            
+            alert ("Erro ao excluir o pet!");
+
             return;
         }
-
         carregarDados();
     }
 
     const handleAlterarStatusPet = async (pet: Pet) => {
 
-        var novoStatus = {};
-
-        if (pet.statusPet === "ATIVO") {
-            novoStatus = {statusPet : "BLOQUEADO"}
-        } else {
-            novoStatus = {statusPet : "ATIVO"}
-        }
-
-        var dadosRetorno = await
-        axios.patch('http://localhost:8080/pets/'+ pet.id+'/status', novoStatus);
-
-        if (dadosRetorno.status == 200) {
-            alert("Status do pet foi alterado com sucesso!");
-        } else {
-            alert (dadosRetorno.data);
-            
-            return;
-        }
+        await atualizarStatusPet(pet);
 
         carregarDados();
     }

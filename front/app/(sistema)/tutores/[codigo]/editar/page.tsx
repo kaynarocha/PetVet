@@ -3,9 +3,9 @@
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { Tutor } from "@/app/types/tutor";
 import TutorForm from "../../components/TutorForm";
+import { consultaTutorPorId } from "@/app/services/tutorService";
 
 export default function EditarTutor(){
 
@@ -25,20 +25,13 @@ export default function EditarTutor(){
 
     const buscarDados = async() => {
 
-        try {
-            const valorTutorBack = await axios.get<Tutor>('http://localhost:8080/tutores/'+codigo);
+        const valorTutorBack = await consultaTutorPorId(codigo);
 
-            if (valorTutorBack.status == 200) {
-                setTutor(valorTutorBack.data);
-            } else {
-                router.push("/tutores");
-            }
-        } catch (erro) {
-            console.error("Erro ao buscar tutor:", erro);
-            alert("Tutor não encontrado.");
+        if(valorTutorBack){
+            setTutor(valorTutorBack);
+        } else {
             router.push("/tutores");
         }
-
     }
 
     return(<>

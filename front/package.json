@@ -9,7 +9,9 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^2.13.0",
     "axios": "^1.20.0",
+    "js-cookie": "^3.0.8",
     "lucide-react": "^1.45.0",
     "next": "16.3.4",
     "react": "19.2.8",
@@ -17,6 +19,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@types/js-cookie": "^3.0.6",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

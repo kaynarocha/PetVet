@@ -3,9 +3,9 @@
 import Link from "@/node_modules/next/link";
 import { useParams, useRouter } from "@/node_modules/next/navigation";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { Agendamento } from "@/app/types/agendamento";
 import AgendamentoForm from "../../components/AgendamentoForm";
+import { consultaAgendamentoPorId } from "@/app/services/agendamentoService";
 
 export default function EditarAgendamento(){
 
@@ -25,15 +25,13 @@ export default function EditarAgendamento(){
 
     const buscarDados = async() => {
 
-        const valorAgendamentoBack = await axios.get<Agendamento>('http://localhost:8080/agendamentos/'+codigo);
+        const valorAgendamentoBack = await consultaAgendamentoPorId(codigo);
 
-        if (valorAgendamentoBack.status == 200) {
-            setAgendamento(valorAgendamentoBack.data);
+        if (valorAgendamentoBack) {
+            setAgendamento(valorAgendamentoBack);
         } else {
-        router.push("/agendamentos");
+            router.push("/agendamentos");
         }
-    
-
     }
 
 // !agendamento = se o agendamento existir

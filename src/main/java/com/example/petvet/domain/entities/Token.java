@@ -1,10 +1,16 @@
 package com.example.petvet.domain.entities;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
 
 import java.time.LocalDateTime;
 
@@ -24,9 +30,12 @@ public class Token {
     private LocalDateTime dataCadastro;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "usuario_id", referencedColumnName = "id")
     private Usuario usuario;
 
     public Token(String token, Usuario usuario) {
+        this.token = token;
+        this.dataCadastro = LocalDateTime.now();
+        this.usuario = usuario;
     }
 }

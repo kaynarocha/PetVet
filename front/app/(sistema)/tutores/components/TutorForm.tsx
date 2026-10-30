@@ -5,6 +5,7 @@ import Link from "next/link";
 import axios from "axios";
 import { useRouter } from "next/navigation"; 
 import { useState } from "react";
+import { atualizarTutor, salvarTutor } from "@/app/services/tutorService";
 
 export default function TutorForm({ tutorExistente }: TutorFormProps) {
     const router = useRouter();
@@ -32,26 +33,29 @@ export default function TutorForm({ tutorExistente }: TutorFormProps) {
     const handlerSalvar = async (e: React.FormEvent<HTMLFormElement>) => { 
         e.preventDefault(); // Impede o recarregamento da página
 
-        try {
-            let dadosRetorno;
-            
-            if (tutorExistente) {
-                dadosRetorno = await axios.put<Tutor>(`http://localhost:8080/tutores/${tutor.id}`, tutor);
-                if (dadosRetorno.status === 200) {
-                    alert("Tutor atualizado com sucesso!");
-                    router.push("/tutores");
+        if (tutorExistente) {
+                    var dadosRetorno = await atualizarTutor(tutor);
+        
+                if (dadosRetorno) {
+                    alert("Tutor foi salvo com sucesso!");
+                } else {
+                    alert ("Erro ao atualizar o tutor!");
+                    
+                    return;
                 }
-            } else {
-                dadosRetorno = await axios.post<Tutor>('http://localhost:8080/tutores', tutor);
-                if (dadosRetorno.status === 200 || dadosRetorno.status === 201) {
-                    alert("Tutor cadastrado com sucesso!");
-                    router.push("/tutores");
+        
+                } else {
+                    var dadosRetorno = await salvarTutor(tutor);
+        
+                if (dadosRetorno) {
+                    alert("Tutor foi salvo com sucesso!");
+                } else {
+                    alert ("Erro ao salvar o tutor!");
+                    
+                    return;
                 }
+                router.push("/tutores");
             }
-        } catch (error) {
-            console.error("Erro ao salvar tutor:", error);
-            alert("Erro ao salvar tutor. Verifique os dados.");
-        }
     };
 
     return (

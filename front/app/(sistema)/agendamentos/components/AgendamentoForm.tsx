@@ -1,8 +1,7 @@
 'use client';
 
+import { atualizarAgendamento } from "@/app/services/agendamentoService";
 import { Agendamento, AgendamentoFormProps } from "@/app/types/agendamento";
-import Link from "@/node_modules/next/link";
-import axios from "axios";
 import { useRouter } from "next/dist/client/components/navigation";
 import { useState } from "react";
 
@@ -29,6 +28,7 @@ export default function AgendamentoForm({agendamentoExistente} : AgendamentoForm
             )
         )
     }
+    // ARRUMAR ESSA PARTE TODA  ++ FAZER SISTEMA PAGE
 
     // formData - nome / FormData - Tipo
     const handlerSalvar = async (e: React.FormEvent<HTMLFormElement>) => { 
@@ -38,34 +38,27 @@ export default function AgendamentoForm({agendamentoExistente} : AgendamentoForm
             ...agendamento,
             data: agendamento.data ? `${agendamento.data}T00:00:00` : null
         };
-
-        try {
-            let dadosRetorno;
             
             if (agendamentoExistente) {
-                dadosRetorno = await axios.put<Agendamento>(
-                    `http://localhost:8080/agendamentos/${agendamento.id}`, 
-                    agendamentoParaEnviar
-                );
+                
+                var dadosRetorno = await atualizarAgendamento(agendamento);   
+                if (dadosRetorno) {
+                    alert("Agendamento foi salvo com sucesso!");
+                } else {
+                    alert ("Erro ao atualizar o agendamento!");
+                    
+                    return;
+                }
+
             } else {
-                dadosRetorno = await axios.post<Agendamento>(
-                    'http://localhost:8080/agendamentos', 
-                    agendamentoParaEnviar
-                );
+                alert("Erro ao salvar o agendamento!");
+                return;
             }
 
-            if (dadosRetorno.status === 200 || dadosRetorno.status === 201) {
-                alert("Agendamento salvo com sucesso!");
-                router.push("/agendamentos");
-            } else {
-                alert(dadosRetorno.data);
-            }
-        } catch (error) {
-            console.error("Erro ao salvar agendamento:", error);
-            alert("Erro ao salvar agendamento. Verifique os dados.");
+            router.push("/agendamentos");
         }
-    }
-
+        }
+    
 
     return (
         <form onSubmit={handlerSalvar} className="space-y-6">

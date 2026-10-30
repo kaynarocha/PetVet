@@ -1,5 +1,6 @@
 'use client';
 
+import { atualizarPet, salvarPet } from "@/app/services/petService";
 import { Pet, PetFormProps } from "@/app/types/pet";
 import Link from "@/node_modules/next/link";
 import axios from "axios";
@@ -31,33 +32,32 @@ export default function PetForm({petExistente} : PetFormProps) {
     }
 
     // formData - nome / FormData - Tipo
-    const handlerSalvar = async (formData: FormData) => { 
-
-        if (petExistente) {
-            var dadosRetorno = await 
-            axios.put<Pet>(`http://localhost:8080/pets/${pet.id}`, pet);
-
-        if (dadosRetorno.status == 200) {
-            alert("Pet salvo com sucesso!");
-        } else {
-            alert (dadosRetorno.data);
-            
-            return;
-        }
-
-        } else {
-            var dadosRetorno = await axios.post<Pet>('http://localhost:8080/pets', pet);
-
-        if (dadosRetorno.status == 200) {
-            alert("Pet foi salvo com sucesso!");
-            router.push("/pets");
-        } else {
-            alert (dadosRetorno.data);
-            
-            return;
-        }
-    }
-}
+    const handlerSalvar = async (formData: FormData) => {
+       
+               if (petExistente) {
+                   var dadosRetorno = await atualizarPet(pet);
+       
+               if (dadosRetorno) {
+                   alert("Pet foi atualizado com sucesso!");
+               } else {
+                   alert ("Erro ao atualizar o pet!");
+                   
+                   return;
+               }
+       
+               } else {
+                   var dadosRetorno = await salvarPet(pet);
+       
+               if (dadosRetorno) {
+                   alert("Pet foi salvo com sucesso!");
+               } else {
+                   alert ("Erro ao salvar o pet!");
+                   
+                   return;
+               }
+               router.push("/pets");
+           }
+       }
 
     return (
         <form action={handlerSalvar} className="space-y-6">

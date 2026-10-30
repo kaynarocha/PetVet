@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Pet } from "@/app/types/pet";
 import PetForm from "../../components/PetForm";
+import { consultaPetPorId } from "@/app/services/petService";
 
 export default function EditarPet(){
 
@@ -25,14 +26,14 @@ export default function EditarPet(){
 
     const buscarDados = async() => {
 
-        const valorPetBack = await axios.get<Pet>('http://localhost:8080/pets/'+codigo);
+        const valorPetBack = await consultaPetPorId(codigo);
 
-        if (valorPetBack.status == 200) {
-            setPet(valorPetBack.data);
+        if(valorPetBack) {
+            setPet(valorPetBack);
         } else {
         router.push("/pets");
+
         }
-    
 
     }
 

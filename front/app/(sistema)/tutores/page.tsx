@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Tutor } from "@/app/types/tutor";
 import axios from "axios";
+import { atualizarStatusTutor, buscarListaTutores, deletarTutor } from "@/app/services/tutorService";
 
 export default function Tutores(){
 
@@ -16,8 +17,8 @@ export default function Tutores(){
     const carregarDados = async () => {
         // Lógica para carregar os dados dos tutores
         try {
-            const dados = await axios.get<Tutor[]>("http://localhost:8080/tutores");
-            setTutores(dados.data);
+            const dados = await buscarListaTutores();   
+            setTutores(dados);
         } catch (error) {
             alert("Erro ao carregar os dados dos tutores.");
         }
@@ -25,13 +26,12 @@ export default function Tutores(){
 
         const handleDeletarTutor = async (tutor: Tutor) => {
 
-        var dadosRetorno = await 
-        axios.delete('http://localhost:8080/tutores/'+ tutor.id+'/excluir');
+        var dadosRetorno = await deletarTutor(tutor.id || 0);
 
-        if (dadosRetorno.status == 200) {
+        if (dadosRetorno == 200) {
             alert("Tutor foi excluído com sucesso!");
         } else {
-            alert (dadosRetorno.data);
+            alert ("Erro ao excluir o tutor!");
             
             return;
         }
@@ -41,24 +41,7 @@ export default function Tutores(){
 
     const handleAlterarStatusTutor = async (tutor: Tutor) => {
 
-        var novoStatus = {};
-
-        if (tutor.statusTutor === "ATIVO") {
-            novoStatus = {statusTutor : "BLOQUEADO"}
-        } else {
-            novoStatus = {statusTutor : "ATIVO"}
-        }
-
-        var dadosRetorno = await
-        axios.patch('http://localhost:8080/tutores/'+ tutor.id+'/status', novoStatus);
-
-        if (dadosRetorno.status == 200) {
-            alert("Status do usuário foi alterado com sucesso!");
-        } else {
-            alert (dadosRetorno.data);
-            
-            return;
-        }
+        await atualizarStatusTutor(tutor);
 
         carregarDados();
     }
