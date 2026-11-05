@@ -27,7 +27,7 @@ public class UsuarioController {
     // ? significa qualquer coisa
     @GetMapping
     @Operation(summary = "Método de consulta de lista de usuários",
-                description = "Método responsável em efetuar a consulta de todos os usuários sem filtro")
+            description = "Método responsável em efetuar a consulta de todos os usuários sem filtro")
     public ResponseEntity<List<UsuarioResponse>> listarTodos() {
 
         return ResponseEntity.ok(usuarioService.listarTodosUsuariosTable());
@@ -54,7 +54,7 @@ public class UsuarioController {
     public ResponseEntity<UsuarioResponse> buscarPorId(@PathVariable Long id) {
 
         UsuarioResponse usuarioBanco = usuarioService.buscarPorId(id);
-        if (usuarioBanco!= null) {
+        if (usuarioBanco != null) {
             return ResponseEntity.ok(usuarioBanco);
         }
         return ResponseEntity.notFound().build();
@@ -64,12 +64,12 @@ public class UsuarioController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Método de criação de usuários!",
-                description = "Método responsável em efetuar a criação de novos usuários.")
+            description = "Método responsável em efetuar a criação de novos usuários.")
     public ResponseEntity<?> criar(@RequestBody UsuarioRequest usuario) {
 
         try {
 
-            UsuarioResponse usuarioBanco = usuarioService.salvarUsuario(usuario,0L);
+            UsuarioResponse usuarioBanco = usuarioService.salvarUsuario(usuario, 0L);
             return ResponseEntity.ok(usuarioBanco);
 
         } catch (Exception e) {
@@ -82,33 +82,33 @@ public class UsuarioController {
     public ResponseEntity<Void> atualizarStatus(@PathVariable Long id,
                                                 @RequestBody AtualizarStatusRequest statusRequest) {
 
-       var atualizarUsuario = usuarioService.atualizarStatus(statusRequest.status(),id);
+        var atualizarUsuario = usuarioService.atualizarStatus(statusRequest.status(), id);
 
-       if (atualizarUsuario) {
-           return ResponseEntity.ok().build();
-       }
+        if (atualizarUsuario) {
+            return ResponseEntity.ok().build();
+        }
 
-       return ResponseEntity.notFound().build();
+        return ResponseEntity.notFound().build();
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> atualizar(@PathVariable Long id,
-                                             @RequestBody UsuarioRequest usuario) {
+                                       @RequestBody UsuarioRequest usuario) {
 
-            try {
-                UsuarioResponse usuarioBanco = usuarioService.salvarUsuario(usuario, id);
-                return ResponseEntity.ok(usuarioBanco);
-            } catch (Exception e) {
-                return ResponseEntity
-                        .badRequest()
-                        .body(e.getMessage());
-            }
+        try {
+            UsuarioResponse usuarioBanco = usuarioService.salvarUsuario(usuario, id);
+            return ResponseEntity.ok(usuarioBanco);
+        } catch (Exception e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(e.getMessage());
         }
+    }
 
     @DeleteMapping("/{id}/excluir")
     public ResponseEntity<Void> excluir(@PathVariable Long id) {
 
-        var atualizarUsuario = usuarioService.atualizarStatus(EnumStatusUsuario.EXCLUIDO,id);
+        var atualizarUsuario = usuarioService.atualizarStatus(EnumStatusUsuario.EXCLUIDO, id);
 
         if (atualizarUsuario) {
             return ResponseEntity.ok().build();
@@ -128,4 +128,10 @@ public class UsuarioController {
         return ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/buscarusuariologado")
+    @Operation(summary = "Usuario Logado", description = "Usuario logado")
+    public ResponseEntity<UsuarioResponse> buscarUsuarioLogado() {
+        return ResponseEntity.ok(usuarioService.BuscarUsuarioLogado());
+
+    }
 }

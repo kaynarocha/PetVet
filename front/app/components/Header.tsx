@@ -1,4 +1,13 @@
+'use client'
+import { useDispatch } from "react-redux";
+import { store } from "../redux/store";
+import { logout } from "../redux/slices/authSlice";
+
 export default function Header(){
+
+    const usuario = store.getState().auth.usuario;
+
+    const dispatch = useDispatch();
 
     return (
         <header className="w-full bg-[#0a0a0f]/70 backdrop-blur-xl border-b border-white/10 sticky top-0 z-50">
@@ -19,10 +28,12 @@ export default function Header(){
                         </svg>
                     </div>
                     <span className="text-white font-medium text-sm sm:text-base">
-                        Área do Usuário
+                        {usuario? usuario.nome.toLocaleUpperCase() : 'Usuário não identificado.'}
                     </span>
                 </div>
-                <button className="group relative overflow-hidden px-4 py-2 bg-gradient-to-r from-[#a855f7] to-[#7c3aed] text-white font-medium text-sm rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-[0_0_20px_2px_rgba(168,85,247,0.45)] active:scale-95 focus:outline-none focus:ring-2 focus:ring-[#22c55e]/50">
+                <button onClick={() => {
+                    dispatch(logout())
+                } } className="group relative overflow-hidden px-4 py-2 bg-gradient-to-r from-[#a855f7] to-[#7c3aed] text-white font-medium text-sm rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-[0_0_20px_2px_rgba(168,85,247,0.45)] active:scale-95 focus:outline-none focus:ring-2 focus:ring-[#22c55e]/50">
                     <span className="relative z-10">Sair</span>
                     <span className="absolute inset-0 bg-gradient-to-r from-[#22c55e] to-[#16a34a] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                     <span className="absolute inset-0 z-10 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">

@@ -90,6 +90,7 @@ public class UsuarioService {
         } else {
 
             Usuario usuarioBanco = usuarioRepository.findById(id).orElse(null);
+
             if (usuarioBanco != null) {
                 usuarioBanco.setNome(usuario.nome());
                 usuarioBanco.setCpf(new CPF(usuario.cpf()));
@@ -109,8 +110,9 @@ public class UsuarioService {
 
         var usuario = usuarioRepository.findById(id).orElse(null);
 
-        if (usuario == null)
+        if (usuario == null) {
             return null;
+        }
 
         return new UsuarioResponse(usuario);
     }
@@ -149,5 +151,16 @@ public class UsuarioService {
 
         return false;
 
+    }
+
+    public UsuarioResponse BuscarUsuarioLogado() {
+        try {
+            var usuarioLogado = getUsuarioLogado();
+            return usuarioRepository.findById(usuarioLogado.id())
+                    .stream()
+                    .map(UsuarioResponse::new).findFirst().orElse(null);
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao buscar usuário logado");
+        }
     }
 }
