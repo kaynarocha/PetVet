@@ -4,7 +4,6 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.petvet.application.DTOs.LoginRequest;
 import com.example.petvet.application.DTOs.UsuarioLogado;
 import com.example.petvet.domain.entities.Token;
@@ -14,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import javax.security.auth.Subject;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -41,7 +39,8 @@ public class TokenService {
             Algorithm algorithm = Algorithm.HMAC256(secret);
 
             var usuario = usuarioRepository.findAll()
-                    .stream().filter( u-> u.getEmail().equals(loginRequestDto.email()))
+                    .stream().filter(u -> u.getEmail() != null &&
+                            u.getEmail().getEmail().equalsIgnoreCase(loginRequestDto.email()))
                     .findFirst().orElse(null);
 
             String token = JWT.create()

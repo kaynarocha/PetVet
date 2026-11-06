@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.List;
 
 @Component
 public class JwtFilter extends OncePerRequestFilter {
@@ -34,7 +33,6 @@ public class JwtFilter extends OncePerRequestFilter {
         || uri.startsWith("/swagger-resources")
         || uri.startsWith("/webjars")
         || uri.startsWith("/auth/login")
-        || uri.startsWith("/")
         ){
 
             filterChain.doFilter(request, response);
