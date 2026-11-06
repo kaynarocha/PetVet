@@ -4,7 +4,7 @@ import Footer from "../components/Footer";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import { RootState } from "../redux/store";
-import { useRouter } from "next/dist/client/components/navigation";
+import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 
 export default function SistemaLayout({children}){
