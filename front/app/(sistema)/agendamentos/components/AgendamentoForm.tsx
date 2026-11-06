@@ -1,24 +1,24 @@
 'use client';
 
-import { atualizarAgendamento } from "@/app/services/agendamentoService";
+import { atualizarAgendamento, salvarAgendamento } from "@/app/services/agendamentoService";
 import { Agendamento, AgendamentoFormProps } from "@/app/types/agendamento";
-import { useRouter } from "next/dist/client/components/navigation";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export default function AgendamentoForm({agendamentoExistente} : AgendamentoFormProps) {
+export default function AgendamentoForm({ agendamentoExistente }: AgendamentoFormProps) {
     const router = useRouter();
 
     // constante com array de informações
-    const [agendamento, setAgendamento] = useState<Agendamento> (
+    const [agendamento, setAgendamento] = useState<Agendamento>(
         // se for existente, ele carrega os dados
-        agendamentoExistente || 
+        agendamentoExistente ||
         new Agendamento(null, "", "", "", "ATIVO")
     );
 
     // função para atualizar os valores do formulário
-    const handlerChange = ( campo : 'data' | 'servico' | 'descricao', valor: string) => {
-        // preview
-        setAgendamento(valorAnterior => 
+    const handlerChange = (campo: 'data' | 'servico' | 'descricao', valor: string) => {
+        setAgendamento(valorAnterior =>
             new Agendamento(
                 valorAnterior.id,
                 campo === 'data' ? valor : valorAnterior.data,
@@ -26,87 +26,87 @@ export default function AgendamentoForm({agendamentoExistente} : AgendamentoForm
                 campo === 'descricao' ? valor : valorAnterior.descricao,
                 valorAnterior.statusAgendamento
             )
-        )
-    }
-    // ARRUMAR ESSA PARTE TODA  ++ FAZER SISTEMA PAGE
+        );
+    };
 
-    // formData - nome / FormData - Tipo
-    const handlerSalvar = async (e: React.FormEvent<HTMLFormElement>) => { 
-        e.preventDefault();
+    const handlerSalvar = async (formData: FormData) => {
 
+        // back-end espera data com hora (LocalDateTime)
         const agendamentoParaEnviar = {
             ...agendamento,
-            data: agendamento.data ? `${agendamento.data}T00:00:00` : null
-        };
-            
-            if (agendamentoExistente) {
-                
-                var dadosRetorno = await atualizarAgendamento(agendamento);   
-                if (dadosRetorno) {
-                    alert("Agendamento foi salvo com sucesso!");
-                } else {
-                    alert ("Erro ao atualizar o agendamento!");
-                    
-                    return;
-                }
+            data: agendamento.data ? `${agendamento.data.slice(0, 10)}T00:00:00` : null
+        } as Agendamento;
 
+        if (agendamentoExistente) {
+            var dadosRetorno = await atualizarAgendamento(agendamentoParaEnviar);
+            if (dadosRetorno) {
+                alert("Agendamento foi salvo com sucesso!");
             } else {
-                alert("Erro ao salvar o agendamento!");
+                alert("Erro ao atualizar o agendamento!");
+
                 return;
             }
 
-            router.push("/agendamentos");
+        } else {
+            var dadosRetorno = await salvarAgendamento(agendamentoParaEnviar);
+            if (dadosRetorno) {
+                alert("Agendamento foi salvo com sucesso!");
+            } else {
+                alert("Erro ao salvar o agendamento!");
+
+                return;
+            }
         }
-        }
-    
+
+        router.push("/agendamentos");
+    };
 
     return (
-        <form onSubmit={handlerSalvar} className="space-y-6">
+        <form action={handlerSalvar} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-
 
                 <div className="space-y-2">
                     <label className="block text-sm font-medium text-white/70">
                         Data:
                     </label>
-                    <input name="data"
-                    type="date"
-                    value={agendamento.data || ""} 
-                    required
-                    placeholder="01/01/2026"
-                    onChange={(e) => handlerChange('data', e.target.value)}
-                    className="w-full px-4 py-2.5 bg-white/[0.03] border border-white/10 rounded-xl text-white placeholder-white/30 outline-none focus:ring-2 focus:ring-[#a855f7]/30 focus:border-[#a855f7] transition-all duration-200 focus:bg-white/[0.06]">
+                    <input
+                        name="data"
+                        type="date"
+                        value={agendamento.data?.slice(0, 10) || ""}
+                        required
+                        placeholder="01/01/2026"
+                        onChange={(e) => handlerChange('data', e.target.value)}
+                        className="w-full px-4 py-2.5 bg-white/[0.03] border border-white/10 rounded-xl text-white placeholder-white/30 outline-none focus:ring-2 focus:ring-[#a855f7]/30 focus:border-[#a855f7] transition-all duration-200 focus:bg-white/[0.06]">
                     </input>
                 </div>
-
 
                 <div className="space-y-2">
                     <label className="block text-sm font-medium text-white/70">
                         Serviço:
                     </label>
-                    <input name="servico" 
-                    value={agendamento.servico}
-                    required
-                    placeholder="Tosa e banho"
-                    onChange={(e) => handlerChange('servico', e.target.value)}
-                    className="w-full px-4 py-2.5 bg-white/[0.03] border border-white/10 rounded-xl text-white placeholder-white/30 outline-none focus:ring-2 focus:ring-[#a855f7]/30 focus:border-[#a855f7] transition-all duration-200 focus:bg-white/[0.06]">
+                    <input
+                        name="servico"
+                        value={agendamento.servico}
+                        required
+                        placeholder="Tosa e banho"
+                        onChange={(e) => handlerChange('servico', e.target.value)}
+                        className="w-full px-4 py-2.5 bg-white/[0.03] border border-white/10 rounded-xl text-white placeholder-white/30 outline-none focus:ring-2 focus:ring-[#a855f7]/30 focus:border-[#a855f7] transition-all duration-200 focus:bg-white/[0.06]">
                     </input>
                 </div>
-
 
                 <div className="space-y-2">
                     <label className="block text-sm font-medium text-white/70">
-                        Descrição
+                        Descrição:
                     </label>
-                    <input name="descricao" 
-                    value={agendamento.descricao}
-                    required
-                    placeholder="O animal é doce"
-                    onChange={(e) => handlerChange('descricao', e.target.value)}
-                    className="w-full px-4 py-2.5 bg-white/[0.03] border border-white/10 rounded-xl text-white placeholder-white/30 outline-none focus:ring-2 focus:ring-[#a855f7]/30 focus:border-[#a855f7] transition-all duration-200 focus:bg-white/[0.06]">
+                    <input
+                        name="descricao"
+                        value={agendamento.descricao}
+                        required
+                        placeholder="O animal é doce"
+                        onChange={(e) => handlerChange('descricao', e.target.value)}
+                        className="w-full px-4 py-2.5 bg-white/[0.03] border border-white/10 rounded-xl text-white placeholder-white/30 outline-none focus:ring-2 focus:ring-[#a855f7]/30 focus:border-[#a855f7] transition-all duration-200 focus:bg-white/[0.06]">
                     </input>
                 </div>
-
 
             </div>
 
@@ -122,5 +122,4 @@ export default function AgendamentoForm({agendamentoExistente} : AgendamentoForm
             </div>
         </form>
     );
-    }
-
+}

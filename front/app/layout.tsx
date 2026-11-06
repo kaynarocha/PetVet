@@ -16,7 +16,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className="h-full"
       >
       <body>
-        {children}
         <StoreProvider>
           {children}
         </StoreProvider>
