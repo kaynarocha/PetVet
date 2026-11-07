@@ -1,11 +1,17 @@
 'use client'
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { store } from "../redux/store";
 import { logout } from "../redux/slices/authSlice";
+import { Usuario } from "../types/usuario";
 
 export default function Header(){
 
-    const usuario = store.getState().auth.usuario;
+    const [usuario, setUsuario] = useState<Usuario | null>(null);
+
+    useEffect(() => {
+        setUsuario(store.getState().auth.usuario);
+    }, []);
 
     const dispatch = useDispatch();
 

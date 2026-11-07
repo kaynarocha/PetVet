@@ -3,7 +3,7 @@
 import { atualizarUsuario, salvarUsuario } from "@/app/services/usuarioService";
 import { Usuario, UsuarioFormProps } from "@/app/types/usuario";
 import Link from "@/node_modules/next/link";
-import axios from "axios";
+
 import { useRouter } from "next/dist/client/components/navigation";
 import { useState } from "react";
 

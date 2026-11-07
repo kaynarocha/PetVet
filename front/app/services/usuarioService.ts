@@ -35,7 +35,7 @@ export async function atualizarStatusUsuario(usuario:Usuario) :Promise<void>{
     api.patch('/usuarios/'+usuario.id+'/status',novoStatus);
 
     if(dadosRetorno.status==200){
-        alert("Atulizado status com sucesso!");
+        alert("Atualizado status com sucesso!");
     }else{
         alert(dadosRetorno.data);
 

@@ -5,7 +5,7 @@ import { useParams, useRouter } from "@/node_modules/next/navigation";
 import UsuarioForm from "../../components/UsuarioForm";
 import { useEffect, useState } from "react";
 import { Usuario } from "@/app/types/usuario";
-import axios from "axios";
+
 import { consultaUsuarioPorId } from "@/app/services/usuarioService";
 
 export default function EditarUsuario(){
