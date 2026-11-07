@@ -23,16 +23,25 @@ public class ServicoService {
     @Autowired
     private TokenService tokenService;
 
+    @Autowired
+    private UsuarioService usuarioService;
+
     @Value("${spring.secretkey}")
     private String secret;
 
 
     public List<ServicoResponse> listarTodosServicosTable() {
 
-        return servicoRepository.findAll()
-                .stream()
+        var usuarioLogado = usuarioService.getUsuarioLogado();
+
+        var servicos = usuarioLogado.empresa_id() == null
+                ? servicoRepository.findAll()
+                : servicoRepository.getServicosByEmpresa_Id(usuarioLogado.empresa_id());
+
+        return servicos.stream()
                 .map(ServicoResponse::new)
                 .toList();
+
     }
 
     public CriarServicoResponse criarServicoAdmin(CriarServicoRequest criarServicoRequest) {
@@ -51,6 +60,7 @@ public class ServicoService {
 
         if (id == 0L) {
             Servico servicoBanco = new Servico(servico);
+            servicoBanco.setEmpresa(usuarioService.getEmpresaLogada());
             servicoRepository.save(servicoBanco);
 
             return new ServicoResponse(servicoBanco);
@@ -58,7 +68,7 @@ public class ServicoService {
         } else {
 
             Servico servicoBanco = servicoRepository.findById(id).orElse(null);
-            if (servicoBanco == null) {
+            if (servicoBanco == null && usuarioService.podeAcessar(empresaIdDe(servicoBanco))) {
                 servicoBanco.setNome(servico.nome());
                 servicoBanco.setDescricao(servico.descricao());
                 servicoBanco.setValor(servico.valor());
@@ -76,7 +86,7 @@ public class ServicoService {
 
         var servico = servicoRepository.findById(id).orElse(null);
 
-        if (servico == null)
+        if (servico == null || !usuarioService.podeAcessar(empresaIdDe(servico)))
             return null;
 
             return new ServicoResponse(servico);
@@ -86,11 +96,15 @@ public class ServicoService {
 
             Servico servicoBanco = servicoRepository.findById(id).orElse(null);
 
-            if (servicoBanco != null) {
+            if (servicoBanco != null && usuarioService.podeAcessar(empresaIdDe(servicoBanco))) {
                 servicoBanco.setStatusServico(statusServico);
                 servicoRepository.save(servicoBanco);
                 return true;
             }
             return false;
         }
+
+    private Long empresaIdDe(Servico servico) {
+        return servico.getEmpresa() != null ? servico.getEmpresa().getId() : null;
     }
+}

@@ -37,6 +37,10 @@ public class Tutor {
 
     private String role = "ROLE_TUTOR";
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "empresa_id", referencedColumnName = "id")
+    private Empresa empresa;
+
     private EnumStatusTutor statusTutor = EnumStatusTutor.ATIVO;
 
     public Tutor(TutorRequest tutor) {

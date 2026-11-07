@@ -16,10 +16,18 @@ public class PetService {
     @Autowired
     private PetRepository petRepository;
 
+    @Autowired
+    private UsuarioService usuarioService;
+
     public List<PetResponse> listarTodosPetsTable() {
 
-        return petRepository.findAll()
-                .stream()
+        var usuarioLogado = usuarioService.getUsuarioLogado();
+
+        var pets = usuarioLogado.empresa_id() == null
+                ? petRepository.findAll()
+                : petRepository.getPetsByEmpresa_Id(usuarioLogado.empresa_id());
+
+        return pets.stream()
                 .map(PetResponse::new)
                 .toList();
     }
@@ -28,13 +36,15 @@ public class PetService {
 
         if (id == 0L) {
             Pet petBanco = new Pet(pet);
+
+            petBanco.setEmpresa(usuarioService.getEmpresaLogada());
             petRepository.save(petBanco);
 
             return new PetResponse(petBanco);
         } else {
 
             Pet petBanco = petRepository.findById(id).orElse(null);
-            if (petBanco != null) {
+            if (petBanco != null && usuarioService.podeAcessar(empresaIdDe(petBanco))) {
                 petBanco.setNome(pet.nome());
                 petBanco.setRaca(pet.raca());
                 petBanco.setDataNascimento(pet.dataNascimento());
@@ -51,7 +61,8 @@ public class PetService {
 
         var pet = petRepository.findById(id).orElse(null);
 
-        if (pet == null)
+        // não vai retornar pet de outra empresa
+        if (pet == null || !usuarioService.podeAcessar(empresaIdDe(pet)))
             return null;
 
             return new PetResponse(pet);
@@ -61,7 +72,9 @@ public class PetService {
     public boolean atualizarStatus(EnumStatusPet statusPet, Long id) {
 
         Pet petBanco = petRepository.findById(id).orElse(null);
-        if (petBanco != null) {
+
+        // só muda status de pet da própria empresa
+        if (petBanco != null && usuarioService.podeAcessar(empresaIdDe(petBanco))) {
             petBanco.setStatusPet(statusPet);
             petRepository.save(petBanco);
             return true;
@@ -69,5 +82,9 @@ public class PetService {
         }
 
         return false;
+    }
+
+    private Long empresaIdDe(Pet pet) {
+        return pet.getEmpresa() != null ? pet.getEmpresa().getId() : null;
     }
 }

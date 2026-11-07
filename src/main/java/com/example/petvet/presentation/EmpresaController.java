@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping
+@RequestMapping("/empresas")
 @Tag(name = "Empresas", description = "Grupo de APIs responsável por controlar a estrutura " +
                                     "de criação e consulta de empresas do sistema!")
 public class EmpresaController {

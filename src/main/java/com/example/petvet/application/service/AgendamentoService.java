@@ -16,10 +16,18 @@ public class AgendamentoService {
     @Autowired
     private AgendamentoRepository agendamentoRepository;
 
+    @Autowired
+    private UsuarioService usuarioService;
+
     public List<AgendamentoResponse> listarTodosAgendamentosTable() {
 
-        return agendamentoRepository.findAll()
-                .stream()
+        var usuarioLogado = usuarioService.getUsuarioLogado();
+
+        var agendamentos = usuarioLogado.empresa_id() == null
+                ? agendamentoRepository.findAll()
+                : agendamentoRepository.getAgendamentosByEmpresa_Id(usuarioLogado.empresa_id());
+
+        return agendamentos.stream()
                 .map(AgendamentoResponse::new)
                 .toList();
     }
@@ -28,13 +36,14 @@ public class AgendamentoService {
 
         if (id == null) {
             Agendamento agendamentoBanco = new Agendamento(agendamento);
+            agendamentoBanco.setEmpresa(usuarioService.getEmpresaLogada());
             agendamentoRepository.save(agendamentoBanco);
 
             return new AgendamentoResponse(agendamentoBanco);
         } else {
 
             Agendamento agendamentoBanco = agendamentoRepository.findById(id).orElse(null);
-            if (agendamentoBanco != null) {
+            if (agendamentoBanco != null && usuarioService.podeAcessar(empresaIdDe(agendamentoBanco))) {
                 agendamentoBanco.setDescricao(agendamento.descricao());
                 agendamentoBanco.setServico(agendamento.servico());
                 agendamentoBanco.setData(agendamento.data());
@@ -51,7 +60,7 @@ public class AgendamentoService {
 
         var agendamento = agendamentoRepository.findById(id).orElse(null);
 
-        if (agendamento != null)
+        if (agendamento != null || !usuarioService.podeAcessar(empresaIdDe(agendamento)))
             return null;
 
             return new AgendamentoResponse(agendamento);
@@ -62,12 +71,16 @@ public class AgendamentoService {
 
         Agendamento agendamentoBanco = agendamentoRepository.findById(id).orElse(null);
 
-        if (agendamentoBanco != null) {
+        if (agendamentoBanco != null && usuarioService.podeAcessar(empresaIdDe(agendamentoBanco))) {
             agendamentoBanco.setStatusAgendamento(statusAgendamento);
             agendamentoRepository.save(agendamentoBanco);
             return true;
         }
 
         return false;
+    }
+
+    private Long empresaIdDe(Agendamento agendamento) {
+        return agendamento.getEmpresa() != null ? agendamento.getEmpresa().getId() : null;
     }
 }

@@ -16,10 +16,19 @@ public class EmpresaService {
     @Autowired
     private EmpresaRepository empresaRepository;
 
+    @Autowired
+    private UsuarioService usuarioService;
+
     public List<EmpresaResponse> listarTodosEmpresasTable() {
 
-        return empresaRepository.findAll()
-                .stream()
+        var usuarioLogado = usuarioService.getUsuarioLogado();
+
+        // Usuário de empresa só enxerga a própria empresa; admin geral enxerga todas.
+        var empresas = usuarioLogado.empresa_id() == null
+                ? empresaRepository.findAll()
+                : empresaRepository.findById(usuarioLogado.empresa_id()).stream().toList();
+
+        return empresas.stream()
                 .map(EmpresaResponse::new)
                 .toList();
     }
@@ -28,6 +37,11 @@ public class EmpresaService {
 
         //Nova Empresa
         if(id == 0L) {
+            // >>> MUDANÇA MULTIEMPRESA: só admin geral cadastra empresa
+            // Somente o admin geral (sem empresa) cadastra novas empresas.
+            if (usuarioService.getUsuarioLogado().empresa_id() != null) {
+                throw new IllegalArgumentException("Sem permissão para cadastrar empresas!");
+            }
             Empresa empresaBanco = new Empresa(empresa);
             empresaRepository.save(empresaBanco);
 
@@ -35,7 +49,7 @@ public class EmpresaService {
         }else {
             //Empresa existente
             Empresa empresaBanco = empresaRepository.findById(id).orElse(null);
-            if(empresaBanco!= null ){
+            if(empresaBanco!= null && usuarioService.podeAcessar(empresaBanco.getId())){
                 empresaBanco.setRazaoSocial(empresa.razaoSocial());
                 empresaBanco.setCnpj(empresa.cnpj());
                 empresaBanco.setNomeFantasia(empresa.nomeFantasia());
@@ -49,7 +63,7 @@ public class EmpresaService {
     public EmpresaResponse buscarPorId(Long id) {
 
         var empresa = empresaRepository.findById(id).orElse(null);
-        if (empresa == null) {
+        if (empresa == null || !usuarioService.podeAcessar(empresa.getId())) {
             return null;
         }
 
@@ -57,6 +71,11 @@ public class EmpresaService {
     }
 
     public boolean atualizarStatus(EnumStatusEmpresa statusEmpresa, Long id) {
+
+        // bloquear/excluir empresa: só admin geral
+        if (usuarioService.getUsuarioLogado().empresa_id() != null) {
+            return false;
+        }
 
         Empresa empresaBanco = empresaRepository.findById(id).orElse(null);
         if(empresaBanco!= null ){

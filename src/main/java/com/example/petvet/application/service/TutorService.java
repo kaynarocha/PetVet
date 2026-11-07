@@ -18,10 +18,18 @@ public class TutorService {
     @Autowired
     private TutorRepository tutorRepository;
 
+    @Autowired
+    private UsuarioService usuarioService;
+
     public List<TutorResponse> listarTodosTutoresTable() {
 
-        return tutorRepository.findAll()
-                .stream()
+        var usuarioLogado = usuarioService.getUsuarioLogado();
+
+        var tutores = usuarioLogado.empresa_id() == null
+                ? tutorRepository.findAll()
+                : tutorRepository.getTutoresByEmpresa_Id(usuarioLogado.empresa_id());
+
+        return tutores.stream()
                 .map(TutorResponse::new)
                 .toList();
 
@@ -31,13 +39,14 @@ public class TutorService {
 
         if (id == 0L) {
             Tutor tutorBanco = new Tutor(tutor);
+            tutorBanco.setEmpresa(usuarioService.getEmpresaLogada());
             tutorRepository.save(tutorBanco);
 
             return new TutorResponse(tutorBanco);
         } else {
 
             Tutor tutorBanco = tutorRepository.findById(id).orElse(null);
-            if (tutorBanco != null) {
+            if (tutorBanco != null && usuarioService.podeAcessar(empresaIdDe(tutorBanco))) {
                 tutorBanco.setNome(tutor.nome());
                 tutorBanco.setCpf(new CPF(tutor.cpf()));
                 tutorBanco.setEmail(new EMAIL(tutor.email()));
@@ -57,7 +66,7 @@ public class TutorService {
 
         var tutor = tutorRepository.findById(id).orElse(null);
 
-        if (tutor == null)
+        if (tutor == null && usuarioService.podeAcessar(empresaIdDe(tutor)))
             return null;
 
             return new TutorResponse(tutor);
@@ -66,7 +75,7 @@ public class TutorService {
         public boolean atualizarStatus(EnumStatusTutor statusTutor, Long id) {
 
             Tutor tutorBanco = tutorRepository.findById(id).orElse(null);
-            if (tutorBanco != null) {
+            if (tutorBanco != null && usuarioService.podeAcessar(empresaIdDe(tutorBanco))) {
                 tutorBanco.setStatusTutor(statusTutor);
                 tutorRepository.save(tutorBanco);
                 return true;
@@ -74,4 +83,7 @@ public class TutorService {
             return false;
         }
 
+    private Long empresaIdDe(Tutor tutor) {
+        return tutor.getEmpresa() != null ? tutor.getEmpresa().getId() : null;
+    }
 }
