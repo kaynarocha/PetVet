@@ -1,10 +1,13 @@
 'use client';
 
 import { atualizarAgendamento, salvarAgendamento } from "@/app/services/agendamentoService";
+import api from "@/app/services/api";
+import { buscarListaPets } from "@/app/services/petService";
 import { Agendamento, AgendamentoFormProps } from "@/app/types/agendamento";
+import { Pet } from "@/app/types/pet";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function AgendamentoForm({ agendamentoExistente }: AgendamentoFormProps) {
     const router = useRouter();
@@ -16,15 +19,28 @@ export default function AgendamentoForm({ agendamentoExistente }: AgendamentoFor
         new Agendamento(null, "", "", "", "ATIVO")
     );
 
+    // fk pet e serviço
+    const [pets, setPets] = useState<Pet[]>([]);
+    const [servicos, setServicos] = useState<{ id: number; nome: string }[]>([]);
+    const [petId, setPetId] = useState<number | null>(agendamentoExistente?.petId ?? null);
+    const [servicoId, setServicoId] = useState<number | null>(agendamentoExistente?.servicoId ?? null);
+
+    useEffect(() => {
+        buscarListaPets().then(setPets).catch(() => {});
+        api.get("/servico").then((r) => setServicos(r.data)).catch(() => {});
+    }, []);
+
     // função para atualizar os valores do formulário
-    const handlerChange = (campo: 'data' | 'servico' | 'descricao', valor: string) => {
+    const handlerChange = (campo: 'data' | 'descricao', valor: string) => {
         setAgendamento(valorAnterior =>
             new Agendamento(
                 valorAnterior.id,
                 campo === 'data' ? valor : valorAnterior.data,
-                campo === 'servico' ? valor : valorAnterior.servico,
+                valorAnterior.servico,
                 campo === 'descricao' ? valor : valorAnterior.descricao,
-                valorAnterior.statusAgendamento
+                valorAnterior.statusAgendamento,
+                valorAnterior.servicoId,
+                valorAnterior.petId
             )
         );
     };
@@ -34,6 +50,8 @@ export default function AgendamentoForm({ agendamentoExistente }: AgendamentoFor
         // back-end espera data com hora (LocalDateTime)
         const agendamentoParaEnviar = {
             ...agendamento,
+            servicoId,
+            petId,
             data: agendamento.data ? `${agendamento.data.slice(0, 10)}T00:00:00` : null
         } as Agendamento;
 
@@ -82,16 +100,30 @@ export default function AgendamentoForm({ agendamentoExistente }: AgendamentoFor
 
                 <div className="space-y-2">
                     <label className="block text-sm font-medium text-white/70">
+                        Pet:
+                    </label>
+                    <select name="pet" required value={petId ?? ""}
+                    onChange={(e) => setPetId(e.target.value ? Number(e.target.value) : null)}
+                    className="w-full px-4 py-2.5 bg-white/[0.03] border border-white/10 rounded-xl text-white outline-none focus:ring-2 focus:ring-[#a855f7]/30 focus:border-[#a855f7]">
+                        <option value="" className="text-black">Selecione...</option>
+                        {pets.map((p) => (
+                            <option key={p.id} value={p.id ?? ""} className="text-black">{p.nome}</option>
+                        ))}
+                    </select>
+                </div>
+
+                <div className="space-y-2">
+                    <label className="block text-sm font-medium text-white/70">
                         Serviço:
                     </label>
-                    <input
-                        name="servico"
-                        value={agendamento.servico}
-                        required
-                        placeholder="Tosa e banho"
-                        onChange={(e) => handlerChange('servico', e.target.value)}
-                        className="w-full px-4 py-2.5 bg-white/[0.03] border border-white/10 rounded-xl text-white placeholder-white/30 outline-none focus:ring-2 focus:ring-[#a855f7]/30 focus:border-[#a855f7] transition-all duration-200 focus:bg-white/[0.06]">
-                    </input>
+                    <select name="servico" required value={servicoId ?? ""}
+                    onChange={(e) => setServicoId(e.target.value ? Number(e.target.value) : null)}
+                    className="w-full px-4 py-2.5 bg-white/[0.03] border border-white/10 rounded-xl text-white outline-none focus:ring-2 focus:ring-[#a855f7]/30 focus:border-[#a855f7]">
+                        <option value="" className="text-black">Selecione...</option>
+                        {servicos.map((sv) => (
+                            <option key={sv.id} value={sv.id} className="text-black">{sv.nome}</option>
+                        ))}
+                    </select>
                 </div>
 
                 <div className="space-y-2">

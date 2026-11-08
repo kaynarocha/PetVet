@@ -24,13 +24,20 @@ public class Agendamento {
 
     private LocalDateTime data;
 
-    private String servico;
+    // fk serviço no agendamento
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "servico_id", referencedColumnName = "id")
+    private Servico servico;
 
     private String descricao;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "empresa_id", referencedColumnName = "id")
     private Empresa empresa;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "pet_id", referencedColumnName = "id")
+    private Pet pet;
 
     private String role = "ROLE_AGENDAMENTO";
 
@@ -39,7 +46,6 @@ public class Agendamento {
     public Agendamento(AgendamentoRequest agendamento) {
         this.setData(agendamento.data() != null ? agendamento.data() : LocalDateTime.now());
         this.setDescricao(agendamento.descricao());
-        this.setServico(agendamento.servico());
         this.setRole("ROLE_AGENDAMENTO");
     }
 

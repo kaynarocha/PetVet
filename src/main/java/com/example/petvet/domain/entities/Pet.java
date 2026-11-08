@@ -25,6 +25,11 @@ public class Pet {
 
     private LocalDate dataNascimento;
 
+    // fk pet para tutor
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "tutor_id", referencedColumnName = "id")
+    private Tutor tutor;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "empresa_id", referencedColumnName = "id")
     private Empresa empresa;

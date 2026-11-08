@@ -4,7 +4,9 @@ import com.example.petvet.application.DTOs.PetRequest;
 import com.example.petvet.application.DTOs.PetResponse;
 import com.example.petvet.application.DTOs.EnumStatusPet;
 import com.example.petvet.domain.entities.Pet;
+import com.example.petvet.domain.entities.Tutor;
 import com.example.petvet.domain.repository.PetRepository;
+import com.example.petvet.domain.repository.TutorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,9 @@ public class PetService {
 
     @Autowired
     private UsuarioService usuarioService;
+
+    @Autowired
+    private TutorRepository tutorRepository;
 
     public List<PetResponse> listarTodosPetsTable() {
 
@@ -38,6 +43,8 @@ public class PetService {
             Pet petBanco = new Pet(pet);
 
             petBanco.setEmpresa(usuarioService.getEmpresaLogada());
+            // fk que preenche pet tutor
+            petBanco.setTutor(buscarTutorDaMesmaEmpresa(pet.tutorId(), petBanco.getEmpresa().getId()));
             petRepository.save(petBanco);
 
             return new PetResponse(petBanco);
@@ -48,6 +55,11 @@ public class PetService {
                 petBanco.setNome(pet.nome());
                 petBanco.setRaca(pet.raca());
                 petBanco.setDataNascimento(pet.dataNascimento());
+
+                if (pet.tutorId() != null) {
+                    petBanco.setTutor(buscarTutorDaMesmaEmpresa(pet.tutorId(), empresaIdDe(petBanco)));
+                }
+
                 petRepository.save(petBanco);
 
                 return new PetResponse(petBanco);
@@ -87,4 +99,20 @@ public class PetService {
     private Long empresaIdDe(Pet pet) {
         return pet.getEmpresa() != null ? pet.getEmpresa().getId() : null;
     }
+
+    // fk = tutor precisa existir e ser da mesma empresa do pet
+    // para não misturar dados entre empresas
+    private Tutor buscarTutorDaMesmaEmpresa(Long tutorId, Long empresaId) {
+        if (tutorId == null) {
+            throw new IllegalArgumentException("Informe o tutor do pet!");
+        }
+        Tutor tutor = tutorRepository.findById(tutorId)
+                .orElseThrow(() -> new IllegalArgumentException("Tutor não encontrado!"));
+        Long empresaDoTutor = tutor.getEmpresa() != null ? tutor.getEmpresa().getId() : null;
+        if (empresaDoTutor == null || !empresaDoTutor.equals(empresaId)) {
+            throw new IllegalArgumentException("Tutor não encontrado!");
+        }
+        return tutor;
+    }
+
 }

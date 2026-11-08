@@ -5,7 +5,11 @@ export class Agendamento {
         public data: string,
         public servico: string,
         public descricao: string,
-        public statusAgendamento: string) {
+        public statusAgendamento: string,
+        // fk
+        public servicoId?: number | null,
+        public petId?: number | null,
+        public petNome?: string | null) {
 
     }
 }

@@ -5,7 +5,10 @@ export class Pet {
         public nome: string,
         public raca: string,
         public dataNascimento: string | null,
-        public statusPet: string) {
+        public statusPet: string,
+        // fk
+        public tutorId?: number | null,
+        public tutorNome?: string | null) {
 
     }
 

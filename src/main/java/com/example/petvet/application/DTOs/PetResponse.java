@@ -4,7 +4,8 @@ import com.example.petvet.domain.entities.Pet;
 
 import java.time.LocalDate;
 
-public record PetResponse(Long id, String nome, String raca, LocalDate dataNascimento, EnumStatusPet statusPet) {
+public record PetResponse(Long id, String nome, String raca, LocalDate dataNascimento, EnumStatusPet statusPet,
+                          Long tutorId, String tutorNome) {
 
     public PetResponse(Pet petEntidade) {
 
@@ -13,7 +14,9 @@ public record PetResponse(Long id, String nome, String raca, LocalDate dataNasci
                 petEntidade.getNome(),
                 petEntidade.getRaca(),
                 petEntidade.getDataNascimento(),
-                petEntidade.getStatusPet()
+                petEntidade.getStatusPet(),
+                petEntidade.getTutor() != null ? petEntidade.getTutor().getId() : null,
+                petEntidade.getTutor() != null ? petEntidade.getTutor().getNome() : null
         );
     }
 }

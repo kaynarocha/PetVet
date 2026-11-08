@@ -1,11 +1,13 @@
 'use client';
 
 import { atualizarPet, salvarPet } from "@/app/services/petService";
+import { buscarListaTutores } from "@/app/services/tutorService";
 import { Pet, PetFormProps } from "@/app/types/pet";
+import { Tutor } from "@/app/types/tutor";
 import Link from "@/node_modules/next/link";
 import axios from "axios";
 import { useRouter } from "next/dist/client/components/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function PetForm({petExistente} : PetFormProps) {
     const router = useRouter();
@@ -16,6 +18,14 @@ export default function PetForm({petExistente} : PetFormProps) {
         petExistente || 
         new Pet(null, "", "", "", "ATIVO")
     );
+
+    //fk
+    const [tutores, setTutores] = useState<Tutor[]>([]);
+    const [tutorId, setTutorId] = useState<number | null>(petExistente?.tutorId ?? null);
+
+    useEffect(() => {
+        buscarListaTutores().then(setTutores).catch(() => {});
+    }, []);
 
     // função para atualizar os valores do formulário
     const handlerChange = ( campo : 'nome' | 'raca' | 'dataNascimento', valor: string) => {
@@ -34,6 +44,13 @@ export default function PetForm({petExistente} : PetFormProps) {
     // formData - nome / FormData - Tipo
     const handlerSalvar = async (formData: FormData) => {
        
+                // fk = envia o tutor junto com os dados do pet
+                if (tutorId == null) {
+                   alert("Selecione o tutor do pet!");
+                   return;
+               }
+               const petParaEnviar = { ...pet, tutorId };
+
                if (petExistente) {
                    var dadosRetorno = await atualizarPet(pet);
        
@@ -62,6 +79,21 @@ export default function PetForm({petExistente} : PetFormProps) {
     return (
         <form action={handlerSalvar} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                <div className="space-y-2">
+                    <label className="block text-sm font-medium text-white/70">
+                        Tutor:
+                    </label>
+                    <select name="tutor" required
+                    value={tutorId ?? ""}
+                    onChange={(e) => setTutorId(e.target.value ? Number(e.target.value) : null)}
+                    className="w-full px-4 py-2.5 bg-white/[0.03] border border-white/10 rounded-xl text-white outline-none focus:ring-2 focus:ring-[#a855f7]/30 focus:border-[#a855f7]">
+                        <option value="" className="text-black">Selecione...</option>
+                        {tutores.map((t) => (
+                            <option key={t.id} value={t.id ?? ""} className="text-black">{t.nome}</option>
+                        ))}
+                    </select>
+                </div>
 
 
                 <div className="space-y-2">
