@@ -75,6 +75,11 @@ public class TutorController {
 
         try {
             TutorResponse tutorBanco = tutorService.salvarTutor(tutor, id);
+
+            if (tutorBanco == null) {
+                return ResponseEntity.notFound().build();
+            }
+
             return ResponseEntity.ok(tutorBanco);
         } catch (Exception e) {
             return ResponseEntity

@@ -1,6 +1,6 @@
 'use client';
 
-import axios from "axios";
+import axios from "@/app/services/api";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Agendamento } from "@/app/types/agendamento";

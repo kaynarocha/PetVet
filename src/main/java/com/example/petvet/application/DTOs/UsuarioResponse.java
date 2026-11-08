@@ -2,7 +2,8 @@ package com.example.petvet.application.DTOs;
 
 import com.example.petvet.domain.entities.Usuario;
 
-public record UsuarioResponse(Long id, String nome, String email, String senha, EnumStatusUsuario status) {
+// trocar EMAIL e CPF
+public record UsuarioResponse(Long id, String nome, String cpf, String email, EnumStatusUsuario status) {
 
     public UsuarioResponse(Usuario usuarioEntidade) {
 

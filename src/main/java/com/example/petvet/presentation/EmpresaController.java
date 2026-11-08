@@ -77,6 +77,11 @@ public class EmpresaController {
 
         try {
             EmpresaResponse empresaBanco = empresaService.salvarEmpresa(empresa,id);
+
+            if (empresaBanco == null) {
+                return ResponseEntity.notFound().build();
+            }
+
             return ResponseEntity.ok(empresaBanco);
         }catch (RuntimeException e){
             return ResponseEntity.badRequest().body(e.getMessage());

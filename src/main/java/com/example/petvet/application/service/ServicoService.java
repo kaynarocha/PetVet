@@ -68,7 +68,7 @@ public class ServicoService {
         } else {
 
             Servico servicoBanco = servicoRepository.findById(id).orElse(null);
-            if (servicoBanco == null && usuarioService.podeAcessar(empresaIdDe(servicoBanco))) {
+            if (servicoBanco != null && usuarioService.podeAcessar(empresaIdDe(servicoBanco))) {
                 servicoBanco.setNome(servico.nome());
                 servicoBanco.setDescricao(servico.descricao());
                 servicoBanco.setValor(servico.valor());

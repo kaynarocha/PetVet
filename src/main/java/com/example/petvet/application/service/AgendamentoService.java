@@ -34,7 +34,7 @@ public class AgendamentoService {
 
     public AgendamentoResponse salvarAgendamento(AgendamentoRequest agendamento, Long id) {
 
-        if (id == null) {
+        if (id == 0L) {
             Agendamento agendamentoBanco = new Agendamento(agendamento);
             agendamentoBanco.setEmpresa(usuarioService.getEmpresaLogada());
             agendamentoRepository.save(agendamentoBanco);
@@ -60,7 +60,7 @@ public class AgendamentoService {
 
         var agendamento = agendamentoRepository.findById(id).orElse(null);
 
-        if (agendamento != null || !usuarioService.podeAcessar(empresaIdDe(agendamento)))
+        if (agendamento == null || !usuarioService.podeAcessar(empresaIdDe(agendamento)))
             return null;
 
             return new AgendamentoResponse(agendamento);

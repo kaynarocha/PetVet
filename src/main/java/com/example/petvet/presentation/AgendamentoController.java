@@ -84,6 +84,11 @@ public class AgendamentoController {
 
         try {
             AgendamentoResponse agendamentoBanco = agendamentoService.salvarAgendamento(agendamento, id);
+
+            if (agendamentoBanco == null) {
+                return ResponseEntity.notFound().build();
+            }
+
             return ResponseEntity.ok(agendamentoBanco);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());

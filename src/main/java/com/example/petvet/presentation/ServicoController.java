@@ -99,6 +99,10 @@ public class ServicoController {
         try {
 
             ServicoResponse servicoBanco = servicoService.salvarServico(servico, id);
+            if (servicoBanco == null) {
+                return ResponseEntity.notFound().build();
+            }
+
             return ResponseEntity.ok(servicoBanco);
 
         } catch (Exception e) {

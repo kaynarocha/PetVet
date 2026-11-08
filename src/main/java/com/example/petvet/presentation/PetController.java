@@ -76,6 +76,11 @@ public class PetController {
 
         try {
             PetResponse petBanco = petService.salvarPet(pet, id);
+
+            if (petBanco == null) {
+                return ResponseEntity.notFound().build();
+            }
+
             return ResponseEntity.ok(petBanco);
         }   catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());

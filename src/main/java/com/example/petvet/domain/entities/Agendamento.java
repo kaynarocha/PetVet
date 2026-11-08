@@ -37,7 +37,7 @@ public class Agendamento {
     private EnumStatusAgendamento statusAgendamento =  EnumStatusAgendamento.ATIVO;
 
     public Agendamento(AgendamentoRequest agendamento) {
-        this.setData(LocalDateTime.now());
+        this.setData(agendamento.data() != null ? agendamento.data() : LocalDateTime.now());
         this.setDescricao(agendamento.descricao());
         this.setServico(agendamento.servico());
         this.setRole("ROLE_AGENDAMENTO");

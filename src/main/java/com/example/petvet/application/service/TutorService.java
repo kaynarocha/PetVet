@@ -66,7 +66,7 @@ public class TutorService {
 
         var tutor = tutorRepository.findById(id).orElse(null);
 
-        if (tutor == null && usuarioService.podeAcessar(empresaIdDe(tutor)))
+        if (tutor == null || !usuarioService.podeAcessar(empresaIdDe(tutor)))
             return null;
 
             return new TutorResponse(tutor);

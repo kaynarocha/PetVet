@@ -3,9 +3,11 @@
 import { atualizarUsuario, salvarUsuario } from "@/app/services/usuarioService";
 import { Usuario, UsuarioFormProps } from "@/app/types/usuario";
 import Link from "@/node_modules/next/link";
+import { buscarListaEmpresas } from "@/app/services/empresaService";
 
 import { useRouter } from "next/dist/client/components/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Empresa } from "@/app/types/empresa";
 
 export default function UsuarioForm({usuarioExistente} : UsuarioFormProps) {
     const router = useRouter();
@@ -16,6 +18,17 @@ export default function UsuarioForm({usuarioExistente} : UsuarioFormProps) {
         usuarioExistente || 
         new Usuario(null, "", "", "ATIVO", "", "")
     );
+
+    const [empresas, setEmpresas] = useState<Empresa[]>([]);
+    const [empresaId, setEmpresaId] = useState<number | null>(null);
+
+    useEffect(() => {
+        buscarListaEmpresas().then((lista) => {
+            setEmpresas(lista);
+            // usuário de empresa recebe só a própria empresa na lista; já deixa selecionada
+            if (lista.length === 1) setEmpresaId(lista[0].id);
+        }).catch(() => {});
+    }, []);
 
     // função para atualizar os valores do formulário
     const handlerChange = ( campo : 'nome' | 'email' | 'cpf' | 'senha', valor: string) => {
@@ -47,7 +60,17 @@ export default function UsuarioForm({usuarioExistente} : UsuarioFormProps) {
         }
 
         } else {
-            var dadosRetorno = await salvarUsuario(usuario);
+
+            if (empresaId == null) {
+                alert("Selecione a empresa do usuário!");
+                return;
+            }
+            try {
+                var dadosRetorno = await salvarUsuario({ ...usuario, empresaId });
+            } catch (erro: any) {
+                alert(erro?.response?.data ?? "Erro ao salvar o usuário!");
+                return;
+            }
 
         if (dadosRetorno) {
             alert("Usuário foi salvo com sucesso!");
@@ -63,6 +86,24 @@ export default function UsuarioForm({usuarioExistente} : UsuarioFormProps) {
     return (
         <form action={handlerSalvar} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                {!usuarioExistente && (
+                <div className="space-y-2">
+                    <label className="block text-sm font-medium text-white/70">
+                        Empresa:
+                    </label>
+                    <select name="empresa"
+                    value={empresaId ?? ""}
+                    required
+                    onChange={(e) => setEmpresaId(e.target.value ? Number(e.target.value) : null)}
+                    className="w-full px-4 py-2.5 bg-white/[0.03] border border-white/10 rounded-xl text-white outline-none focus:ring-2 focus:ring-[#a855f7]/30 focus:border-[#a855f7]">
+                        <option value="" className="text-black">Selecione...</option>
+                        {empresas.map((e) => (
+                            <option key={e.id} value={e.id ?? ""} className="text-black">{e.nomeFantasia}</option>
+                        ))}
+                    </select>
+                </div>
+                )}
 
 
                 <div className="space-y-2">

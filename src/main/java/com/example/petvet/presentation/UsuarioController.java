@@ -97,6 +97,11 @@ public class UsuarioController {
 
         try {
             UsuarioResponse usuarioBanco = usuarioService.salvarUsuario(usuario, id);
+
+            if (usuarioBanco == null) {
+                return ResponseEntity.notFound().build();
+            }
+
             return ResponseEntity.ok(usuarioBanco);
         } catch (Exception e) {
             return ResponseEntity

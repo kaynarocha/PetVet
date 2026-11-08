@@ -37,7 +37,7 @@ public class EmpresaService {
 
         //Nova Empresa
         if(id == 0L) {
-            // >>> MUDANÇA MULTIEMPRESA: só admin geral cadastra empresa
+            // só admin geral cadastra empresa
             // Somente o admin geral (sem empresa) cadastra novas empresas.
             if (usuarioService.getUsuarioLogado().empresa_id() != null) {
                 throw new IllegalArgumentException("Sem permissão para cadastrar empresas!");

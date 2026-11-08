@@ -3,9 +3,7 @@ package com.example.petvet.domain.entities;
 import com.example.petvet.application.DTOs.EmpresaRequest;
 import com.example.petvet.application.DTOs.EnumStatusEmpresa;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -28,6 +26,8 @@ public class Empresa {
     // muitos usuarios = empresa para usuarios
     // sempre que terminar em Many, vai ser private LIST
     //mappedBy = apontar o outro lado
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "empresa")
     private List<Usuario> usuario;
 
