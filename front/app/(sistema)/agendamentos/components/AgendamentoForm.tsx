@@ -56,7 +56,13 @@ export default function AgendamentoForm({ agendamentoExistente }: AgendamentoFor
         } as Agendamento;
 
         if (agendamentoExistente) {
-            var dadosRetorno = await atualizarAgendamento(agendamentoParaEnviar);
+           
+            try {
+                var dadosRetorno = await atualizarAgendamento(agendamentoParaEnviar);
+            } catch (erro: any) {
+                alert(erro?.response?.data ?? "Erro ao atualizar o agendamento!");
+                return;
+            }
             if (dadosRetorno) {
                 alert("Agendamento foi salvo com sucesso!");
             } else {
@@ -66,7 +72,12 @@ export default function AgendamentoForm({ agendamentoExistente }: AgendamentoFor
             }
 
         } else {
-            var dadosRetorno = await salvarAgendamento(agendamentoParaEnviar);
+            try {
+                var dadosRetorno = await salvarAgendamento(agendamentoParaEnviar);
+            } catch (erro: any) {
+                alert(erro?.response?.data ?? "Erro ao salvar o agendamento!");
+                return;
+            }
             if (dadosRetorno) {
                 alert("Agendamento foi salvo com sucesso!");
             } else {

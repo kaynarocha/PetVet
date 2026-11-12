@@ -52,18 +52,22 @@ export default function PetForm({petExistente} : PetFormProps) {
                const petParaEnviar = { ...pet, tutorId };
 
                if (petExistente) {
-                   var dadosRetorno = await atualizarPet(pet);
-       
-               if (dadosRetorno) {
-                   alert("Pet foi atualizado com sucesso!");
-               } else {
-                   alert ("Erro ao atualizar o pet!");
-                   
-                   return;
-               }
+    
+                   try {
+                       var dadosRetorno = await atualizarPet(petParaEnviar);
+                   } catch (erro: any) {
+                       alert(erro?.response?.data ?? "Erro ao atualizar o pet!");
+                       return;
+                   }
        
                } else {
-                   var dadosRetorno = await salvarPet(pet);
+                
+                   try {
+                       var dadosRetorno = await salvarPet(petParaEnviar);
+                   } catch (erro: any) {
+                       alert(erro?.response?.data ?? "Erro ao salvar o pet!");
+                       return;
+                   }
        
                if (dadosRetorno) {
                    alert("Pet foi salvo com sucesso!");
