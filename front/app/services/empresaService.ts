@@ -25,7 +25,7 @@ export async function atualizarStatusEmpresa(empresa:Empresa) :Promise<void>{
     var novoStatus = {};
 
     if(empresa.statusEmpresa ==="ATIVO"){
-        novoStatus = {statusEmpresa:"BLOQUEADO"}
+        novoStatus = {statusEmpresa:"INATIVO"}
     } else {
         novoStatus = {statusEmpresa:"ATIVO"}
     }
@@ -62,8 +62,9 @@ export async function  salvarEmpresa (empresa:Empresa): Promise<number>{
     return dadosRetorno.data;
 }
 
-export async function buscarEmpresaLogada(): Promise<Empresa> {
+/*export async function buscarEmpresaLogada(): Promise<Empresa> {
 
     return (await api.get<Empresa>('/empresas/buscarempresalogada')).data;
 }
+    */
     

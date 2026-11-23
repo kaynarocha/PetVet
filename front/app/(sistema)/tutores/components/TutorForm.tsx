@@ -2,10 +2,10 @@
 
 import { Tutor, TutorFormProps } from "@/app/types/tutor";
 import Link from "next/link"; 
-import axios from "axios";
 import { useRouter } from "next/navigation"; 
 import { useState } from "react";
 import { atualizarTutor, salvarTutor } from "@/app/services/tutorService";
+import { buscarEnderecoPorCep } from "@/app/services/enderecoService";
 
 export default function TutorForm({ tutorExistente }: TutorFormProps) {
     const router = useRouter();
@@ -13,6 +13,8 @@ export default function TutorForm({ tutorExistente }: TutorFormProps) {
     const [tutor, setTutor] = useState<Tutor>(
         tutorExistente || new Tutor(null, "", "", "", "", "", "", "ATIVO")
     );
+
+    const [cep, setCep] = useState<string>("");
 
     const handlerChange = (campo: 'nome' | 'cpf' | 'telefone' | 'email' | 'dataNascimento' | 'endereco', valor: string) => {
         setTutor(valorAnterior => 
@@ -27,6 +29,25 @@ export default function TutorForm({ tutorExistente }: TutorFormProps) {
                 valorAnterior.statusTutor
             )
         );
+    };
+
+    const handlerBuscarCep = async () => {
+        // remove tudo que não for número
+        const cepNumeros = cep.replace(/\D/g, "");
+
+        if (cepNumeros.length !== 8) {
+            return;
+        }
+
+        try {
+            const endereco = await buscarEnderecoPorCep(cepNumeros);
+
+            handlerChange('endereco',
+                endereco.logradouro + ", " + endereco.bairro + ", " + endereco.cidade + " - " + endereco.uf);
+
+        } catch (error) {
+            alert("CEP não encontrado!");
+        }
     };
 
     // React.FormEvent e previne o reload da página
@@ -104,6 +125,16 @@ export default function TutorForm({ tutorExistente }: TutorFormProps) {
                         type="date" value={tutor.dataNascimento || ""} 
                         required onChange={(e) => handlerChange('dataNascimento', e.target.value)} 
                         className="w-full px-4 py-2.5 bg-white/[0.03] border border-white/10 rounded-xl text-white placeholder-white/30 outline-none focus:ring-2 focus:ring-[#a855f7]/30 focus:border-[#a855f7] transition-all duration-200 focus:bg-white/[0.06]" />
+                </div>
+
+                <div className="space-y-2">
+                    <label className="block text-sm font-medium text-white/70">CEP:</label>
+                    <input name="cep" 
+                    value={cep} 
+                    placeholder="88000-000" 
+                    onChange={(e) => setCep(e.target.value)} 
+                    onBlur={handlerBuscarCep}
+                    className="w-full px-4 py-2.5 bg-white/[0.03] border border-white/10 rounded-xl text-white placeholder-white/30 outline-none focus:ring-2 focus:ring-[#a855f7]/30 focus:border-[#a855f7] transition-all duration-200 focus:bg-white/[0.06]" />
                 </div>
 
                 <div className="space-y-2">

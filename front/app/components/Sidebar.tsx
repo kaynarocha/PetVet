@@ -12,10 +12,12 @@ export default function Sidebar(){
             </div>
             <nav className="flex flex-col space-y-2">
                 <Link href="/home" className="flex items-center px-4 py-3 text-white/60 hover:text-white hover:bg-white/5 rounded-xl transition-all duration-200 font-medium border border-transparent hover:border-white/10">Home</Link>
+                <Link href="/empresas" className="flex items-center px-4 py-3 text-white/60 hover:text-white hover:bg-white/5 rounded-xl transition-all duration-200 font-medium border border-transparent hover:border-white/10">Empresas</Link>
                 <Link href="/usuarios" className="flex items-center px-4 py-3 text-white/60 hover:text-white hover:bg-white/5 rounded-xl transition-all duration-200 font-medium border border-transparent hover:border-white/10">Usuários</Link>
                 <Link href="/tutores" className="flex items-center px-4 py-3 text-white/60 hover:text-white hover:bg-white/5 rounded-xl transition-all duration-200 font-medium border border-transparent hover:border-white/10">Tutores</Link>
                 <Link href="/pets" className="flex items-center px-4 py-3 text-white/60 hover:text-white hover:bg-white/5 rounded-xl transition-all duration-200 font-medium border border-transparent hover:border-white/10">Pets</Link>
                 <Link href="/agendamentos" className="flex items-center px-4 py-3 text-white/60 hover:text-white hover:bg-white/5 rounded-xl transition-all duration-200 font-medium border border-transparent hover:border-white/10">Agendamentos</Link>
+                <Link href="/servicos" className="flex items-center px-4 py-3 text-white/60 hover:text-white hover:bg-white/5 rounded-xl transition-all duration-200 font-medium border border-transparent hover:border-white/10">Serviços</Link>
 
             </nav>
         </aside>);

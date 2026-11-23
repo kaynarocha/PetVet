@@ -25,10 +25,11 @@ export async function deletarAgendamento(id:number) : Promise<number>{
 export async function atualizarStatusAgendamento(agendamento:Agendamento) :Promise<void>{
    
     var novoStatus = {};
+    
     if(agendamento.statusAgendamento ==="ATIVO"){
-        novoStatus = {status:"BLOQUEADO"}
+        novoStatus = {statusAgendamento:"BLOQUEADO"}
     }else{
-        novoStatus = {status:"ATIVO"}
+        novoStatus = {statusAgendamento:"ATIVO"}
     }
 
     var dadosRetorno = await  

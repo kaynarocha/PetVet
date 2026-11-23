@@ -25,10 +25,11 @@ export async function deletarTutor(id:number) : Promise<number>{
 export async function atualizarStatusTutor(tutor:Tutor) :Promise<void>{
    
     var novoStatus = {};
+    
     if(tutor.statusTutor ==="ATIVO"){
-        novoStatus = {status:"BLOQUEADO"}
+        novoStatus = {statusTutor:"BLOQUEADO"}
     }else{
-        novoStatus = {status:"ATIVO"}
+        novoStatus = {statusTutor:"ATIVO"}
     }
 
     var dadosRetorno = await  

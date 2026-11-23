@@ -45,10 +45,16 @@ public class UsuarioController {
                 txtEmail.getText(),
                 txtSenha.getText(),
                 txtCpf.getText(),
-                "maxmax1");
+                "maxnyxthena2");
 
         int respostaApi = executarMetodoAPI("http://localhost:8080/usuarios/admin",jsonRequest,"POST");
 
+        if (respostaApi == 200) {
+            showMessage(Alert.AlertType.INFORMATION, "Usuário salvo com sucesso!");
+            voltar(event);
+        } else {
+            showMessage(Alert.AlertType.ERROR, "Erro ao salvar usuário!");
+        }
 
     }
 

@@ -5,9 +5,16 @@ import { Pet } from "@/app/types/pet";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/app/redux/store";
+import { setPets } from "@/app/redux/slices/petSlice";
+
 export default function Pets(){
 
-    const [pets, setPets] = useState<Pet[]>([]);
+    //const [pets, setPets] = useState<Pet[]>([]);
+    const pets = useSelector((state: RootState) => state.pet.lista);
+    const dispatch = useDispatch();
+
 
     useEffect(() => {
         carregarDados();
@@ -18,7 +25,7 @@ export default function Pets(){
     
     try {
         const dados = await buscarListaPets();
-        setPets(dados);
+        dispatch(setPets(dados));
 
     } catch (error) {
         alert("Erro ao carregar os dados dos pets.");
@@ -198,7 +205,7 @@ export default function Pets(){
 
                         { pets.length === 0 && (
                             <tr>
-                                <td colSpan={5} className="px-6 py-4 text-sm text-white/40">
+                                <td colSpan={6} className="px-6 py-4 text-sm text-white/40">
                                     Nenhum pet cadastrado.
                                 </td>
                             </tr>

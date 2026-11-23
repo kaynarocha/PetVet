@@ -26,10 +26,11 @@ export async function deletarPet(id:number) : Promise<number>{
 export async function atualizarStatusPet(pet:Pet) :Promise<void>{
    
     var novoStatus = {};
+    
     if(pet.statusPet ==="ATIVO"){
-        novoStatus = {status:"BLOQUEADO"}
+        novoStatus = {statusPet:"BLOQUEADO"}
     }else{
-        novoStatus = {status:"ATIVO"}
+        novoStatus = {statusPet:"ATIVO"}
     }
 
     var dadosRetorno = await  

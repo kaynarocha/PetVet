@@ -3,8 +3,10 @@
 import { atualizarAgendamento, salvarAgendamento } from "@/app/services/agendamentoService";
 import api from "@/app/services/api";
 import { buscarListaPets } from "@/app/services/petService";
+import { buscarListaServicos } from "@/app/services/servicoService";
 import { Agendamento, AgendamentoFormProps } from "@/app/types/agendamento";
 import { Pet } from "@/app/types/pet";
+import { Servico } from "@/app/types/Servico";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -21,13 +23,13 @@ export default function AgendamentoForm({ agendamentoExistente }: AgendamentoFor
 
     // fk pet e serviço
     const [pets, setPets] = useState<Pet[]>([]);
-    const [servicos, setServicos] = useState<{ id: number; nome: string }[]>([]);
+    const [servicos, setServicos] = useState<Servico[]>([]);
     const [petId, setPetId] = useState<number | null>(agendamentoExistente?.petId ?? null);
     const [servicoId, setServicoId] = useState<number | null>(agendamentoExistente?.servicoId ?? null);
 
     useEffect(() => {
         buscarListaPets().then(setPets).catch(() => {});
-        api.get("/servico").then((r) => setServicos(r.data)).catch(() => {});
+        buscarListaServicos().then(setServicos).catch(() => {});
     }, []);
 
     // função para atualizar os valores do formulário
@@ -132,7 +134,7 @@ export default function AgendamentoForm({ agendamentoExistente }: AgendamentoFor
                     className="w-full px-4 py-2.5 bg-white/[0.03] border border-white/10 rounded-xl text-white outline-none focus:ring-2 focus:ring-[#a855f7]/30 focus:border-[#a855f7]">
                         <option value="" className="text-black">Selecione...</option>
                         {servicos.map((sv) => (
-                            <option key={sv.id} value={sv.id} className="text-black">{sv.nome}</option>
+                            <option key={sv.id} value={sv.id ?? ""} className="text-black">{sv.nome}</option>
                         ))}
                     </select>
                 </div>
