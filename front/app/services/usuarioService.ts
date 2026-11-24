@@ -62,6 +62,9 @@ export async function  salvarUsuario (usuario:Usuario): Promise<number>{
     return dadosRetorno.data;
 }
 
-export async function buscarUsuarioLogado(): Promise<Usuario> {
-    return (await api.get<Usuario>('/usuarios/buscarusuariologado')).data;
+// recebe o token como parametro, 
+// caso seja chamado de fora do contexto do redux
+export async function buscarUsuarioLogado(token?: string): Promise<Usuario> {
+    const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
+    return (await api.get<Usuario>('/usuarios/buscarusuariologado', config)).data;
 }
