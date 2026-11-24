@@ -29,7 +29,12 @@ public class ServicoController {
     private TextField txtDuracaoMinutos;
 
     @FXML
+    private TextField txtEmpresaId;
+
+    @FXML
     public void salvarServico(ActionEvent event) throws Exception{
+
+        String empresaId = txtEmpresaId.getText().isBlank() ? "null" : txtEmpresaId.getText().trim();
 
         String jsonRequest = String.format("{\n" +
                         " \"nome\": \"%s\",\n" +
@@ -41,7 +46,8 @@ public class ServicoController {
                 txtDescricao.getText(),
                 txtValor.getText().replace(",", "."),
                 txtDuracaoMinutos.getText(),
-                "sksdmsdefoi4409i9tkdfogkpog3443itd");
+                empresaId,
+                "maxnyxthena2");
 
         int respostaApi = executaMetodoAPI("http://localhost:8080/servico/adminServico",jsonRequest,"POST");
 

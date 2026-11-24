@@ -6,6 +6,7 @@ import com.example.petvet.application.DTOs.ServicoRequest;
 import com.example.petvet.application.DTOs.ServicoResponse;
 import com.example.petvet.application.DTOs.EnumStatusServico;
 import com.example.petvet.domain.entities.Servico;
+import com.example.petvet.domain.repository.EmpresaRepository;
 import com.example.petvet.domain.repository.ServicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,6 +26,9 @@ public class ServicoService {
 
     @Autowired
     private UsuarioService usuarioService;
+
+    @Autowired
+    private EmpresaRepository empresaRepository;
 
     @Value("${spring.secretkey}")
     private String secret;
@@ -51,6 +55,12 @@ public class ServicoService {
         }
 
         Servico servicoAdminSalvar = new Servico(criarServicoRequest);
+
+        if (criarServicoRequest.empresaId() != null) {
+            servicoAdminSalvar.setEmpresa(empresaRepository.findById(criarServicoRequest.empresaId())
+                    .orElseThrow(() -> new IllegalArgumentException("Empresa não encontrada!")));
+        }
+
         servicoRepository.save(servicoAdminSalvar);
 
         return new CriarServicoResponse(servicoAdminSalvar.getId(),"Serviço salvo com sucesso");
