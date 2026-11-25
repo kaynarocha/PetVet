@@ -1,6 +1,6 @@
 'use client'
 
-import Link from "@/node_modules/next/link";
+import Link from "next/link";
 import UsuarioForm from "../components/UsuarioForm";
 
 export default function CadastroUsuario(){

@@ -1,5 +1,5 @@
 
-import { Metadata } from "@/node_modules/next/types";
+import { Metadata } from "next/types";
 import "./globals.css";
 import StoreProvider from "./redux/StoreProvider";
 

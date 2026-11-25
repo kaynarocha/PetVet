@@ -1,7 +1,7 @@
 "use client"
 
-import Link from "@/node_modules/next/link";
-import { useParams, useRouter } from "@/node_modules/next/navigation";
+import Link from "next/link";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Pet } from "@/app/types/pet";

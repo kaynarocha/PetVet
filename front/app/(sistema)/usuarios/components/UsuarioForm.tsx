@@ -2,7 +2,7 @@
 
 import { atualizarUsuario, salvarUsuario } from "@/app/services/usuarioService";
 import { Usuario, UsuarioFormProps } from "@/app/types/usuario";
-import Link from "@/node_modules/next/link";
+import Link from "next/link";
 import { buscarListaEmpresas } from "@/app/services/empresaService";
 
 import { useRouter } from "next/dist/client/components/navigation";

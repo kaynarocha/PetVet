@@ -41,6 +41,7 @@ public class ServicoController {
                         " \"descricao\": \"%s\",\n" +
                         " \"valor\": %s,\n" +
                         " \"duracaoMinutos\": %s,\n" +
+                        " \"empresaId\": %s,\n" +
                         " \"secretKey\": \"%s\"\n" +
                         "}", txtNome.getText(),
                 txtDescricao.getText(),

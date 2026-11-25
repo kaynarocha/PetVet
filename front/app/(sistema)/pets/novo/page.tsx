@@ -1,6 +1,6 @@
 'use client'
 
-import Link from "@/node_modules/next/link";
+import Link from "next/link";
 import PetForm from "../components/PetForm";
 
 export default function CadastroPet(){

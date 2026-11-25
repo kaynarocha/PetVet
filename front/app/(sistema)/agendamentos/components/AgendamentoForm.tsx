@@ -54,7 +54,7 @@ export default function AgendamentoForm({ agendamentoExistente }: AgendamentoFor
             ...agendamento,
             servicoId,
             petId,
-            data: agendamento.data ? `${agendamento.data.slice(0, 10)}T00:00:00` : null
+            data: agendamento.data ? `${agendamento.data.slice(0, 16)}:00` : null
         } as Agendamento;
 
         if (agendamentoExistente) {
@@ -102,8 +102,8 @@ export default function AgendamentoForm({ agendamentoExistente }: AgendamentoFor
                     </label>
                     <input
                         name="data"
-                        type="date"
-                        value={agendamento.data?.slice(0, 10) || ""}
+                        type="datetime-local"
+                        value={agendamento.data?.slice(0, 16) || ""}
                         required
                         placeholder="01/01/2026"
                         onChange={(e) => handlerChange('data', e.target.value)}

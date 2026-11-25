@@ -3,7 +3,7 @@
 import { consultaEmpresaPorId } from "@/app/services/empresaService";
 import { Empresa } from "@/app/types/empresa";
 import { useParams, useRouter } from "next/dist/client/components/navigation";
-import Link from "@/node_modules/next/link";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import EmpresaForm from "../../components/EmpresaForm";
 

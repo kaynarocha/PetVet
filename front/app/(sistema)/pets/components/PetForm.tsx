@@ -4,8 +4,7 @@ import { atualizarPet, salvarPet } from "@/app/services/petService";
 import { buscarListaTutores } from "@/app/services/tutorService";
 import { Pet, PetFormProps } from "@/app/types/pet";
 import { Tutor } from "@/app/types/tutor";
-import Link from "@/node_modules/next/link";
-import axios from "axios";
+import Link from "next/link";
 import { useRouter } from "next/dist/client/components/navigation";
 import { useEffect, useState } from "react";
 

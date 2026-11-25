@@ -5,6 +5,15 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Agendamento } from "@/app/types/agendamento";
 
+
+// Função para formatar a data e hora no formato bonitinho
+function formatarDataHora(data: string): string {
+    if (!data) return "";
+    const [dia, hora] = data.split("T");
+    const [ano, mes, d] = dia.split("-");
+    return `${d}/${mes}/${ano} ${hora ? hora.slice(0, 5) : ""}`;
+}
+
 export default function Agendamentos(){
 
     const [agendamentos, setAgendamentos] = useState<Agendamento[] | []>([]);
@@ -160,7 +169,7 @@ export default function Agendamentos(){
                             </td>
 
                             <td className="px-6 py-4 text-sm text-white/90 font-medium">
-                                {agendamento.data}
+                                {formatarDataHora(agendamento.data)}
                             </td>
 
                             <td className="px-6 py-4 text-sm text-white/60">

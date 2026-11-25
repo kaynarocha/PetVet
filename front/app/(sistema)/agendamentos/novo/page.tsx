@@ -1,7 +1,6 @@
 'use client'
 
-import Link from "@/node_modules/next/link";
-import UsuarioForm from "../components/AgendamentoForm";
+import Link from "next/link";
 import AgendamentoForm from "../components/AgendamentoForm";
 
 export default function CadastroAgendamento(){

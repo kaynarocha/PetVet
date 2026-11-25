@@ -1,7 +1,7 @@
 "use client"
 
-import Link from "@/node_modules/next/link";
-import { useParams, useRouter } from "@/node_modules/next/navigation";
+import Link from "next/link";
+import { useParams, useRouter } from "next/navigation";
 import UsuarioForm from "../../components/UsuarioForm";
 import { useEffect, useState } from "react";
 import { Usuario } from "@/app/types/usuario";
